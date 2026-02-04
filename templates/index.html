@@ -76,6 +76,15 @@
 
 <script src="//embed.typeform.com/next/embed.js"></script>
 <script>
+  window.tf.createEmbed('rsvpForm', 'y0BhXqYR', {
+    onSubmit: () => {
+      // Hide the container after submission
+      document.getElementById('rsvpForm').style.display = 'none';
+      console.log('Form submitted and hidden!');
+    }
+  });
+</script>
+<script>
 document.addEventListener("DOMContentLoaded", function() {
     const btn = document.getElementById("rsvpBtn");
     const formContainer = document.getElementById("rsvpForm");
