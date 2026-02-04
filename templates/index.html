@@ -1,13 +1,63 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<div class="jumbotron">
-    <h1 class="display-4">Bootstrap starter template by {{ app_data['author'] }} </h1>
-    <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-    <p>Title: {{ app_data['html_title'] }}</p>
+<div class="container my-5">
+    <div class="row align-items-center">
+        <!-- Collage Section -->
+        <div class="col-md-5 mb-4 mb-md-0 position-relative">
+            <div class="collage">
+                <img src="{{ url_for('static', filename='static/images/liftsnow.jpg') }}" class="collage-photo photo1" alt="Photo 1">
+                <img src="{{ url_for('static', filename='images/photo2.jpg') }}" class="collage-photo photo2" alt="Photo 2">
+                <img src="{{ url_for('static', filename='images/photo3.jpg') }}" class="collage-photo photo3" alt="Photo 3">
+            </div>
+        </div>
 
-    <hr class="my-4">
-    <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-    <a class="btn btn-primary btn-lg" href="/contact" role="button">Contact</a>
-  </div>
+        <!-- Wedding Info Section -->
+        <div class="col-md-7">
+            <h1 class="display-4 text-primary">We're Getting Married!</h1>
+            <p class="lead">Join us for our special day on <strong>June 15, 2026</strong> at <strong>Sunset Gardens</strong>.</p>
+            <p>Ceremony starts at 4 PM, followed by dinner and dancing.</p>
+            <p>Please RSVP by <strong>May 15, 2026</strong>.</p>
+            <a class="btn btn-primary btn-lg mt-3" href="/contact" role="button">Contact Us</a>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Collage styles */
+.collage {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
+}
+
+.collage-photo {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+    position: absolute;
+    transition: transform 0.3s;
+}
+
+/* Angled collage positions */
+.photo1 { transform: rotate(-8deg); top: 0; left: 0; z-index: 3; }
+.photo2 { transform: rotate(5deg); top: 20px; left: 20px; z-index: 2; }
+.photo3 { transform: rotate(-5deg); top: 40px; left: -10px; z-index: 1; }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .collage {
+        position: relative;
+        max-width: 90%;
+        height: auto;
+    }
+
+    .collage-photo {
+        position: relative;
+        transform: rotate(0deg) !important;
+        margin-bottom: 15px;
+    }
+}
+</style>
 {% endblock %}
