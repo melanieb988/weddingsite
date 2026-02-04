@@ -74,16 +74,38 @@
 }
 </style>
 
+<script src="//embed.typeform.com/next/embed.js"></script>
 <script>
-    // Show Typeform iframe when button is clicked
-    document.addEventListener("DOMContentLoaded", function() {
-        const btn = document.getElementById("rsvpBtn");
-        const form = document.getElementById("rsvpForm");
+document.addEventListener("DOMContentLoaded", function() {
+    const btn = document.getElementById("rsvpBtn");
+    const formContainer = document.getElementById("rsvpForm");
 
-        btn.addEventListener("click", function() {
-            form.style.display = "block";
-            btn.scrollIntoView({ behavior: "smooth", block: "start" });
-        });
+    btn.addEventListener("click", function() {
+        formContainer.style.display = "block";
+        btn.scrollIntoView({ behavior: "smooth", block: "start" });
+
+        // Initialize Typeform embed with onSubmit callback
+        if (!window.typeformEmbedInitialized) {
+            const typeformElement = document.getElementById("typeformEmbed");
+            window.tf = window.tf || {};
+            window.tf.embed = window.tf.embed || {};
+            
+            // Embed options
+            window.tf.embed.makeWidget(typeformElement, "01KGNB2KYPBK5T3Q6DVEDM4S6D", {
+                hideHeaders: true,
+                hideFooter: true,
+                onSubmit: function() {
+                    // Hide the form when submitted
+                    formContainer.style.display = "none";
+
+                    // Optional: show a thank-you message
+                    alert("Thank you for your RSVP!");
+                }
+            });
+
+            window.typeformEmbedInitialized = true; // prevent re-initializing
+        }
     });
+});
 </script>
 {% endblock %}
