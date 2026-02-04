@@ -22,11 +22,10 @@
             <!-- RSVP Button -->
             <button id="rsvpBtn" class="btn btn-success btn-lg mt-3">Start RSVP</button>
 
-            <!-- Typeform Iframe (hidden initially) -->
-          <div id="rsvpForm" class="mt-4" style="display:none;">
-    <div data-tf-live="01KGNB2KYPBK5T3Q6DVEDM4S6D"></div>
-    <script src="//embed.typeform.com/next/embed.js"></script>
-</div>
+            <!-- Typeform Widget Container (hidden initially) -->
+            <div id="rsvpForm" class="mt-4" style="display:none;">
+                <div id="typeformEmbed" style="width: 100%; height: 500px;"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -74,36 +73,32 @@
 }
 </style>
 
+<!-- Typeform Embed Script -->
 <script src="//embed.typeform.com/next/embed.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     const btn = document.getElementById("rsvpBtn");
     const formContainer = document.getElementById("rsvpForm");
+    let widgetInitialized = false;
 
     btn.addEventListener("click", function() {
         formContainer.style.display = "block";
         btn.scrollIntoView({ behavior: "smooth", block: "start" });
 
-        // Initialize Typeform embed with onSubmit callback
-        if (!window.typeformEmbedInitialized) {
+        if (!widgetInitialized) {
             const typeformElement = document.getElementById("typeformEmbed");
-            window.tf = window.tf || {};
-            window.tf.embed = window.tf.embed || {};
-            
-            // Embed options
+
             window.tf.embed.makeWidget(typeformElement, "01KGNB2KYPBK5T3Q6DVEDM4S6D", {
                 hideHeaders: true,
                 hideFooter: true,
                 onSubmit: function() {
-                    // Hide the form when submitted
+                    // Hide the form on submit
                     formContainer.style.display = "none";
-
-                    // Optional: show a thank-you message
                     alert("Thank you for your RSVP!");
                 }
             });
 
-            window.typeformEmbedInitialized = true; // prevent re-initializing
+            widgetInitialized = true;
         }
     });
 });
