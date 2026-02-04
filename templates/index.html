@@ -15,12 +15,12 @@
         <!-- Wedding Info Section -->
         <div class="col-md-7">
             <h1 class="display-4 text-primary">We're Getting Married!</h1>
-            <p class="lead">Join us for our special day on <strong>June 15, 2026</strong> at <strong>Sunset Gardens</strong>.</p>
+            <p class="lead">Join us for our special day on <strong>October 24, 2026</strong> at <strong>Sunset Gardens</strong>.</p>
             <p>Ceremony starts at 4 PM, followed by dinner and dancing.</p>
-            <p>Please RSVP by <strong>May 15, 2026</strong>.</p>
+            <p>Please RSVP by <strong>May 24, 2026</strong>.</p>
 
             <!-- RSVP Button -->
-            <button id="rsvpBtn" class="btn btn-success btn-lg mt-3">Start RSVP</button>
+            <button id="rsvpBtn" class="btn btn-success btn-lg mt-3">RSVP</button>
 
             <!-- Typeform Iframe (hidden initially) -->
           <div id="rsvpForm" class="mt-4" style="display:none;">
@@ -84,26 +84,27 @@ document.addEventListener("DOMContentLoaded", function() {
         formContainer.style.display = "block";
         btn.scrollIntoView({ behavior: "smooth", block: "start" });
 
-        // Initialize Typeform embed with onSubmit callback
-        if (!window.typeformEmbedInitialized) {
-            const typeformElement = document.getElementById("typeformEmbed");
-            window.tf = window.tf || {};
-            window.tf.embed = window.tf.embed || {};
-            
-            // Embed options
-            window.tf.embed.makeWidget(typeformElement, "01KGNB2KYPBK5T3Q6DVEDM4S6D", {
-                hideHeaders: true,
-                hideFooter: true,
-                onSubmit: function() {
-                    // Hide the form when submitted
-                    formContainer.style.display = "none";
+        // Listen for Typeform ready event
+        if (!window.typeformListenerAdded) {
+            // Typeform automatically triggers tf.load when data-tf-live is used
+            window.tf.load = window.tf.load || [];
+            window.tf.load.push(function() {
+                const iframe = formContainer.querySelector("iframe");
 
-                    // Optional: show a thank-you message
-                    alert("Thank you for your RSVP!");
+                if (iframe) {
+                    // Listen for messages from the Typeform iframe
+                    window.addEventListener("message", function(event) {
+                        // Make sure message is from Typeform
+                        if (event.origin.includes("typeform.com") && event.data === "form-submit") {
+                            // Hide the form when submitted
+                            formContainer.style.display = "none";
+                            alert("Thank you for your RSVP!");
+                        }
+                    });
                 }
             });
 
-            window.typeformEmbedInitialized = true; // prevent re-initializing
+            window.typeformListenerAdded = true;
         }
     });
 });
