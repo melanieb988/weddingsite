@@ -1,3 +1,5 @@
 ###### Peter's Starter Template for a Flask Web App ######
 ###### Requirements without Version Specifiers ######
-flask
+
+flask==2.3.2
+gunicorn==21.2.0
