@@ -27,11 +27,7 @@ app_data = {
 }
 
 
-def get_db_connection():
-    """Return a connection to the SQLite database."""
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row  # allows dictionary-like access
-    return conn
+
 
 
 @app.route("/")
