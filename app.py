@@ -3,6 +3,12 @@
 
 
 from flask import Flask, render_template
+import os
+
+DB_PATH = os.environ.get("DB_PATH", "/data/rsvp.db")  # fallback for local testing
+
+# For local testing, you can set:
+# DB_PATH = "data/rsvp.db"
 
 DEVELOPMENT_ENV = True
 
