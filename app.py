@@ -1,9 +1,18 @@
 from flask import Flask, render_template, request, jsonify
 import sqlite3
 import os
+import shutil
 
-DB_PATH = os.environ.get("DB_PATH", "/data/rsvp.db")  # fallback for local testing
-DEVELOPMENT_ENV = True
+DB_PATH = "/data/rsvp.db"
+LOCAL_DB = "data/rsvp.db"
+
+# Make sure /data exists
+os.makedirs("/data", exist_ok=True)
+
+# Copy local DB to persistent disk if it doesn't exist there yet
+if not os.path.exists(DB_PATH):
+    shutil.copyfile(LOCAL_DB, DB_PATH)
+
 
 app = Flask(__name__)
 
