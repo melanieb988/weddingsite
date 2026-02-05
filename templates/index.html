@@ -20,78 +20,35 @@
             <p>Please RSVP by <strong>May 24, 2026</strong>.</p>
 
             <!-- RSVP Button -->
-            <button id="rsvpBtn" class="btn btn-success btn-lg mt-3" data-bs-toggle="modal" data-bs-target="#rsvpModal">
+            <button type="button" class="btn btn-success btn-lg mt-3" data-bs-toggle="modal" data-bs-target="#rsvpModal">
                 RSVP
             </button>
         </div>
     </div>
 </div>
 
-<!-- Bootstrap RSVP Modal -->
+<!-- RSVP Modal -->
 <div class="modal fade" id="rsvpModal" tabindex="-1" aria-labelledby="rsvpModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="rsvpModalLabel">RSVP</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <!-- Lookup Section -->
-        <div id="lookupSection">
-          <label for="guestNameInput" class="form-label">Enter Your Full Name</label>
-          <input type="text" id="guestNameInput" class="form-control mb-2" placeholder="Full Name">
-          <button id="lookupBtn" class="btn btn-primary w-100">Search</button>
-        </div>
-
-        <!-- RSVP Details Section (hidden until name found) -->
-        <div id="rsvpDetails" style="display:none; margin-top:15px;">
-          <h6>RSVP for <span id="guestNameDisplay"></span></h6>
-
-          <div id="householdMembers" class="mb-3">
-            <!-- Household members checkboxes will be inserted here -->
-          </div>
-
-          <div class="mb-2">
-            <label class="form-label">Will you attend?</label><br>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="attending" id="attendingYes" value="Yes" checked>
-              <label class="form-check-label" for="attendingYes">Yes</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="attending" id="attendingNo" value="No">
-              <label class="form-check-label" for="attendingNo">No</label>
-            </div>
-          </div>
-
-          <div class="mb-2">
-            <label for="mealChoice" class="form-label">Meal Choice</label>
-            <select id="mealChoice" class="form-select">
-              <option value="">Select...</option>
-              <option value="Chicken">Chicken</option>
-              <option value="Beef">Beef</option>
-              <option value="Vegetarian">Vegetarian</option>
-            </select>
-          </div>
-
-          <div class="mb-2" id="plusOneContainer" style="display:none;">
-            <label for="plusOne" class="form-label">Plus One Name</label>
-            <input type="text" id="plusOne" class="form-control" placeholder="Your plus-one's name">
-          </div>
-
-          <div class="mb-2">
-            <label for="songRec" class="form-label">Song Request</label>
-            <input type="text" id="songRec" class="form-control" placeholder="Your song request">
-          </div>
-
-          <button id="submitRSVP" class="btn btn-success w-100 mt-2">Submit RSVP</button>
-          <div id="rsvpMessage" class="mt-2 text-success" style="display:none;"></div>
-        </div>
+        <input type="text" id="guestName" class="form-control mb-3" placeholder="Enter your name">
+        <button id="searchBtn" class="btn btn-primary mb-3">Search</button>
+        <div id="householdContainer"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="submitRsvpBtn" class="btn btn-success">Submit RSVP</button>
       </div>
     </div>
   </div>
 </div>
 
 <style>
+/* Collage styles */
 .collage {
     position: relative;
     width: 100%;
@@ -107,88 +64,101 @@
     transition: transform 0.3s;
 }
 
+/* Angled collage positions */
 .photo1 { transform: rotate(-8deg); top: 0; left: 0; z-index: 3; }
 .photo2 { transform: rotate(5deg); top: 20px; left: 20px; z-index: 2; }
 .photo3 { transform: rotate(-5deg); top: 40px; left: -10px; z-index: 1; }
 
+/* Responsive adjustments */
 @media (max-width: 768px) {
-    .collage { max-width: 90%; height: auto; }
-    .collage-photo { position: relative; transform: rotate(0deg) !important; margin-bottom: 15px; }
+    .collage {
+        position: relative;
+        max-width: 90%;
+        height: auto;
+    }
+
+    .collage-photo {
+        position: relative;
+        transform: rotate(0deg) !important;
+        margin-bottom: 15px;
+    }
+
+    /* Stack RSVP form below images on mobile */
+    #householdContainer {
+        margin-top: 20px;
+    }
 }
 </style>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    const lookupBtn = document.getElementById("lookupBtn");
-    const guestNameInput = document.getElementById("guestNameInput");
-    const rsvpDetails = document.getElementById("rsvpDetails");
-    const guestNameDisplay = document.getElementById("guestNameDisplay");
-    const householdMembersDiv = document.getElementById("householdMembers");
-    const plusOneContainer = document.getElementById("plusOneContainer");
-    const submitRSVP = document.getElementById("submitRSVP");
-    const rsvpMessage = document.getElementById("rsvpMessage");
+document.getElementById("searchBtn").addEventListener("click", async () => {
+    const name = document.getElementById("guestName").value.trim();
+    if (!name) return alert("Please enter your name.");
 
-    let guestData = null;
-
-    lookupBtn.addEventListener("click", async () => {
-        const name = guestNameInput.value.trim();
-        if (!name) return alert("Please enter your name");
-
-        const response = await fetch("/api/lookup", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name })
-        });
-        const data = await response.json();
-
-        if (!data.found) {
-            alert("Name not found. Please check your spelling.");
-            return;
-        }
-
-        guestData = data;
-        guestNameDisplay.textContent = guestData.name;
-
-        // Household members (simple example: just this guest for now)
-        householdMembersDiv.innerHTML = `<label>Household:</label><br><input type="checkbox" checked disabled> ${guestData.name}`;
-
-        // Conditional plus-one
-        plusOneContainer.style.display = guestData.plus_one_allowed === "Yes" ? "block" : "none";
-
-        rsvpDetails.style.display = "block";
+    const res = await fetch("/api/lookup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name })
     });
 
-    submitRSVP.addEventListener("click", async () => {
-        if (!guestData) return;
+    const guests = await res.json();
+    const container = document.getElementById("householdContainer");
+    container.innerHTML = "";
 
-        const attending = document.querySelector('input[name="attending"]:checked').value;
-        const meal_choice = document.getElementById("mealChoice").value;
-        const plus_one_name = document.getElementById("plusOne").value;
-        const song_rec = document.getElementById("songRec").value;
+    if (guests.length === 0) {
+        container.innerHTML = "<p>No guests found. Check your spelling.</p>";
+        return;
+    }
 
-        const response = await fetch("/api/rsvp", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                guest_id: guestData.guest_id,
-                attending,
-                meal_choice,
-                plus_one_name,
-                song_rec
-            })
-        });
-
-        const result = await response.json();
-
-        if (result.success) {
-            rsvpMessage.textContent = "Thank you! Your RSVP has been submitted.";
-            rsvpMessage.style.display = "block";
-            rsvpDetails.style.display = "none";
-        } else {
-            alert("There was an error submitting your RSVP. Please try again.");
-        }
+    guests.forEach(g => {
+        const div = document.createElement("div");
+        div.className = "mb-3 p-2 border rounded";
+        div.innerHTML = `
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="${g.name}" id="guest-${g.name}" ${g.attending ? "checked" : ""}>
+                <label class="form-check-label fw-bold" for="guest-${g.name}">${g.name} ${g.plus_one_allowed ? "(Plus One Allowed)" : ""}</label>
+            </div>
+            <input type="text" class="form-control mt-1" placeholder="Meal choice" value="${g.meal_choice || ''}">
+            <input type="text" class="form-control mt-1" placeholder="Plus One Name" value="${g.plus_one_name || ''}" ${!g.plus_one_allowed ? 'disabled' : ''}>
+            <input type="text" class="form-control mt-1" placeholder="Song Recommendation" value="${g.song_rec || ''}">
+        `;
+        container.appendChild(div);
     });
+});
+
+document.getElementById("submitRsvpBtn").addEventListener("click", async () => {
+    const householdDivs = document.getElementById("householdContainer").children;
+    const guests = [];
+
+    for (const div of householdDivs) {
+        const name = div.querySelector("input[type=checkbox]").value;
+        const attending = div.querySelector("input[type=checkbox]").checked;
+        const meal_choice = div.querySelectorAll("input[type=text]")[0].value;
+        const plus_one_name = div.querySelectorAll("input[type=text]")[1].value;
+        const song_rec = div.querySelectorAll("input[type=text]")[2].value;
+
+        guests.push({ name, attending, meal_choice, plus_one_name, song_rec });
+    }
+
+    const res = await fetch("/api/rsvp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ guests })
+    });
+
+    const result = await res.json();
+    if (result.status === "success") {
+        alert("RSVP submitted! Thank you.");
+        const modalEl = document.getElementById("rsvpModal");
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        modal.hide();
+        document.getElementById("guestName").value = "";
+        document.getElementById("householdContainer").innerHTML = "";
+    } else {
+        alert("Error submitting RSVP. Try again.");
+    }
 });
 </script>
 {% endblock %}
+
 
