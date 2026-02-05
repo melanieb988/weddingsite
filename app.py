@@ -1,17 +1,18 @@
 from flask import Flask, render_template, request, jsonify
-import sqlite3
 import os
-import shutil
+import psycopg2
 
-DB_PATH = "/data/rsvp.db"
-LOCAL_DB = "data/rsvp.db"
+app = Flask(__name__)
 
-# Make sure /data exists
-os.makedirs("/data", exist_ok=True)
+# Get database URL from environment variable
+DB_URL = os.environ.get("DATABASE_URL")
+if not DB_URL:
+    raise Exception("DATABASE_URL not set!")
 
-# Copy local DB to persistent disk if it doesn't exist there yet
-if not os.path.exists(DB_PATH):
-    shutil.copyfile(LOCAL_DB, DB_PATH)
+def get_db_connection():
+    conn = psycopg2.connect(DB_URL)
+    return conn
+
 
 
 app = Flask(__name__)
@@ -57,58 +58,72 @@ def contact():
 @app.route("/api/lookup", methods=["POST"])
 def lookup():
     data = request.get_json()
-    name = data.get("name", "").strip()
+    name_input = data.get("name", "").strip()
 
-    if not name:
-        return jsonify({"found": False, "error": "No name provided"}), 400
+    if not name_input:
+        return jsonify({"error": "No name provided"}), 400
 
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute(
-        "SELECT guest_id, name, household_id, plus_one_allowed FROM guests WHERE name LIKE ?",
-        (f"%{name}%",),
-    )
-    guest = cur.fetchone()
+    # Search for guests by name (case-insensitive)
+    cur.execute("""
+        SELECT name, household_id, plus_one_allowed, attending, meal_choice, plus_one_name, song_rec
+        FROM guests
+        WHERE LOWER(name) LIKE LOWER(%s)
+    """, (f"%{name_input}%",))
+    results = cur.fetchall()
+    cur.close()
     conn.close()
 
-    if guest:
-        return jsonify({
-            "found": True,
-            "guest_id": guest["guest_id"],
-            "name": guest["name"],
-            "household_id": guest["household_id"],
-            "plus_one_allowed": guest["plus_one_allowed"],
-        })
-    else:
-        return jsonify({"found": False})
+    # Return list of guests as JSON
+    guests_list = [
+        {
+            "name": r[0],
+            "household_id": r[1],
+            "plus_one_allowed": r[2],
+            "attending": r[3],
+            "meal_choice": r[4],
+            "plus_one_name": r[5],
+            "song_rec": r[6]
+        }
+        for r in results
+    ]
+
+    return jsonify(guests_list)
+
 
 
 # ===== API: Submit RSVP =====
 @app.route("/api/rsvp", methods=["POST"])
-def submit_rsvp():
+def rsvp():
     data = request.get_json()
-    guest_id = data.get("guest_id")
-    attending = data.get("attending")
-    meal_choice = data.get("meal_choice")
-    plus_one_name = data.get("plus_one_name")
-    song_rec = data.get("song_rec")
+    guests = data.get("guests")  # list of guests with updates
 
-    if not guest_id:
-        return jsonify({"success": False, "error": "Missing guest ID"}), 400
+    if not guests:
+        return jsonify({"error": "No guest data provided"}), 400
 
-    try:
-        conn = get_db_connection()
-        cur = conn.cursor()
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    for g in guests:
         cur.execute("""
             UPDATE guests
-            SET attending = ?, meal_choice = ?, plus_one_name = ?, song_rec = ?
-            WHERE guest_id = ?
-        """, (attending, meal_choice, plus_one_name, song_rec, guest_id))
-        conn.commit()
-        conn.close()
-        return jsonify({"success": True})
-    except Exception as e:
-        return jsonify({"success": False, "error": str(e)}), 500
+            SET attending=%s, meal_choice=%s, plus_one_name=%s, song_rec=%s
+            WHERE name=%s
+        """, (
+            g.get("attending"),
+            g.get("meal_choice"),
+            g.get("plus_one_name"),
+            g.get("song_rec"),
+            g.get("name")
+        ))
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return jsonify({"status": "success"})
+
 
 
 if __name__ == "__main__":
