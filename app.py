@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 import os
-import psycopg2
+import psycopg2-binary
 
 app = Flask(__name__)
 
