@@ -4,88 +4,81 @@
 <div class="container my-5">
     <div class="row align-items-start">
         <!-- Collage Section -->
-        <div class="col-md-5 mb-4 mb-md-0 position-relative">
+        <div class="col-md-5 mb-4 mb-md-0">
             <div class="collage">
-                <img src="{{ url_for('static', filename='images/liftsnow.jpg') }}" class="collage-photo photo1" alt="Photo 1">
-                <img src="{{ url_for('static', filename='images/photo2.jpg') }}" class="collage-photo photo2" alt="Photo 2">
-                <img src="{{ url_for('static', filename='images/photo3.jpg') }}" class="collage-photo photo3" alt="Photo 3">
+                <img src="{{ url_for('static', filename='images/liftsnow.jpg') }}" class="collage-photo photo1">
+                <img src="{{ url_for('static', filename='images/photo2.jpg') }}" class="collage-photo photo2">
+                <img src="{{ url_for('static', filename='images/photo3.jpg') }}" class="collage-photo photo3">
             </div>
         </div>
 
-        <!-- Wedding Info Section -->
+        <!-- Wedding Info -->
         <div class="col-md-7">
             <h1 class="display-4 text-primary">We're Getting Married!</h1>
-            <p class="lead">Join us for our special day on <strong>October 24, 2026</strong> at <strong>Sunset Gardens</strong>.</p>
-            <p>Ceremony starts at 4 PM, followed by dinner and dancing.</p>
-            <p>Please RSVP by <strong>May 24, 2026</strong>.</p>
+            <p class="lead">October 24, 2026 · Sunset Gardens</p>
+            <p>Please RSVP by <strong>May 24, 2026</strong></p>
 
-            <!-- RSVP Button -->
-            <button type="button" class="btn btn-success btn-lg mt-3" data-bs-toggle="modal" data-bs-target="#rsvpModal">
+            <button class="btn btn-success btn-lg mt-3"
+                    data-bs-toggle="modal"
+                    data-bs-target="#rsvpModal">
                 RSVP
             </button>
         </div>
     </div>
 </div>
 
-<!-- RSVP Modal -->
-<div class="modal fade" id="rsvpModal" tabindex="-1" aria-labelledby="rsvpModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="rsvpModalLabel">RSVP</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <input type="text" id="guestName" class="form-control mb-3" placeholder="Enter your name">
-        <button id="searchBtn" class="btn btn-primary mb-3">Search</button>
-        <div id="householdContainer"></div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" id="submitRsvpBtn" class="btn btn-success">Submit RSVP</button>
-      </div>
+<!-- RSVP MODAL -->
+<div class="modal fade" id="rsvpModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">RSVP</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <input type="text"
+                       id="guestName"
+                       class="form-control mb-3"
+                       placeholder="Enter your full name">
+
+                <button id="searchBtn" class="btn btn-primary mb-3">
+                    Find My Invitation
+                </button>
+
+                <div id="householdContainer"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button id="submitRsvpBtn" class="btn btn-success">
+                    Submit RSVP
+                </button>
+            </div>
+
+        </div>
     </div>
-  </div>
 </div>
 
 <style>
-/* Collage styles */
 .collage {
     position: relative;
-    width: 100%;
     max-width: 400px;
-    margin: auto;
 }
-
 .collage-photo {
     width: 100%;
     border-radius: 12px;
-    box-shadow: 0 8px 15px rgba(0,0,0,0.15);
     position: absolute;
-    transition: transform 0.3s;
 }
-
-/* Angled collage positions */
-.photo1 { transform: rotate(-8deg); top: 0; left: 0; z-index: 3; }
+.photo1 { transform: rotate(-8deg); z-index: 3; }
 .photo2 { transform: rotate(5deg); top: 20px; left: 20px; z-index: 2; }
 .photo3 { transform: rotate(-5deg); top: 40px; left: -10px; z-index: 1; }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
-    .collage {
-        position: relative;
-        max-width: 90%;
-        height: auto;
-    }
-
     .collage-photo {
         position: relative;
-        transform: rotate(0deg) !important;
+        transform: none !important;
         margin-bottom: 15px;
-    }
-
-    /* Stack RSVP form below images on mobile */
-    #householdContainer {
-        margin-top: 20px;
     }
 }
 </style>
@@ -105,40 +98,79 @@ document.getElementById("searchBtn").addEventListener("click", async () => {
     const container = document.getElementById("householdContainer");
     container.innerHTML = "";
 
-    if (guests.length === 0) {
-        container.innerHTML = "<p>No guests found. Check your spelling.</p>";
+    if (!guests.length) {
+        container.innerHTML = "<p>No invitation found. Please check spelling.</p>";
         return;
     }
 
     guests.forEach(g => {
         const div = document.createElement("div");
-        div.className = "mb-3 p-2 border rounded";
+        div.className = "border rounded p-3 mb-3";
+
+        const plusOneHTML = g.plus_one_allowed ? `
+            <label class="form-label mt-2">Bringing a plus one?</label>
+            <select class="form-select plus-one-toggle">
+                <option value="no" ${!g.plus_one_name ? "selected" : ""}>No</option>
+                <option value="yes" ${g.plus_one_name ? "selected" : ""}>Yes</option>
+            </select>
+            <input type="text"
+                   class="form-control mt-2 plus-one-name"
+                   placeholder="Plus One Name"
+                   value="${g.plus_one_name || ""}"
+                   style="display:${g.plus_one_name ? "block" : "none"}">
+        ` : "";
+
         div.innerHTML = `
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="${g.name}" id="guest-${g.name}" ${g.attending ? "checked" : ""}>
-                <label class="form-check-label fw-bold" for="guest-${g.name}">${g.name} ${g.plus_one_allowed ? "(Plus One Allowed)" : ""}</label>
+                <input class="form-check-input attending" type="checkbox" ${g.attending ? "checked" : ""}>
+                <label class="form-check-label fw-bold">${g.name}</label>
             </div>
-            <input type="text" class="form-control mt-1" placeholder="Meal choice" value="${g.meal_choice || ''}">
-            <input type="text" class="form-control mt-1" placeholder="Plus One Name" value="${g.plus_one_name || ''}" ${!g.plus_one_allowed ? 'disabled' : ''}>
-            <input type="text" class="form-control mt-1" placeholder="Song Recommendation" value="${g.song_rec || ''}">
+
+            <input type="text"
+                   class="form-control mt-2 meal"
+                   placeholder="Meal choice"
+                   value="${g.meal_choice || ""}">
+
+            ${plusOneHTML}
+
+            <input type="text"
+                   class="form-control mt-2 song"
+                   placeholder="Song request"
+                   value="${g.song_rec || ""}">
         `;
+
         container.appendChild(div);
     });
 });
 
+document.addEventListener("change", e => {
+    if (e.target.classList.contains("plus-one-toggle")) {
+        const wrapper = e.target.closest("div");
+        const input = wrapper.querySelector(".plus-one-name");
+        if (e.target.value === "yes") {
+            input.style.display = "block";
+        } else {
+            input.style.display = "none";
+            input.value = "";
+        }
+    }
+});
+
 document.getElementById("submitRsvpBtn").addEventListener("click", async () => {
-    const householdDivs = document.getElementById("householdContainer").children;
+    const cards = document.querySelectorAll("#householdContainer > div");
     const guests = [];
 
-    for (const div of householdDivs) {
-        const name = div.querySelector("input[type=checkbox]").value;
-        const attending = div.querySelector("input[type=checkbox]").checked;
-        const meal_choice = div.querySelectorAll("input[type=text]")[0].value;
-        const plus_one_name = div.querySelectorAll("input[type=text]")[1].value;
-        const song_rec = div.querySelectorAll("input[type=text]")[2].value;
-
-        guests.push({ name, attending, meal_choice, plus_one_name, song_rec });
-    }
+    cards.forEach(card => {
+        guests.push({
+            name: card.querySelector(".form-check-label").innerText,
+            attending: card.querySelector(".attending").checked,
+            meal_choice: card.querySelector(".meal").value,
+            plus_one_name: card.querySelector(".plus-one-name")
+                ? card.querySelector(".plus-one-name").value
+                : null,
+            song_rec: card.querySelector(".song").value
+        });
+    });
 
     const res = await fetch("/api/rsvp", {
         method: "POST",
@@ -146,19 +178,10 @@ document.getElementById("submitRsvpBtn").addEventListener("click", async () => {
         body: JSON.stringify({ guests })
     });
 
-    const result = await res.json();
-    if (result.status === "success") {
-        alert("RSVP submitted! Thank you.");
-        const modalEl = document.getElementById("rsvpModal");
-        const modal = bootstrap.Modal.getInstance(modalEl);
-        modal.hide();
-        document.getElementById("guestName").value = "";
-        document.getElementById("householdContainer").innerHTML = "";
-    } else {
-        alert("Error submitting RSVP. Try again.");
+    if ((await res.json()).status === "success") {
+        alert("Thank you! Your RSVP has been recorded.");
+        bootstrap.Modal.getInstance(document.getElementById("rsvpModal")).hide();
     }
 });
 </script>
 {% endblock %}
-
-
