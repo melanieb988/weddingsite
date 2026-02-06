@@ -52,8 +52,8 @@ def contact():
 
 # ===== API: Lookup Guest by Name =====
 @app.route("/api/lookup", methods=["POST"])
-    def lookup():
-        data = request.get_json()
+def lookup():
+    data = request.get_json()
     name_input = data.get("name", "").strip()
     
     if not name_input:
