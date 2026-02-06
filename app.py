@@ -107,6 +107,44 @@ def lookup():
     return jsonify(guests_list)
 
 
+@app.route("/api/household", methods=["POST"])
+def household():
+    data = request.get_json()
+    name = data.get("name")
+    household_id = data.get("household_id")
+
+    if not name or not household_id:
+        return jsonify({"error": "Missing data"}), 400
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT name, household_id, plus_one_allowed, attending,
+               meal_choice, plus_one_name, song_rec
+        FROM guests
+        WHERE household_id = %s
+        ORDER BY name
+    """, (household_id,))
+
+    results = cur.fetchall()
+    cur.close()
+    conn.close()
+
+    guests = [
+        {
+            "name": r[0],
+            "household_id": r[1],
+            "plus_one_allowed": r[2],
+            "attending": r[3],
+            "meal_choice": r[4],
+            "plus_one_name": r[5],
+            "song_rec": r[6]
+        }
+        for r in results
+    ]
+
+    return jsonify(guests)
 
 
 # ===== API: Submit RSVP =====
