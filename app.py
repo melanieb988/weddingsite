@@ -50,101 +50,87 @@ def contact():
     return render_template("contact.html", app_data=app_data)
 
 
-# ===== API: Lookup Guest by Name =====
+
 @app.route("/api/lookup", methods=["POST"])
 def lookup():
     data = request.get_json()
     name_input = data.get("name", "").strip()
-    
+
     if not name_input:
         return jsonify({"error": "No name provided"}), 400
-    
+
     conn = get_db_connection()
     cur = conn.cursor()
-    
-    # 1️⃣ Find the household_id for the searched name
-    cur.execute("""
-        SELECT household_id
-        FROM guests
-        WHERE LOWER(name) LIKE LOWER(%s)
-        LIMIT 1
-    """, (f"%{name_input}%",))
-    
-    row = cur.fetchone()
-    
-    if not row:
-        cur.close()
-        conn.close()
-        return jsonify([])  # no guest found
-    
-    household_id = row[0]
-    
-    # 2️⃣ Get ALL guests in that household
-    cur.execute("""
-        SELECT name, household_id, plus_one_allowed, attending, meal_choice, plus_one_name, song_rec
-        FROM guests
-        WHERE household_id = %s
-        ORDER BY name
-    """, (household_id,))
-    
+
+    # Split input into first and last name if possible
+    parts = name_input.split()
+    if len(parts) == 1:
+        # Only first name
+        cur.execute("""
+            SELECT id, name, household_id, plus_one_allowed
+            FROM guests
+            WHERE LOWER(name) LIKE LOWER(%s)
+        """, (f"{parts[0]}%",))
+    else:
+        # Full name search
+        cur.execute("""
+            SELECT id, name, household_id, plus_one_allowed
+            FROM guests
+            WHERE LOWER(name) = LOWER(%s)
+        """, (name_input,))
+
     results = cur.fetchall()
     cur.close()
     conn.close()
-    
+
+    # Return only the matching people
     guests_list = [
         {
-            "name": r[0],
-            "household_id": r[1],
-            "plus_one_allowed": r[2],
-            "attending": r[3],
-            "meal_choice": r[4],
-            "plus_one_name": r[5],
-            "song_rec": r[6]
+            "id": r[0],
+            "name": r[1],
+            "household_id": r[2],
+            "plus_one_allowed": r[3]
         }
         for r in results
     ]
-    
+
     return jsonify(guests_list)
 
 
 @app.route("/api/household", methods=["POST"])
 def household():
     data = request.get_json()
-    name = data.get("name")
     household_id = data.get("household_id")
-
-    if not name or not household_id:
-        return jsonify({"error": "Missing data"}), 400
+    if not household_id:
+        return jsonify({"error": "No household_id provided"}), 400
 
     conn = get_db_connection()
     cur = conn.cursor()
 
     cur.execute("""
-        SELECT name, household_id, plus_one_allowed, attending,
-               meal_choice, plus_one_name, song_rec
+        SELECT name, attending, meal_choice, plus_one_allowed, plus_one_name, song_rec
         FROM guests
         WHERE household_id = %s
-        ORDER BY name
     """, (household_id,))
 
     results = cur.fetchall()
     cur.close()
     conn.close()
 
-    guests = [
+    household_list = [
         {
             "name": r[0],
-            "household_id": r[1],
-            "plus_one_allowed": r[2],
-            "attending": r[3],
-            "meal_choice": r[4],
-            "plus_one_name": r[5],
-            "song_rec": r[6]
+            "attending": r[1],
+            "meal_choice": r[2],
+            "plus_one_allowed": r[3],
+            "plus_one_name": r[4],
+            "song_rec": r[5]
         }
         for r in results
     ]
 
-    return jsonify(guests)
+    return jsonify(household_list)
+
 
 
 # ===== API: Submit RSVP =====
