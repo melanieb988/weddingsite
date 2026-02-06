@@ -67,14 +67,14 @@ def lookup():
     if len(parts) == 1:
         # Only first name
         cur.execute("""
-            SELECT id, name, household_id, plus_one_allowed
+            SELECT  name, household_id, plus_one_allowed
             FROM guests
             WHERE LOWER(name) LIKE LOWER(%s)
         """, (f"{parts[0]}%",))
     else:
         # Full name search
         cur.execute("""
-            SELECT id, name, household_id, plus_one_allowed
+            SELECT  name, household_id, plus_one_allowed
             FROM guests
             WHERE LOWER(name) = LOWER(%s)
         """, (name_input,))
@@ -86,10 +86,10 @@ def lookup():
     # Return only the matching people
     guests_list = [
         {
-            "id": r[0],
-            "name": r[1],
-            "household_id": r[2],
-            "plus_one_allowed": r[3]
+           
+            "name": r[0],
+            "household_id": r[1],
+            "plus_one_allowed": r[2]
         }
         for r in results
     ]
