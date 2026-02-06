@@ -3,7 +3,7 @@
 {% block body %}
 <div class="container my-5">
     <div class="row align-items-start">
-        <!-- Collage Section -->
+        <!-- Photos -->
         <div class="col-md-5 mb-4 mb-md-0">
             <div class="collage">
                 <img src="{{ url_for('static', filename='images/liftsnow.jpg') }}" class="collage-photo photo1">
@@ -12,7 +12,7 @@
             </div>
         </div>
 
-        <!-- Wedding Info -->
+        <!-- Info -->
         <div class="col-md-7">
             <h1 class="display-4 text-primary">We're Getting Married!</h1>
             <p class="lead">October 24, 2026 · Sunset Gardens</p>
@@ -41,7 +41,7 @@
                 <input type="text"
                        id="guestName"
                        class="form-control mb-3"
-                       placeholder="Enter your full name">
+                       placeholder="Enter your first or full name">
 
                 <button id="searchBtn" class="btn btn-primary mb-3">
                     Find My Invitation
@@ -84,9 +84,14 @@
 </style>
 
 <script>
+const container = document.getElementById("householdContainer");
+
+/* SEARCH */
 document.getElementById("searchBtn").addEventListener("click", async () => {
     const name = document.getElementById("guestName").value.trim();
     if (!name) return alert("Please enter your name.");
+
+    container.innerHTML = "<p>Searching...</p>";
 
     const res = await fetch("/api/lookup", {
         method: "POST",
@@ -94,14 +99,49 @@ document.getElementById("searchBtn").addEventListener("click", async () => {
         body: JSON.stringify({ name })
     });
 
-    const guests = await res.json();
-    const container = document.getElementById("householdContainer");
+    const matches = await res.json();
     container.innerHTML = "";
 
-    if (!guests.length) {
+    if (!matches.length) {
         container.innerHTML = "<p>No invitation found. Please check spelling.</p>";
         return;
     }
+
+    // Unique match → load household
+    if (matches.length === 1) {
+        loadHousehold(matches[0]);
+        return;
+    }
+
+    // Multiple matches → user selects
+    container.innerHTML = "<p class='fw-bold'>Which one are you?</p>";
+
+    matches.forEach(m => {
+        const btn = document.createElement("button");
+        btn.className = "btn btn-outline-primary w-100 mb-2";
+        btn.innerText = `${m.name} (${m.household_id})`;
+        btn.onclick = () => loadHousehold(m);
+        container.appendChild(btn);
+    });
+});
+
+/* LOAD HOUSEHOLD */
+async function loadHousehold(selection) {
+    container.innerHTML = "<p>Loading your invitation...</p>";
+
+    const res = await fetch("/api/household", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(selection)
+    });
+
+    const guests = await res.json();
+    renderHousehold(guests);
+}
+
+/* RENDER HOUSEHOLD */
+function renderHousehold(guests) {
+    container.innerHTML = "";
 
     guests.forEach(g => {
         const div = document.createElement("div");
@@ -113,8 +153,7 @@ document.getElementById("searchBtn").addEventListener("click", async () => {
                 <option value="no" ${!g.plus_one_name ? "selected" : ""}>No</option>
                 <option value="yes" ${g.plus_one_name ? "selected" : ""}>Yes</option>
             </select>
-            <input type="text"
-                   class="form-control mt-2 plus-one-name"
+            <input class="form-control mt-2 plus-one-name"
                    placeholder="Plus One Name"
                    value="${g.plus_one_name || ""}"
                    style="display:${g.plus_one_name ? "block" : "none"}">
@@ -126,27 +165,25 @@ document.getElementById("searchBtn").addEventListener("click", async () => {
                 <label class="form-check-label fw-bold">${g.name}</label>
             </div>
 
-            <input type="text"
-                   class="form-control mt-2 meal"
+            <input class="form-control mt-2 meal"
                    placeholder="Meal choice"
                    value="${g.meal_choice || ""}">
 
             ${plusOneHTML}
 
-            <input type="text"
-                   class="form-control mt-2 song"
+            <input class="form-control mt-2 song"
                    placeholder="Song request"
                    value="${g.song_rec || ""}">
         `;
 
         container.appendChild(div);
     });
-});
+}
 
+/* TOGGLE PLUS ONE NAME */
 document.addEventListener("change", e => {
     if (e.target.classList.contains("plus-one-toggle")) {
-        const wrapper = e.target.closest("div");
-        const input = wrapper.querySelector(".plus-one-name");
+        const input = e.target.nextElementSibling;
         if (e.target.value === "yes") {
             input.style.display = "block";
         } else {
@@ -156,10 +193,12 @@ document.addEventListener("change", e => {
     }
 });
 
+/* SUBMIT RSVP */
 document.getElementById("submitRsvpBtn").addEventListener("click", async () => {
     const cards = document.querySelectorAll("#householdContainer > div");
-    const guests = [];
+    if (!cards.length) return;
 
+    const guests = [];
     cards.forEach(card => {
         guests.push({
             name: card.querySelector(".form-check-label").innerText,
@@ -178,10 +217,14 @@ document.getElementById("submitRsvpBtn").addEventListener("click", async () => {
         body: JSON.stringify({ guests })
     });
 
-    if ((await res.json()).status === "success") {
+    const result = await res.json();
+    if (result.status === "success") {
         alert("Thank you! Your RSVP has been recorded.");
         bootstrap.Modal.getInstance(document.getElementById("rsvpModal")).hide();
+        container.innerHTML = "";
+        document.getElementById("guestName").value = "";
     }
 });
 </script>
 {% endblock %}
+
