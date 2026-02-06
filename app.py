@@ -52,26 +52,45 @@ def contact():
 
 # ===== API: Lookup Guest by Name =====
 @app.route("/api/lookup", methods=["POST"])
-def lookup():
-    data = request.get_json()
+    def lookup():
+        data = request.get_json()
     name_input = data.get("name", "").strip()
-
+    
     if not name_input:
         return jsonify({"error": "No name provided"}), 400
-
+    
     conn = get_db_connection()
     cur = conn.cursor()
-    # Search for guests by name (case-insensitive)
+    
+    # 1️⃣ Find the household_id for the searched name
+    cur.execute("""
+        SELECT household_id
+        FROM guests
+        WHERE LOWER(name) LIKE LOWER(%s)
+        LIMIT 1
+    """, (f"%{name_input}%",))
+    
+    row = cur.fetchone()
+    
+    if not row:
+        cur.close()
+        conn.close()
+        return jsonify([])  # no guest found
+    
+    household_id = row[0]
+    
+    # 2️⃣ Get ALL guests in that household
     cur.execute("""
         SELECT name, household_id, plus_one_allowed, attending, meal_choice, plus_one_name, song_rec
         FROM guests
-        WHERE LOWER(name) LIKE LOWER(%s)
-    """, (f"%{name_input}%",))
+        WHERE household_id = %s
+        ORDER BY name
+    """, (household_id,))
+    
     results = cur.fetchall()
     cur.close()
     conn.close()
-
-    # Return list of guests as JSON
+    
     guests_list = [
         {
             "name": r[0],
@@ -84,8 +103,9 @@ def lookup():
         }
         for r in results
     ]
-
+    
     return jsonify(guests_list)
+
 
 
 
