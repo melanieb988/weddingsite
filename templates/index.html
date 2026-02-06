@@ -3,7 +3,7 @@
 {% block body %}
 <div class="container my-5">
     <div class="row align-items-start">
-        <!-- Photos -->
+        <!-- Collage Section -->
         <div class="col-md-5 mb-4 mb-md-0">
             <div class="collage">
                 <img src="{{ url_for('static', filename='images/liftsnow.jpg') }}" class="collage-photo photo1">
@@ -12,7 +12,7 @@
             </div>
         </div>
 
-        <!-- Info -->
+        <!-- Wedding Info Section -->
         <div class="col-md-7">
             <h1 class="display-4 text-primary">We're Getting Married!</h1>
             <p class="lead">October 24, 2026 · Sunset Gardens</p>
@@ -27,11 +27,10 @@
     </div>
 </div>
 
-<!-- RSVP MODAL -->
+<!-- RSVP Modal -->
 <div class="modal fade" id="rsvpModal" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
-
             <div class="modal-header">
                 <h5 class="modal-title">RSVP</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -42,20 +41,14 @@
                        id="guestName"
                        class="form-control mb-3"
                        placeholder="Enter your first or full name">
-
-                <button id="searchBtn" class="btn btn-primary mb-3">
-                    Find My Invitation
-                </button>
+                <button id="searchBtn" class="btn btn-primary mb-3">Find My Invitation</button>
 
                 <div id="householdContainer"></div>
             </div>
 
             <div class="modal-footer">
-                <button id="submitRsvpBtn" class="btn btn-success">
-                    Submit RSVP
-                </button>
+                <button id="submitRsvpBtn" class="btn btn-success">Submit RSVP</button>
             </div>
-
         </div>
     </div>
 </div>
@@ -86,7 +79,7 @@
 <script>
 const container = document.getElementById("householdContainer");
 
-/* SEARCH */
+/* SEARCH BUTTON */
 document.getElementById("searchBtn").addEventListener("click", async () => {
     const name = document.getElementById("guestName").value.trim();
     if (!name) return alert("Please enter your name.");
@@ -107,15 +100,14 @@ document.getElementById("searchBtn").addEventListener("click", async () => {
         return;
     }
 
-    // Unique match → load household
+    // Single match → load household
     if (matches.length === 1) {
         loadHousehold(matches[0]);
         return;
     }
 
-    // Multiple matches → user selects
-    container.innerHTML = "<p class='fw-bold'>Which one are you?</p>";
-
+    // Multiple matches → user selects which one they are
+    container.innerHTML = "<p class='fw-bold'>Multiple matches found. Which one are you?</p>";
     matches.forEach(m => {
         const btn = document.createElement("button");
         btn.className = "btn btn-outline-primary w-100 mb-2";
@@ -125,21 +117,21 @@ document.getElementById("searchBtn").addEventListener("click", async () => {
     });
 });
 
-/* LOAD HOUSEHOLD */
-async function loadHousehold(selection) {
-    container.innerHTML = "<p>Loading your invitation...</p>";
+/* LOAD HOUSEHOLD MEMBERS */
+async function loadHousehold(selectedPerson) {
+    container.innerHTML = "<p>Loading your household...</p>";
 
     const res = await fetch("/api/household", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(selection)
+        body: JSON.stringify({ household_id: selectedPerson.household_id })
     });
 
     const guests = await res.json();
     renderHousehold(guests);
 }
 
-/* RENDER HOUSEHOLD */
+/* RENDER HOUSEHOLD FORM */
 function renderHousehold(guests) {
     container.innerHTML = "";
 
@@ -180,7 +172,7 @@ function renderHousehold(guests) {
     });
 }
 
-/* TOGGLE PLUS ONE NAME */
+/* TOGGLE PLUS ONE NAME FIELD */
 document.addEventListener("change", e => {
     if (e.target.classList.contains("plus-one-toggle")) {
         const input = e.target.nextElementSibling;
@@ -196,7 +188,7 @@ document.addEventListener("change", e => {
 /* SUBMIT RSVP */
 document.getElementById("submitRsvpBtn").addEventListener("click", async () => {
     const cards = document.querySelectorAll("#householdContainer > div");
-    if (!cards.length) return;
+    if (!cards.length) return alert("Please select your invitation first.");
 
     const guests = [];
     cards.forEach(card => {
@@ -223,6 +215,8 @@ document.getElementById("submitRsvpBtn").addEventListener("click", async () => {
         bootstrap.Modal.getInstance(document.getElementById("rsvpModal")).hide();
         container.innerHTML = "";
         document.getElementById("guestName").value = "";
+    } else {
+        alert("There was an error. Please try again.");
     }
 });
 </script>
