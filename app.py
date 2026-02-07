@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 import os
 import psycopg2
+import random
 
 app = Flask(__name__)
 
@@ -28,21 +29,65 @@ app_data = {
 
 
 
+@app.route("/gallery")
+def gallery():
+    gallery_folder = os.path.join(app.static_folder, 'images', 'gallery')
 
+    images = [f for f in os.listdir(gallery_folder)
+              if os.path.isfile(os.path.join(gallery_folder, f))]
+    images.sort()
+
+    app_data = {
+        'description': 'Our Wedding Gallery',
+        'keywords': 'wedding, photos, gallery',
+        'author': 'Melanie & Isaac',
+        'html_title': 'Gallery - Melanie & Isaac',
+        'project_name': 'Melanie & Isaac Wedding'
+    }
+
+    return render_template('gallery.html', images=images, app_data=app_data)
 
 @app.route("/")
 def index():
-    return render_template("index.html", app_data=app_data)
+    image_folder = os.path.join("static", "images", "collage")
+
+    collage_images = []
+    if os.path.exists(image_folder):
+        collage_images = sorted(
+            f for f in os.listdir(image_folder)
+            if f.lower().endswith(('.png', '.jpg', '.jpeg', '.webp'))
+        )
+        random.shuffle(collage_images)
+
+    return render_template(
+        "index.html",
+        app_data=app_data,
+        collage_images=collage_images
+    )
 
 
-@app.route("/about")
+@app.route("/event")
 def about():
-    return render_template("about.html", app_data=app_data)
+    return render_template("event.html", app_data=app_data)
 
 
-@app.route("/service")
-def service():
-    return render_template("service.html", app_data=app_data)
+@app.route("/gallery")
+def gallery():
+    gallery_folder = os.path.join(app.static_folder, 'images', 'gallery')
+
+    images = [f for f in os.listdir(gallery_folder)
+              if os.path.isfile(os.path.join(gallery_folder, f))]
+    images.sort()
+
+    app_data = {
+        'description': 'Our Wedding Gallery',
+        'keywords': 'wedding, photos, gallery',
+        'author': 'Melanie & Isaac',
+        'html_title': 'Gallery - Melanie & Isaac',
+        'project_name': 'Melanie & Isaac Wedding'
+    }
+
+    return render_template('gallery.html', images=images, app_data=app_data)
 
 
 @app.route("/contact")
@@ -168,4 +213,3 @@ def rsvp():
 
 if __name__ == "__main__":
     app.run(debug=DEVELOPMENT_ENV)
-
