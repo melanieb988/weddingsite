@@ -1,0 +1,62 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="gallery-page-wrapper" style="padding: 40px 20px; max-width: 1200px; margin: 0 auto;">
+
+  <!-- Page Header -->
+  <div class="text-center mb-5">
+    <h1 style="font-family:'Great Vibes', cursive; font-size:4rem; color:#2d2f3f; margin-bottom:0;">Gallery</h1>
+    <p style="font-family:'Montserrat', sans-serif; color:#514131; font-size:1.2rem; margin-top:4px;">Some of our favorite memories and moments</p>
+  </div>
+
+  <!-- Gallery Grid -->
+  <div class="gallery-grid">
+    {% for img in images %}
+    <div class="gallery-item">
+      <img 
+        src="{{ url_for('static', filename='images/gallery/' ~ img) }}" 
+        alt="{{ img }}" 
+        class="gallery-photo"
+      >
+    </div>
+  {% endfor %}
+  </div>
+
+</div>
+
+<style>
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.gallery-item {
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.gallery-photo {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.gallery-photo:hover {
+  transform: scale(1.05);
+}
+
+/* Mobile: single column */
+@media (max-width: 768px) {
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+  .gallery-photo {
+    width: 100%;
+    height: auto;
+  }
+}
+</style>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="event-page-wrapper" style="padding: 40px 20px; max-width: 1000px; margin: 0 auto;">
+
+  <!-- Page Header -->
+  <div class="text-center mb-5">
+    <img src="{{ url_for('static', filename='images/biltmore1.png') }}" alt="Biltmore Logo" style="height:60px; margin-bottom:16px;">
+    <h1 style="font-family:'Great Vibes', cursive; font-size:4rem; color:#2d2f3f; margin-bottom:0;">Event Details</h1>
+    <p style="font-family:'Montserrat', sans-serif; color:#514131; font-size:1.2rem; margin-top:4px;">Mark your calendars for the fun!</p>
+  </div>
+
+  <!-- Friday, Welcome Event -->
+  <div class="event-day mb-5">
+    <h2 style="font-family:'BickhamScriptPro', cursive; color:#8a685d; font-size:2.8rem;">Friday, October 23rd</h2>
+    <p style="font-family:'Montserrat', sans-serif; color:#2d2f3f; font-size:1.2rem; margin-left:20px;">
+      Welcome Event <br>
+      Time & Place: TBD
+    </p>
+  </div>
+
+  <!-- Saturday, Main Events -->
+  <div class="event-day mb-5">
+    <h2 style="font-family:'BickhamScriptPro', cursive; color:#8a685d; font-size:2.8rem;">Saturday, October 24th</h2>
+
+    <!-- Morning Run -->
+    <div class="event-block mb-4" style="display:flex; align-items:center;">
+      <img src="{{ url_for('static', filename='images/runner2.jpeg') }}" alt="Runner" style="height:60px; margin-right:12px;">
+      <p style="font-family:'Montserrat', sans-serif; color:#2d2f3f; font-size:1.2rem; margin:0;">
+        9:00 AM (Time TBD) – Race / Run around Georgia Tech's Pi Mile Loop (3.14 miles, additional miles welcome!)
+      </p>
+      <img src="{{ url_for('static', filename='images/cartoon_runner2.jpeg') }}" alt="Runner" style="height:60px; margin-left:12px;">
+    </div>
+
+    <!-- Wedding Ceremony -->
+    <div class="event-block mb-4">
+      <p style="font-family:'Montserrat', sans-serif; color:#2d2f3f; font-size:1.2rem; margin:0;">
+        5:00 PM – Wedding Ceremony
+      </p>
+    </div>
+
+    <!-- Cocktail Hour -->
+    <div class="event-block mb-4">
+      <p style="font-family:'Montserrat', sans-serif; color:#2d2f3f; font-size:1.2rem; margin:0;">
+        After Ceremony – Cocktail Hour
+      </p>
+    </div>
+
+    <!-- Dinner & Dancing -->
+    <div class="event-block mb-4">
+      <p style="font-family:'Montserrat', sans-serif; color:#2d2f3f; font-size:1.2rem; margin:0;">
+        Dinner & Dancing – Following Cocktail Hour
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<style>
+.event-day h2 {
+  border-bottom: 2px solid #af8e6e;
+  display: inline-block;
+  padding-bottom: 4px;
+}
+
+.event-block {
+  background-color: #faf9f7;
+  padding: 12px 16px;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  margin-bottom: 12px;
+}
+
+@media (max-width: 768px) {
+  .event-block {
+    display: block !important;
+    text-align: left;
+  }
+  .event-block img {
+    display: inline-block;
+    margin: 4px 6px 0 0;
+  }
+}
+</style>
+{% endblock %}
