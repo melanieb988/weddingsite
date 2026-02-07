@@ -71,23 +71,6 @@ def about():
     return render_template("event.html", app_data=app_data)
 
 
-@app.route("/gallery")
-def gallery():
-    gallery_folder = os.path.join(app.static_folder, 'images', 'gallery')
-
-    images = [f for f in os.listdir(gallery_folder)
-              if os.path.isfile(os.path.join(gallery_folder, f))]
-    images.sort()
-
-    app_data = {
-        'description': 'Our Wedding Gallery',
-        'keywords': 'wedding, photos, gallery',
-        'author': 'Melanie & Isaac',
-        'html_title': 'Gallery - Melanie & Isaac',
-        'project_name': 'Melanie & Isaac Wedding'
-    }
-
-    return render_template('gallery.html', images=images, app_data=app_data)
 
 
 @app.route("/contact")
