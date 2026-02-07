@@ -1,80 +1,286 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<div class="container my-5">
-    <div class="row align-items-start">
-        <!-- Collage Section -->
-        <div class="col-md-5 mb-4 mb-md-0">
-            <div class="collage">
-                <img src="{{ url_for('static', filename='images/liftsnow.jpg') }}" class="collage-photo photo1">
-                <img src="{{ url_for('static', filename='images/photo2.jpg') }}" class="collage-photo photo2">
-                <img src="{{ url_for('static', filename='images/photo3.jpg') }}" class="collage-photo photo3">
-            </div>
-        </div>
+<div class="page-wrapper">
 
-        <!-- Wedding Info Section -->
-        <div class="col-md-7">
-            <h1 class="display-4 text-primary">We're Getting Married!</h1>
-            <p class="lead">October 24, 2026 · Sunset Gardens</p>
-            <p>Please RSVP by <strong>May 24, 2026</strong></p>
+  <div class="page-grid">
 
-            <button class="btn btn-success btn-lg mt-3"
-                    data-bs-toggle="modal"
-                    data-bs-target="#rsvpModal">
-                RSVP
-            </button>
-        </div>
+    <!-- LEFT: COLLAGE -->
+    <div class="collage-wrapper four-img">
+      <!-- Images injected dynamically via JS -->
     </div>
+
+    <!-- RIGHT: INVITATION CONTENT -->
+    <div class="invitation-content">
+      <p class="save-the-date">
+        Save the Date
+        
+      </p>
+
+      <h1 class="names">
+        Melanie Bowden<br>
+        <span class="ampersand">&amp;</span><br>
+        Isaac Birocci
+      </h1>
+      <span class="logo-inline">
+        <img src="{{ url_for('static', filename='images/biltmore1.png') }}" alt="Venue logo">
+      </span>
+      <p class="date">October 24, 2026</p>
+      <p class="location">Atlanta, Georgia</p>
+
+      <button class="rsvp-btn" data-bs-toggle="modal" data-bs-target="#rsvpModal">
+        RSVP
+      </button>
+    </div>
+
+  </div>
 </div>
 
-<!-- RSVP Modal -->
+<!-- RSVP MODAL -->
 <div class="modal fade" id="rsvpModal" tabindex="-1">
-    <div class="modal-dialog modal-lg modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">RSVP</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">RSVP</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
 
-            <div class="modal-body">
-                <input type="text"
-                       id="guestName"
-                       class="form-control mb-3"
-                       placeholder="Enter your first or full name">
-                <button id="searchBtn" class="btn btn-primary mb-3">Find My Invitation</button>
+      <div class="modal-body">
+        <input type="text" id="guestName" class="form-control mb-3" placeholder="Enter your name">
+        <button id="searchBtn" class="btn btn-outline-dark mb-3">Find My Invitation</button>
+        <div id="householdContainer"></div>
+      </div>
 
-                <div id="householdContainer"></div>
-            </div>
-
-            <div class="modal-footer">
-                <button id="submitRsvpBtn" class="btn btn-success">Submit RSVP</button>
-            </div>
-        </div>
+      <div class="modal-footer">
+        <button id="submitRsvpBtn" class="btn btn-dark">Submit RSVP</button>
+      </div>
     </div>
+  </div>
 </div>
 
+<!-- ---------------------- -->
+<!-- STYLES -->
+<!-- ---------------------- -->
 <style>
-.collage {
-    position: relative;
-    max-width: 400px;
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: #faf9f7;
+  font-family: 'Montserrat', sans-serif;
 }
-.collage-photo {
-    width: 100%;
-    border-radius: 12px;
-    position: absolute;
-}
-.photo1 { transform: rotate(-8deg); z-index: 3; }
-.photo2 { transform: rotate(5deg); top: 20px; left: 20px; z-index: 2; }
-.photo3 { transform: rotate(-5deg); top: 40px; left: -10px; z-index: 1; }
 
+.page-wrapper {
+  width: 100vw;
+  height: 100vh;
+}
+
+.page-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  width: 100%;
+  height: 100%;
+}
+
+/* COLLAGE */
+.collage-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.collage-photo {
+  position: absolute;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transition: all 0.6s ease;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
+
+/* DESKTOP LAYOUTS */
+.four-img .slot-1 { top:5%; left:5%; max-width:48%; max-height:48%; }
+.four-img .slot-2 { top:5%; left:50%; max-width:48%; max-height:48%; }
+.four-img .slot-3 { top:43%; left:5%; max-width:48%; max-height:48%; }
+.four-img .slot-4 { top:40%; left:50%; max-width:48%; max-height:48%; }
+
+.three-img .slot-1 { top:5%; left:5%; max-width:50%; max-height:60%; }
+.three-img .slot-2 { top:5%; left:45%; max-width:60%; max-height:40%; }
+.three-img .slot-3 { top:35%; left:45%; max-width:60%; max-height:40%; }
+
+.two-img .slot-1 { top:10%; left:10%; max-width:45%; max-height:45%; }
+.two-img .slot-2 { top:10%; left:50%; max-width:45%; max-height:45%; }
+
+/* INVITATION RIGHT */
+.invitation-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 16px;
+  text-align: center;
+  margin-top:10px;
+}
+
+.save-the-date {
+    font-family:'Great Vibes', cursive; 
+    font-size:4rem; 
+    color:#2d2f3f;
+}
+.logo-inline img {
+  height: 74px;
+  margin: 0 15px;
+  vertical-align: middle;
+  opacity: 0.8;
+  margin-bottom:16px;
+}
+
+.names {
+  font-family: 'serif';
+  font-size: 3rem;
+  color: #514131;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+
+.ampersand {
+  color: #8a685d;
+  font-size: 2.2rem;
+}
+
+.date {
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: 0.18em;
+  color: #514131;
+  margin-bottom: 4px;
+}
+
+.location {
+  font-family: 'Montserrat', sans-serif;
+  color: #2d2f3f;
+  margin-bottom: 24px;
+}
+
+.rsvp-btn {
+  background: transparent;
+  border: 1px solid #514131;
+  color: #514131;
+  padding: 12px 36px;
+  letter-spacing: 0.14em;
+  transition: all 0.3s ease;
+}
+
+.rsvp-btn:hover {
+  background: #514131;
+  color: #faf9f7;
+}
+
+/* ----------------- */
+/* MOBILE LAYOUT */
+/* ----------------- */
 @media (max-width: 768px) {
-    .collage-photo {
-        position: relative;
-        transform: none !important;
-        margin-bottom: 15px;
-    }
+  .page-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .collage-wrapper {
+    height: 400px; /* adjust height for mobile */
+  }
+
+  .collage-photo {
+    position: absolute !important;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    transform: rotate(0deg) !important;
+  }
+
+  /* Mobile 3-image layout — fully editable */
+  .three-img .slot-1 { top:5%; left:5%; max-width:60%; max-height:60%; }
+  .three-img .slot-2 { top:5%; left:45%; max-width:45%; max-height:55%; }
+  .three-img .slot-3 { top:50%; left:35%; max-width:55%; max-height:55%; }
+
+  .two-img .slot-1 { top:10%; left:10%; max-width:45%; max-height:45%; }
+  .two-img .slot-2 { top:50%; left:50%; max-width:45%; max-height:45%; }
 }
 </style>
+
+<!-- ---------------------- -->
+<!-- ROTATING COLLAGE JS -->
+<!-- ---------------------- -->
+<script>
+const rotations = [
+  { type: 'four-img', images: ['grun.JPG','liftsnow.jpg','guatamaladock.jpg','banff.jpg'] },
+  { type: 'three-img', images: ['dipsea.jpg','parents.jpg','bike.jpg'] },
+  { type: 'four-img', images: ['party.jpg','ski.jpg','guatamalastreet.jpg','hbike.JPG'] },
+  { type: 'three-img', images: ['banffrun.jpg','ggp.jpg','trun.jpg'] },
+  { type: 'two-img', images: ['trun.JPG','liftsnow.jpg'] }
+];
+
+// Mobile-specific rotations (choose manually)
+const mobileRotations = [
+  { type: 'three-img', images: ['grun.JPG','liftsnow.jpg','guatamaladock.jpg'] },
+  { type: 'three-img', images: ['dipsea.jpg','parents.jpg','bike.jpg'] },
+  { type: 'three-img', images: ['guatamalastreet.jpg','party.jpg','ski.jpg'] },
+  { type: 'three-img', images: ['banffrun.jpg','ggp.jpg','trun.jpg'] },
+];
+
+let currentRotation = 0;
+const collageWrapper = document.querySelector('.collage-wrapper');
+
+function showRotation(rotation) {
+  collageWrapper.className = 'collage-wrapper ' + rotation.type;
+  collageWrapper.innerHTML = '';
+
+  let imagesToShow = rotation.images;
+
+  if (window.innerWidth <= 768) {
+    // pick 3 images for mobile
+    imagesToShow = mobileRotations[currentRotation % mobileRotations.length].images;
+  }
+
+  imagesToShow.forEach((imgName, idx) => {
+    const img = document.createElement('img');
+    img.src = `/static/images/collage/${imgName}`;
+    img.className = 'collage-photo slot-' + (idx + 1);
+
+    // rotate only on desktop
+    if (window.innerWidth > 768) {
+      const angle = Math.random() * 16 - 8;
+      img.style.transform = `rotate(${angle}deg)`;
+      const xShift = Math.random() * 10 - 5;
+      const yShift = Math.random() * 10 - 5;
+      img.style.top = `calc(${img.style.top} + ${yShift}px)`;
+      img.style.left = `calc(${img.style.left} + ${xShift}px)`;
+    }
+
+    collageWrapper.appendChild(img);
+  });
+}
+
+// Initial load
+showRotation(rotations[currentRotation]);
+
+// Rotate every 6 seconds
+setInterval(() => {
+  currentRotation = (currentRotation + 1) % rotations.length;
+  showRotation(rotations[currentRotation]);
+}, 4000);
+
+// Update layout on resize
+window.addEventListener('resize', () => {
+  showRotation(rotations[currentRotation]);
+});
+</script>
+
+
+
 
 <script>
 const container = document.getElementById("householdContainer");
@@ -221,4 +427,5 @@ document.getElementById("submitRsvpBtn").addEventListener("click", async () => {
 });
 </script>
 {% endblock %}
+
 
