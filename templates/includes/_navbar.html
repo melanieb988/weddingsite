@@ -1,8 +1,6 @@
-
-<!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top" style="background-color: #e3f2fd;">
+<nav class="navbar navbar-expand-lg fixed-top" style="background-color: #faf9f7;"> <!-- off-white background -->
   <div class="container">
-    <a class="navbar-brand" href="/">{{ app_data['project_name'] }}</a>
+    <a class="navbar-brand" href="/" style="color:#af8e6e;">{{ app_data['project_name'] }}</a>
 
     <button class="navbar-toggler" type="button"
             data-bs-toggle="collapse"
@@ -16,18 +14,35 @@
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link active" href="/">Home</a>
+          <a class="nav-link {% if request.path == '/' %}active{% endif %}" 
+             href="/" style="color:#2d2f3f;">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/about">Event Details</a>
+          <a class="nav-link {% if request.path == '/event' %}active{% endif %}" 
+             href="/event" style="color:#2d2f3f;">Event Details</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/service">Gallery</a>
+          <a class="nav-link {% if request.path == '/gallery' %}active{% endif %}" 
+             href="/gallery" style="color:#2d2f3f;">Gallery</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/contact">RSPV</a>
+          <a class="nav-link {% if request.path == '/contact' %}active{% endif %}" 
+             href="/contact" style="color:#2d2f3f;">RSVP</a>
         </li>
       </ul>
     </div>
   </div>
 </nav>
+
+<style>
+  /* Highlight the active nav link */
+  .navbar-nav .nav-link.active {
+    color: #af8e6e !important; /* matches your logo color */
+    font-weight: 600;
+    border-bottom: 2px solid #af8e6e; /* subtle underline if you want */
+  }
+
+  .navbar-nav .nav-link:hover {
+    color: #8a685d !important; /* hover color */
+  }
+</style>
