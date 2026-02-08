@@ -52,7 +52,7 @@
       </div>
 
       <div class="modal-footer">
-        <button id="submitRsvpBtn" class="btn btn-dark">Submit RSVP</button>
+        <button id="submitRsvpBtn" class="btn btn-dark">Too soon to RSVP! </button>
       </div>
     </div>
   </div>
@@ -524,39 +524,32 @@
     });
     
     /* SUBMIT RSVP */
-    document.getElementById("submitRsvpBtn").addEventListener("click", async () => {
-        const cards = document.querySelectorAll("#householdContainer > div");
-        if (!cards.length) return alert("Please select your invitation first.");
+ /* ========================= */
+/* SUBMIT RSVP (COMING SOON) */
+/* ========================= */
+document.getElementById("submitRsvpBtn").addEventListener("click", () => {
+    const cards = document.querySelectorAll("#householdContainer > div");
     
-        const guests = [];
-        cards.forEach(card => {
-            guests.push({
-                name: card.querySelector(".form-check-label").innerText,
-                attending: card.querySelector(".attending").checked,
-                meal_choice: card.querySelector(".meal").value,
-                plus_one_name: card.querySelector(".plus-one-name")
-                    ? card.querySelector(".plus-one-name").value
-                    : null,
-                song_rec: card.querySelector(".song").value
-            });
-        });
-    
-        const res = await fetch("/api/rsvp", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ guests })
-        });
-    
-        const result = await res.json();
-        if (result.status === "success") {
-            alert("Thank you! Your RSVP has been recorded.");
-            bootstrap.Modal.getInstance(document.getElementById("rsvpModal")).hide();
-            container.innerHTML = "";
-            document.getElementById("guestName").value = "";
-        } else {
-            alert("There was an error. Please try again.");
-        }
-    });
+    if (!cards.length) {
+        alert("Please search for your invitation first.");
+        return;
+    }
+
+    // Collect guest info (optional for future use)
+    const guests = Array.from(cards).map(card => ({
+        name: card.querySelector(".form-check-label").innerText,
+        attending: card.querySelector(".attending").checked,
+        meal_choice: card.querySelector(".meal").value,
+        plus_one_name: card.querySelector(".plus-one-name")
+            ? card.querySelector(".plus-one-name").value
+            : null,
+        song_rec: card.querySelector(".song").value
+    }));
+
+    // For now, just show coming soon
+    alert("RSVP coming soon! Thank you for checking your invitation.");
+});
+
     </script>
 {% endblock %}
 
