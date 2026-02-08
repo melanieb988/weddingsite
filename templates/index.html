@@ -57,272 +57,364 @@
     </div>
   </div>
 </div>
-
-<!-- ---------------------- -->
-<!-- STYLES -->
-<!-- ---------------------- -->
 <style>
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  background: #faf9f7;
-  font-family: 'Montserrat', sans-serif;
-}
-
-.page-wrapper {
-  width: 100vw;
-  height: 100vh;
-}
-
-.page-grid {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  width: 100%;
-  height: 100%;
-}
-
-/* COLLAGE */
-.collage-wrapper {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-.collage-photo {
-  position: absolute;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  transition: all 0.6s ease;
-  width: auto;
-  height: auto;
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: cover;
-}
-
-/* DESKTOP LAYOUTS */
-.four-img .slot-1 { top:5%; left:5%; max-width:48%; max-height:48%; }
-.four-img .slot-2 { top:5%; left:50%; max-width:48%; max-height:48%; }
-.four-img .slot-3 { top:43%; left:5%; max-width:48%; max-height:48%; }
-.four-img .slot-4 { top:40%; left:50%; max-width:48%; max-height:48%; }
-
-.three-img .slot-1 { top:5%; left:5%; max-width:50%; max-height:60%; }
-.three-img .slot-2 { top:5%; left:45%; max-width:60%; max-height:40%; }
-.three-img .slot-3 { top:35%; left:45%; max-width:60%; max-height:40%; }
-
-.two-img .slot-1 { top:10%; left:10%; max-width:45%; max-height:45%; }
-.two-img .slot-2 { top:10%; left:50%; max-width:45%; max-height:45%; }
-
-/* INVITATION RIGHT */
-.invitation-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  padding: 16px;
-  text-align: center;
-  margin-top:10px;
-}
-
-.save-the-date {
-    font-family:'Great Vibes', cursive; 
-    font-size:4rem; 
-    color:#2d2f3f;
-}
-.logo-inline img {
-  height: 74px;
-  margin: 0 15px;
-  vertical-align: middle;
-  opacity: 0.8;
-  margin-bottom:16px;
-}
-
-.names {
-  font-family: 'serif';
-  font-size: 3rem;
-  color: #514131;
-  line-height: 1.1;
-  margin-bottom: 16px;
-}
-
-.ampersand {
-  color: #8a685d;
-  font-size: 2.2rem;
-}
-
-.date {
-  font-family: 'Montserrat', sans-serif;
-  letter-spacing: 0.18em;
-  color: #514131;
-  margin-bottom: 4px;
-}
-
-.location {
-  font-family: 'Montserrat', sans-serif;
-  color: #2d2f3f;
-  margin-bottom: 24px;
-}
-
-.rsvp-btn {
-  background: transparent;
-  border: 1px solid #514131;
-  color: #514131;
-  padding: 12px 36px;
-  letter-spacing: 0.14em;
-  transition: all 0.3s ease;
-}
-
-.rsvp-btn:hover {
-  background: #514131;
-  color: #faf9f7;
-}
-
-/* ----------------- */
-/* MOBILE LAYOUT */
-/* ----------------- */
-@media (max-width: 768px) {
-  .page-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .collage-wrapper {
-    height: 400px; /* adjust height for mobile */
-  }
-
-  .collage-photo {
-    position: absolute !important;
-    width: auto;
-    height: auto;
-    max-width: 100%;
-    max-height: 100%;
-    transform: rotate(0deg) !important;
-  }
-
-  /* Mobile 3-image layout — fully editable */
-  .three-img .slot-1 { top:5%; left:5%; max-width:60%; max-height:60%; }
-  .three-img .slot-2 { top:5%; left:45%; max-width:45%; max-height:55%; }
-  .three-img .slot-3 { top:50%; left:35%; max-width:55%; max-height:55%; }
-
-  .two-img .slot-1 { top:10%; left:10%; max-width:45%; max-height:45%; }
-  .two-img .slot-2 { top:50%; left:50%; max-width:45%; max-height:45%; }
-}
-</style>
-
+    /* ========================= */
+    /* BASE RESET */
+    /* ========================= */
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      /* height: 100%; */
+      background: #faf9f7;
+      font-family: 'Montserrat', sans-serif;
+    }
+    
+    .page-wrapper {
+      width: 100vw;
+      /* height: 100vh; */
+    }
+    
+    .page-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      width: 100%;
+      /* height: 100%; */
+    }
+    
+    /* ========================= */
+    /* COLLAGE SYSTEM */
+    /* ========================= */
+    .collage-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 3; /* overridden per rotation */
+      overflow: hidden;
+      background: #faf9f7;
+      max-height:65vh;
+    }
+    
+    /* All images fill their boxes */
+    .collage-photo {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    
+      transition:
+        top 0.6s ease,
+        left 0.6s ease,
+        width 0.6s ease,
+        height 0.6s ease,
+        transform 0.6s ease,
+        opacity 0.6s ease;
+    }
+    
+    /* ========================= */
+    /* INVITATION CONTENT */
+    /* ========================= */
+    .invitation-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 16px;
+      text-align: center;
+      margin-top: 10px;
+    }
+    
+    .save-the-date {
+      font-family: 'Great Vibes', cursive;
+      font-size: 4rem;
+      color: #2d2f3f;
+    }
+    
+    .logo-inline img {
+      height: 74px;
+      margin: 0 15px 16px;
+      vertical-align: middle;
+      opacity: 0.8;
+    }
+    
+    .names {
+      font-family: serif;
+      font-size: 3rem;
+      color: #514131;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    
+    .ampersand {
+      color: #8a685d;
+      font-size: 2.2rem;
+    }
+    
+    .date {
+      font-family: 'Montserrat', sans-serif;
+      letter-spacing: 0.18em;
+      color: #514131;
+      margin-bottom: 4px;
+    }
+    
+    .location {
+      font-family: 'Montserrat', sans-serif;
+      color: #2d2f3f;
+      margin-bottom: 24px;
+    }
+    
+    .rsvp-btn {
+      background: transparent;
+      border: 1px solid #514131;
+      color: #514131;
+      padding: 12px 36px;
+      letter-spacing: 0.14em;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .rsvp-btn:hover {
+      background: #514131;
+      color: #faf9f7;
+    }
+    
+    /* ========================= */
+    /* MOBILE */
+    /* ========================= */
+    @media (max-width: 768px) {
+      html, body {
+        height: auto;
+      }
+    
+      .page-grid {
+        grid-template-columns: 1fr;
+        height: auto;
+      }
+    
+      .collage-wrapper {
+        width: 100%;
+      }
+    
+      .collage-photo {
+        border-radius: 10px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.14);
+      }
+    }
+    </style>
+    
 <!-- ---------------------- -->
 <!-- ROTATING COLLAGE JS -->
 <!-- ---------------------- -->
 <script>
-const rotations = [
-  { type: 'four-img', images: ['grun.JPG','liftsnow.jpg','guatamaladock.jpg','banff.jpg'] },
-  { type: 'three-img', images: ['dipsea.jpg','parents.jpg','bike.jpg'] },
-  { type: 'four-img', images: ['party.jpg','ski.jpg','guatamalastreet.jpg','hbike.JPG'] },
-  { type: 'three-img', images: ['banffrun.jpg','ggp.jpg','trun.jpg'] },
-  { type: 'two-img', images: ['trun.JPG','liftsnow.jpg'] }
-];
-
-// Mobile-specific rotations (choose manually)
-const mobileRotations = [
-  { type: 'three-img', images: ['grun.JPG','liftsnow.jpg','guatamaladock.jpg'] },
-  { type: 'three-img', images: ['dipsea.jpg','parents.jpg','bike.jpg'] },
-  { type: 'three-img', images: ['guatamalastreet.jpg','party.jpg','ski.jpg'] },
-  { type: 'three-img', images: ['banffrun.jpg','ggp.jpg','trun.jpg'] },
-];
-
-let currentRotation = 0;
-const collageWrapper = document.querySelector('.collage-wrapper');
-
-function showRotation(rotation) {
-  collageWrapper.className = 'collage-wrapper ' + rotation.type;
-  collageWrapper.innerHTML = '';
-
-  let imagesToShow = rotation.images;
-
-  if (window.innerWidth <= 768) {
-    // pick 3 images for mobile
-    imagesToShow = mobileRotations[currentRotation % mobileRotations.length].images;
-  }
-
-  imagesToShow.forEach((imgName, idx) => {
-    const img = document.createElement('img');
-    img.src = `/static/images/collage/${imgName}`;
-    img.className = 'collage-photo slot-' + (idx + 1);
-
-    // rotate only on desktop
-    if (window.innerWidth > 768) {
-      const angle = Math.random() * 16 - 8;
-      img.style.transform = `rotate(${angle}deg)`;
-      const xShift = Math.random() * 10 - 5;
-      const yShift = Math.random() * 10 - 5;
-      img.style.top = `calc(${img.style.top} + ${yShift}px)`;
-      img.style.left = `calc(${img.style.left} + ${xShift}px)`;
+    const wrapper = document.querySelector('.collage-wrapper');
+    let current = 0;
+  
+    const isMobile = () => window.innerWidth <= 768;
+  
+    /* ========================= */
+    /* DESKTOP ROTATIONS */
+    /* ========================= */
+    const DESKTOP_ROTATIONS = [
+      {
+        aspectRatio: '4 / 3',
+        images: [
+          'yellowstone.JPG',
+          'liftsnow.jpg',
+          'banff.jpg',
+          'parents.jpg'
+        ],
+        layout: [
+          { top: 0,  left: 0,  width: 50, height: 50 },
+          { top: 0,  left: 50, width: 50, height: 50 },
+          { top: 50, left: 0,  width: 50, height: 50 },
+          { top: 50, left: 50, width: 50, height: 50 }
+        ],
+        rotate: [-2, 2]
+      },
+      {
+        aspectRatio: '3 / 4',
+        images: [
+          'guatamaladock.jpg',
+          'rafting.jpeg',
+          'party.jpg'
+        ],
+        layout: [
+          { top: 0,  left: 0,  width: 40, height: 100 },
+          { top: 0,  left: 40, width: 60, height: 50 },
+          { top: 50, left: 40, width: 60, height: 50 }
+        ],
+        rotate: [-1.5, 1.5]
+      },
+      {
+        aspectRatio: '3 / 4',
+        images: [
+          'dipsea.jpg',
+          'ski.jpg',
+          'hbike.JPG'
+        ],
+        layout: [
+          { top: 0,  left: 60, width: 40, height: 100 },
+          { top: 0,  left: 0,  width: 60, height: 50 },
+          { top: 50, left: 0,  width: 60, height: 50 }
+        ],
+        rotate: [-1.5, 1.5]
+      }
+    ];
+  
+    /* ========================= */
+    /* MOBILE ROTATIONS */
+    /* ========================= */
+    const MOBILE_ROTATIONS = [
+      {
+        aspectRatio: '1 / 1',
+        images: [
+        'banff.jpg',
+        
+          'liftsnow.jpg',
+          'grun.jpg',
+          'parents.jpg'
+        ],
+        layout: [
+          { top: 0,  left: 0,  width: 50, height: 65 },
+          { top: 0,  left: 50, width: 50, height: 50 },
+          { top: 62, left: 0,  width: 50, height: 40 },
+          { top: 50, left: 50, width: 50, height: 50 }
+        ],
+        rotate: [-1, 1]
+      },
+      {
+        aspectRatio: '4 / 5',
+        images: [
+          'dipsea.jpg',
+          'ski.jpg',
+          'guatamalastreet.JPG'
+        ],
+        layout: [
+          { top: 0,  left: 45, width: 55, height: 100 },
+          { top: 0,  left: 0,  width: 46, height: 50 },
+          { top: 50, left: 0,  width: 46, height: 50 }
+        ],
+        rotate: [-1, 1]
+      },
+      {
+        aspectRatio: '4 / 5',
+        images: [
+          'colluseum.JPG',
+          'party.jpg',
+          'bike.JPG'
+          
+          
+        ],
+        layout: [
+          { top: 0,  left: 45, width: 55, height: 100 },
+          { top: 0,  left: 0,  width: 55, height: 50 },
+          { top: 50, left: 0,  width: 46, height: 50 }
+        ],
+        rotate: [-1, 1]
+      },
+      
+      {
+        aspectRatio: '4 / 5',
+        images: [
+          'banffrun.jpg',
+          'ggp.JPG',
+          'proposal.jpg'
+          
+        ],
+        layout: [
+          { top: 0,  left: 0, width: 55, height: 100 },
+          { top: 0,  left: 50,  width: 55, height: 50 },
+          { top: 50, left: 50,  width: 50, height: 50 }
+        ],
+        rotate: [-1, 1]
+      },    {
+        aspectRatio: '4 / 5',
+        images: [
+          'guatamaladock.jpg',
+          'trun.JPG',
+          'brun.heic'
+        ],
+        layout: [
+          { top: 0,  left: 45, width: 55, height: 100 },
+          { top: 0,  left: 0,  width: 55, height: 50 },
+          { top: 48, left: 0,  width: 46, height: 55 }
+        ],
+        rotate: [-1, 1]
+      },
+      {
+        aspectRatio: '1 / 1',
+        images: [
+        'bballgame.jpeg',
+        
+          'hbike.jpg',
+          'italybike.jpeg',
+          'yellowstone.JPG'
+        ],
+        layout: [
+          { top: 0,  left: 0,  width: 50, height: 60 },
+          { top: 0,  left: 50, width: 50, height: 50 },
+          { top: 60, left: 0,  width: 50, height: 40 },
+          { top: 50, left: 50, width: 50, height: 50 }
+        ],
+        rotate: [-1, 1]
+      },
+    ];
+  
+    /* ========================= */
+    /* RENDER */
+    /* ========================= */
+    function renderRotation() {
+      const rotations = isMobile() ? MOBILE_ROTATIONS : DESKTOP_ROTATIONS;
+      const rotation = rotations[current % rotations.length];
+  
+      wrapper.innerHTML = '';
+      wrapper.style.aspectRatio = rotation.aspectRatio;
+  
+      rotation.images.forEach((src, i) => {
+        const img = document.createElement('img');
+        img.src = `/static/images/collage/${src}`;
+        img.className = 'collage-photo';
+  
+        const { top, left, width, height } = rotation.layout[i];
+        img.style.top = `${top}%`;
+        img.style.left = `${left}%`;
+        img.style.width = `${width}%`;
+        img.style.height = `${height}%`;
+  
+        const [minR, maxR] = rotation.rotate;
+        const angle = minR + Math.random() * (maxR - minR);
+        img.style.transform = `rotate(${angle}deg)`;
+  
+        wrapper.appendChild(img);
+      });
     }
-
-    collageWrapper.appendChild(img);
-  });
-}
-
-// Initial load
-showRotation(rotations[currentRotation]);
-
-// Rotate every 6 seconds
-setInterval(() => {
-  currentRotation = (currentRotation + 1) % rotations.length;
-  showRotation(rotations[currentRotation]);
-}, 4000);
-
-// Update layout on resize
-window.addEventListener('resize', () => {
-  showRotation(rotations[currentRotation]);
-});
-</script>
-
-
-
-
+  
+    /* ========================= */
+    /* INIT */
+    /* ========================= */
+    renderRotation();
+  
+    /* ========================= */
+    /* ROTATE */
+    /* ========================= */
+    setInterval(() => {
+      current++;
+      renderRotation();
+    }, 4000);
+  
+    /* ========================= */
+    /* RESIZE */
+    /* ========================= */
+    window.addEventListener('resize', () => {
+      current = 0; // optional: reset to avoid weird jumps
+      renderRotation();
+    });
+  </script>
+  
+    
 <script>
-const container = document.getElementById("householdContainer");
-
-/* SEARCH BUTTON */
-document.getElementById("searchBtn").addEventListener("click", async () => {
-    const name = document.getElementById("guestName").value.trim();
-    if (!name) return alert("Please enter your name.");
-
-    container.innerHTML = "<p>Searching...</p>";
-
-    const res = await fetch("/api/lookup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name })
-    });
-
-    const matches = await res.json();
-    container.innerHTML = "";
-
-    if (!matches.length) {
-        container.innerHTML = "<p>No invitation found. Please check spelling.</p>";
-        return;
-    }
-
-    // Single match → load household
-    if (matches.length === 1) {
-        loadHousehold(matches[0]);
-        return;
-    }
-
-    // Multiple matches → user selects which one they are
-    container.innerHTML = "<p class='fw-bold'>Multiple matches found. Which one are you?</p>";
-    matches.forEach(m => {
-        const btn = document.createElement("button");
-        btn.className = "btn btn-outline-primary w-100 mb-2";
-        btn.innerText = `${m.name} (${m.household_id})`;
-        btn.onclick = () => loadHousehold(m);
-        container.appendChild(btn);
-    });
-});
-
 /* LOAD HOUSEHOLD MEMBERS */
 async function loadHousehold(selectedPerson) {
     container.innerHTML = "<p>Loading your household...</p>";
@@ -427,5 +519,6 @@ document.getElementById("submitRsvpBtn").addEventListener("click", async () => {
 });
 </script>
 {% endblock %}
+
 
 
