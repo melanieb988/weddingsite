@@ -414,111 +414,152 @@
   </script>
   
     
-<script>
-/* LOAD HOUSEHOLD MEMBERS */
-async function loadHousehold(selectedPerson) {
-    container.innerHTML = "<p>Loading your household...</p>";
-
-    const res = await fetch("/api/household", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ household_id: selectedPerson.household_id })
-    });
-
-    const guests = await res.json();
-    renderHousehold(guests);
-}
-
-/* RENDER HOUSEHOLD FORM */
-function renderHousehold(guests) {
-    container.innerHTML = "";
-
-    guests.forEach(g => {
-        const div = document.createElement("div");
-        div.className = "border rounded p-3 mb-3";
-
-        const plusOneHTML = g.plus_one_allowed ? `
-            <label class="form-label mt-2">Bringing a plus one?</label>
-            <select class="form-select plus-one-toggle">
-                <option value="no" ${!g.plus_one_name ? "selected" : ""}>No</option>
-                <option value="yes" ${g.plus_one_name ? "selected" : ""}>Yes</option>
-            </select>
-            <input class="form-control mt-2 plus-one-name"
-                   placeholder="Plus One Name"
-                   value="${g.plus_one_name || ""}"
-                   style="display:${g.plus_one_name ? "block" : "none"}">
-        ` : "";
-
-        div.innerHTML = `
-            <div class="form-check">
-                <input class="form-check-input attending" type="checkbox" ${g.attending ? "checked" : ""}>
-                <label class="form-check-label fw-bold">${g.name}</label>
-            </div>
-
-            <input class="form-control mt-2 meal"
-                   placeholder="Meal choice"
-                   value="${g.meal_choice || ""}">
-
-            ${plusOneHTML}
-
-            <input class="form-control mt-2 song"
-                   placeholder="Song request"
-                   value="${g.song_rec || ""}">
-        `;
-
-        container.appendChild(div);
-    });
-}
-
-/* TOGGLE PLUS ONE NAME FIELD */
-document.addEventListener("change", e => {
-    if (e.target.classList.contains("plus-one-toggle")) {
-        const input = e.target.nextElementSibling;
-        if (e.target.value === "yes") {
-            input.style.display = "block";
-        } else {
-            input.style.display = "none";
-            input.value = "";
+  <script>
+    const container = document.getElementById("householdContainer");
+    
+    /* SEARCH BUTTON */
+    document.getElementById("searchBtn").addEventListener("click", async () => {
+        const name = document.getElementById("guestName").value.trim();
+        if (!name) return alert("Please enter your name.");
+    
+        container.innerHTML = "<p>Searching...</p>";
+    
+        const res = await fetch("/api/lookup", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name })
+        });
+    
+        const matches = await res.json();
+        container.innerHTML = "";
+    
+        if (!matches.length) {
+            container.innerHTML = "<p>No invitation found. Please check spelling.</p>";
+            return;
         }
-    }
-});
-
-/* SUBMIT RSVP */
-document.getElementById("submitRsvpBtn").addEventListener("click", async () => {
-    const cards = document.querySelectorAll("#householdContainer > div");
-    if (!cards.length) return alert("Please select your invitation first.");
-
-    const guests = [];
-    cards.forEach(card => {
-        guests.push({
-            name: card.querySelector(".form-check-label").innerText,
-            attending: card.querySelector(".attending").checked,
-            meal_choice: card.querySelector(".meal").value,
-            plus_one_name: card.querySelector(".plus-one-name")
-                ? card.querySelector(".plus-one-name").value
-                : null,
-            song_rec: card.querySelector(".song").value
+    
+        // Single match → load household
+        if (matches.length === 1) {
+            loadHousehold(matches[0]);
+            return;
+        }
+    
+        // Multiple matches → user selects which one they are
+        container.innerHTML = "<p class='fw-bold'>Multiple matches found. Which one are you?</p>";
+        matches.forEach(m => {
+            const btn = document.createElement("button");
+            btn.className = "btn btn-outline-primary w-100 mb-2";
+            btn.innerText = `${m.name} (${m.household_id})`;
+            btn.onclick = () => loadHousehold(m);
+            container.appendChild(btn);
         });
     });
-
-    const res = await fetch("/api/rsvp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ guests })
-    });
-
-    const result = await res.json();
-    if (result.status === "success") {
-        alert("Thank you! Your RSVP has been recorded.");
-        bootstrap.Modal.getInstance(document.getElementById("rsvpModal")).hide();
-        container.innerHTML = "";
-        document.getElementById("guestName").value = "";
-    } else {
-        alert("There was an error. Please try again.");
+    
+    /* LOAD HOUSEHOLD MEMBERS */
+    async function loadHousehold(selectedPerson) {
+        container.innerHTML = "<p>Loading your household...</p>";
+    
+        const res = await fetch("/api/household", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ household_id: selectedPerson.household_id })
+        });
+    
+        const guests = await res.json();
+        renderHousehold(guests);
     }
-});
-</script>
+    
+    /* RENDER HOUSEHOLD FORM */
+    function renderHousehold(guests) {
+        container.innerHTML = "";
+    
+        guests.forEach(g => {
+            const div = document.createElement("div");
+            div.className = "border rounded p-3 mb-3";
+    
+            const plusOneHTML = g.plus_one_allowed ? `
+                <label class="form-label mt-2">Bringing a plus one?</label>
+                <select class="form-select plus-one-toggle">
+                    <option value="no" ${!g.plus_one_name ? "selected" : ""}>No</option>
+                    <option value="yes" ${g.plus_one_name ? "selected" : ""}>Yes</option>
+                </select>
+                <input class="form-control mt-2 plus-one-name"
+                       placeholder="Plus One Name"
+                       value="${g.plus_one_name || ""}"
+                       style="display:${g.plus_one_name ? "block" : "none"}">
+            ` : "";
+    
+            div.innerHTML = `
+                <div class="form-check">
+                    <input class="form-check-input attending" type="checkbox" ${g.attending ? "checked" : ""}>
+                    <label class="form-check-label fw-bold">${g.name}</label>
+                </div>
+    
+                <input class="form-control mt-2 meal"
+                       placeholder="Meal choice"
+                       value="${g.meal_choice || ""}">
+    
+                ${plusOneHTML}
+    
+                <input class="form-control mt-2 song"
+                       placeholder="Song request"
+                       value="${g.song_rec || ""}">
+            `;
+    
+            container.appendChild(div);
+        });
+    }
+    
+    /* TOGGLE PLUS ONE NAME FIELD */
+    document.addEventListener("change", e => {
+        if (e.target.classList.contains("plus-one-toggle")) {
+            const input = e.target.nextElementSibling;
+            if (e.target.value === "yes") {
+                input.style.display = "block";
+            } else {
+                input.style.display = "none";
+                input.value = "";
+            }
+        }
+    });
+    
+    /* SUBMIT RSVP */
+    document.getElementById("submitRsvpBtn").addEventListener("click", async () => {
+        const cards = document.querySelectorAll("#householdContainer > div");
+        if (!cards.length) return alert("Please select your invitation first.");
+    
+        const guests = [];
+        cards.forEach(card => {
+            guests.push({
+                name: card.querySelector(".form-check-label").innerText,
+                attending: card.querySelector(".attending").checked,
+                meal_choice: card.querySelector(".meal").value,
+                plus_one_name: card.querySelector(".plus-one-name")
+                    ? card.querySelector(".plus-one-name").value
+                    : null,
+                song_rec: card.querySelector(".song").value
+            });
+        });
+    
+        const res = await fetch("/api/rsvp", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ guests })
+        });
+    
+        const result = await res.json();
+        if (result.status === "success") {
+            alert("Thank you! Your RSVP has been recorded.");
+            bootstrap.Modal.getInstance(document.getElementById("rsvpModal")).hide();
+            container.innerHTML = "";
+            document.getElementById("guestName").value = "";
+        } else {
+            alert("There was an error. Please try again.");
+        }
+    });
+    </script>
 {% endblock %}
+
 
 
 
