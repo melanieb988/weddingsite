@@ -1,0 +1,14 @@
+name: Ping site every 15 minutes
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping website
+        run: |
+          curl -I https://isaac-and-melanie.com
