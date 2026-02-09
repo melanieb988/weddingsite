@@ -1,8 +1,12 @@
-name: Ping site every 15 minutes
+name: Ping Render site during day (PST)
 
 on:
   schedule:
-    - cron: "*/15 * * * *"
+    # Every 25 minutes from 5 AM – 11 PM PST
+    # 1 PM – 11:59 PM UTC
+    - cron: "*/25 13-23 * * *"
+    # 12:00 AM – 7:00 AM UTC (covers 11 PM PST – 7 AM PST)
+    - cron: "*/25 0-7 * * *"
   workflow_dispatch:
 
 jobs:
@@ -11,4 +15,4 @@ jobs:
     steps:
       - name: Ping website
         run: |
-          curl -I https://isaac-and-melanie.com
+          curl -s -o /dev/null https://isaac-and-melanie.com
