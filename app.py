@@ -77,7 +77,9 @@ def about():
 def contact():
     return render_template("contact.html", app_data=app_data)
 
-
+@app.route("/pi_mile")
+def pi_mile():
+    return render_template("pi_mile.html", app_data=app_data)
 
 @app.route("/api/lookup", methods=["POST"])
 def lookup():
