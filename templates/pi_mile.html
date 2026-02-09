@@ -1,0 +1,103 @@
+{% extends 'layout.html' %}
+{% block body %}
+<div class="pi-mile-page-wrapper" style="padding: 40px 20px; max-width: 1200px; margin: 0 auto;">
+
+  <!-- Page Header -->
+  <div class="text-center mb-5">
+    <h1 style="font-family:'Great Vibes', cursive; font-size:4rem; color:#2d2f3f; margin-bottom:0;">
+      Pi Mile Race
+    </h1>
+    <p style="font-family:'Montserrat', sans-serif; color:#514131; font-size:1.2rem; margin-top:6px;">
+      Lace up and get ready to race
+    </p>
+  </div>
+
+  <!-- Small Sidewalk Image Above Intro -->
+  <div class="text-center mb-4">
+    <img
+      src="{{ url_for('static', filename='images/pi_mile_sidewalk.jpg') }}"
+      alt="Pi Mile engraved sidewalk"
+      style="
+        width:100%;
+        max-width:150px;
+        border-radius:10px;
+        box-shadow:0 3px 12px rgba(0,0,0,0.08);
+        opacity:0.95;
+      "
+    >
+    <p style="font-family:'Montserrat', sans-serif; color:#514131; font-size:0.85rem; margin-top:6px;">
+      Pi Mile markers
+    </p>
+  </div>
+
+  <!-- Intro Section -->
+  <div class="text-center mb-5" style="max-width:760px; margin: 0 auto;">
+    <p style="font-family:'Montserrat', sans-serif; font-size:1.05rem; color:#2d2f3f; line-height:1.75;">
+      This <strong>3.14-mile loop</strong> winds its way around Georgia Tech’s campus with mile markers etched into the sidewalk
+    </p>
+  </div>
+
+  <!-- Course Description -->
+  <div class="mb-5" style="max-width: 900px; margin: 0 auto;">
+    <h2 style="font-family:'Montserrat', sans-serif; font-size:1.85rem; color:#2d2f3f; margin-bottom:16px;">
+      The Course
+    </h2>
+    <p style="font-family:'Montserrat', sans-serif; font-size:1.05rem; color:#2d2f3f; line-height:1.6;">
+        Runners will complete a <strong>3.14-mile loop</strong> around Georgia Tech’s campus and battle it out to the finish.
+      </p>
+      
+    <p style="font-family:'Montserrat', sans-serif; font-size:1.05rem; color:#2d2f3f; line-height:1.75;">
+      The winner will recieve a prize. 
+    </p>
+  </div>
+
+  <!-- Course Map -->
+  <div class="text-center mb-5">
+    <img
+      src="{{ url_for('static', filename='images/pimile_course_map.png') }}"
+      alt="Pi Mile course map"
+      style="
+        width:100%;
+        max-width:880px;
+        border-radius:12px;
+        box-shadow:0 8px 25px rgba(0,0,0,0.12);
+      "
+    >
+  </div>
+
+  <!-- Start Location -->
+  <div class="text-center mb-4">
+    <h2 style="font-family:'Montserrat', sans-serif; font-size:1.85rem; color:#2d2f3f;">
+      Start Location
+    </h2>
+    <p style="font-family:'Montserrat', sans-serif; font-size:1.05rem; color:#2d2f3f; margin-bottom:14px;">
+        Race Start Time: TBD
+      </p>
+    <p style="font-family:'Montserrat', sans-serif; font-size:1.05rem; color:#2d2f3f; margin-bottom:14px;">
+      The race will begin at:
+    </p>
+
+    <div style="
+      display:inline-block;
+      padding:16px 26px;
+      background:#faf9f7;
+      border-radius:10px;
+      border:1px solid #e6e3de;
+      font-family:'Montserrat', sans-serif;
+      color:#2d2f3f;
+      font-size:1.05rem;
+      line-height:1.5;
+    ">
+      225 North Ave NW<br>
+      Atlanta, GA 30332
+    </div>
+
+    <p style="font-family:'Montserrat', sans-serif; font-size:0.95rem; color:#514131; margin-top:16px;">
+      More miles to follow after. 
+    </p>
+  </div>
+
+</div>
+{% endblock %}
+
+
