@@ -194,7 +194,18 @@ def rsvp():
 
     return jsonify({"status": "success"})
 
+@app.route('/keepalive')
+def keepalive():
+    # Convert current UTC to PST
+    now_utc = datetime.utcnow()
+    now_pst = now_utc - timedelta(hours=8)  # PST = UTC-8
+    hour = now_pst.hour
 
+    # Allowed hours: 5 AM → 12 AM PST
+    if 5 <= hour <= 23:  # 5 → 23 is 5AM to 11PM; 12 AM = 0, we treat as 23 for simplicity
+        return "✅ Site kept alive!"
+    else:
+        return "💤 Site asleep", 200
 
 if __name__ == "__main__":
     app.run(debug=DEVELOPMENT_ENV)
