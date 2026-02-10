@@ -2,11 +2,8 @@ name: Ping Render site during day (PST)
 
 on:
   schedule:
-    # Every 25 minutes from 5 AM – 11 PM PST
-    # 1 PM – 11:59 PM UTC
-    - cron: "*/25 13-23 * * *"
-    # 12:00 AM – 7:00 AM UTC (covers 11 PM PST – 7 AM PST)
-    - cron: "*/25 0-7 * * *"
+    # Every 25 minutes (UTC)
+    - cron: "*/25 * * * *"
   workflow_dispatch:
 
 jobs:
@@ -15,4 +12,13 @@ jobs:
     steps:
       - name: Ping website
         run: |
-          curl -s -o /dev/null https://isaac-and-melanie.com
+          echo "===================================="
+          echo "Ping started at:"
+          date -u
+          echo "===================================="
+
+          echo "Pinging https://isaac-and-melanie.com"
+          curl -L --max-time 15 -s -w "\nHTTP STATUS: %{http_code}\n" https://isaac-and-melanie.com
+
+          echo "===================================="
+          echo "Ping finished"
