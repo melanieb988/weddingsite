@@ -22,7 +22,7 @@ app_data = {
     "name": "Melanie & Isaacs Wedding Site",
     "description": "A basic Flask app using bootstrap for our wedding site",
     "author": "Melanie Bowden",
-    "html_title": "Melanie & Isaac's Python Wedding Site",
+    "html_title": "Melanie & Isaac's Wedding Site",
     "project_name": "Isaac & Melanie's Wedding",
     "keywords": "flask, webapp, basic",
 }
