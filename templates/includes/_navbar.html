@@ -1,7 +1,12 @@
-<nav class="navbar navbar-expand-lg fixed-top" style="background-color: #faf9f7;"> <!-- off-white background -->
-  <div class="container">
-    <a class="navbar-brand" href="/" style="color:#af8e6e;">{{ app_data['project_name'] }}</a>
+<nav class="navbar navbar-expand-lg fixed-top" style="background-color: #faf9f7;">
+  <div class="container-fluid"> <!-- full-width container -->
 
+    <!-- Brand (always left) -->
+    <a class="navbar-brand" href="/" style="color:#af8e6e; font-weight:400;">
+      {{ app_data['project_name'] }}
+    </a>
+
+    <!-- Mobile toggle -->
     <button class="navbar-toggler" type="button"
             data-bs-toggle="collapse"
             data-bs-target="#navbarResponsive"
@@ -11,6 +16,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
+    <!-- Nav links -->
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
@@ -23,12 +29,10 @@
         </li>
         <li class="nav-item">
           <a class="nav-link {% if request.path == '/pi_mile' %}active{% endif %}" 
-             href="/pi_mile" style="color:#2d2f3f; display: flex; align-items: center; gap: 6px;">
-             
+             href="/pi_mile" style="color:#2d2f3f; display:flex; align-items:center; gap:6px;">
             <img src="{{ url_for('static', filename='images/pi_mile_logo.jpeg') }}"
                  alt="Pi Mile Logo"
-                 style="height: 18px; width: auto;">
-        
+                 style="height: 18px; width:auto;">
             Pi Mile Race
           </a>
         </li>
@@ -46,15 +50,33 @@
 </nav>
 
 <style>
-  /* Highlight the active nav link */
+  /* ========================= */
+  /* NAVBAR ACTIVE / HOVER */
+  /* ========================= */
   .navbar-nav .nav-link.active {
-    color: #af8e6e !important; /* matches your logo color */
+    color: #af8e6e !important; /* matches brand color */
     font-weight: 600;
-    border-bottom: 2px solid #af8e6e; /* subtle underline if you want */
+    border-bottom: 2px solid #af8e6e;
   }
 
   .navbar-nav .nav-link:hover {
-    color: #8a685d !important; /* hover color */
+    color: #8a685d !important; /* subtle hover color */
+  }
+
+  /* Optional: adjust mobile toggle icon color */
+  .navbar-toggler {
+    border-color: #af8e6e;
+  }
+  .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(175, 142, 110, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+  }
+
+  /* Optional: adjust spacing for nav items on desktop */
+  @media (min-width: 992px) {
+    .navbar-nav .nav-item {
+      margin-left: 16px;
+    }
   }
 </style>
+
 
