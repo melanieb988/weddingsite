@@ -9,7 +9,21 @@
   <link rel="icon" href="../../../../favicon.ico">
 
   <title>{{ app_data['html_title'] }}</title>
+ <meta property="og:title" content="{{ app_data['project_name'] }}">
+  <meta property="og:description" content="{{ app_data['description'] }}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ request.url_root }}">
+  <meta property="og:image"
+     content="{{ url_for('static',
+                          filename='images/banff.jpg',
+                          _external=True) }}">
 
+  <!-- Twitter (also used by iMessage sometimes) -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image"
+     content="{{ url_for('static',
+                          filename='images/banff.jpg',
+                          _external=True) }}">
   <!-- Fonts -->
   <link href="https://fonts.cdnfonts.com/css/bickham-script-pro" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
@@ -215,6 +229,7 @@
           crossorigin="anonymous"></script>
 </body>
 </html>
+
 
 
 
