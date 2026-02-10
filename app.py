@@ -67,7 +67,7 @@ def index():
 
 
 @app.route("/event")
-def about():
+def event():
     return render_template("event.html", app_data=app_data)
 
 
