@@ -1,84 +1,128 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<div class="event-page-wrapper" style="padding: 40px 20px; max-width: 1000px; margin: 0 auto;">
+<div class="event-page-wrapper" style="padding: 40px 20px; max-width: 1000px; margin: 0 auto; font-family:'Montserrat', sans-serif; color:#2d2f3f;">
 
-  <!-- Page Header -->
+  <!-- HEADER -->
   <div class="text-center mb-5">
-    <img src="{{ url_for('static', filename='images/biltmore1.png') }}" alt="Biltmore Logo" style="height:60px; margin-bottom:16px;">
-    <h1 style="font-family:'Great Vibes', cursive; font-size:4rem; color:#2d2f3f; margin-bottom:0;">Event Details</h1>
-    <p style="font-family:'Montserrat', sans-serif; color:#514131; font-size:1.2rem; margin-top:4px;">Mark your calendars for the fun!</p>
+    <img src="{{ url_for('static', filename='images/biltmore1.png') }}" alt="Biltmore Logo" style="height:60px; margin-bottom:16px; opacity:0.85;">
+    <h1 style="font-family:'Great Vibes', cursive; font-size:3.8rem; margin-bottom:0; color:#2d2f3f;">Event Details</h1>
+    <p style="font-size:1.1rem; color:#514131; margin-top:4px;">Weekend Schedule</p>
   </div>
 
-  <!-- Friday, Welcome Event -->
+  <!-- FRIDAY -->
   <div class="event-day mb-5">
-    <h2 style="font-family:'BickhamScriptPro', cursive; color:#8a685d; font-size:2.8rem;">Friday, October 23rd</h2>
-    <p style="font-family:'Montserrat', sans-serif; color:#2d2f3f; font-size:1.2rem; margin-left:20px;">
-      Welcome Event <br>
-      Time & Place: TBD
-    </p>
+    <h2 style="font-family:'BickhamScriptPro', cursive; color:#8a685d; font-size:2rem; margin-bottom:16px; border-bottom:2px solid #af8e6e; display:inline-block; padding-bottom:4px;">
+      Friday, October 23
+    </h2>
+
+    <div class="event-block">
+      <p class="event-title">Welcome Gathering</p>
+      <p><span class="event-label">Time:</span> TBD</p>
+      <p><span class="event-label">Location:</span> TBD</p>
+    </div>
   </div>
 
-  <!-- Saturday, Main Events -->
+  <!-- SATURDAY -->
   <div class="event-day mb-5">
-    <h2 style="font-family:'BickhamScriptPro', cursive; color:#8a685d; font-size:2.8rem;">Saturday, October 24th</h2>
+    <h2 style="font-family:'BickhamScriptPro', cursive; color:#8a685d; font-size:2rem; margin-bottom:16px; border-bottom:2px solid #af8e6e; display:inline-block; padding-bottom:4px;">
+      Saturday, October 24
+    </h2>
 
-    <!-- Morning Run -->
-    <div class="event-block mb-4" style="display:flex; align-items:center;">
-      <img src="{{ url_for('static', filename='images/runner2.jpeg') }}" alt="Runner" style="height:60px; margin-right:12px;">
-      <p style="font-family:'Montserrat', sans-serif; color:#2d2f3f; font-size:1.2rem; margin:0;">
-        9:00 AM (Time TBD) – Race / Run around Georgia Tech's Pi Mile Loop (3.14 miles, additional miles welcome!)
-      </p>
-      <img src="{{ url_for('static', filename='images/cartoon_runner2.jpeg') }}" alt="Runner" style="height:60px; margin-left:12px;">
+    <!-- Pi Mile Race -->
+    <div class="event-block flex-event">
+      <img src="{{ url_for('static', filename='images/runner2.jpeg') }}" alt="Runner" class="event-icon">
+      <div class="event-text">
+        <p class="event-title">Time TBD (AM) – <a href="{{ url_for('pi_mile') }}">Pi Mile Race</a></p>
+        <p class="event-detail">3.14-mile loop around Georgia Tech campus</p>
+      </div>
+      <img src="{{ url_for('static', filename='images/cartoon_runner2.jpeg') }}" alt="Runner Icon" class="event-icon">
     </div>
 
     <!-- Wedding Ceremony -->
-    <div class="event-block mb-4">
-      <p style="font-family:'Montserrat', sans-serif; color:#2d2f3f; font-size:1.2rem; margin:0;">
-        5:00 PM – Wedding Ceremony
-      </p>
+    <div class="event-block">
+      <p class="event-title">5:00 PM – Wedding Ceremony</p>
+      <p class="event-detail"><span class="event-label">Location:</span> The Biltmore Ballrooms, Imperial Room, 817 W Peachtree St NW #208, Atlanta, GA 30308</p>
+      <p class="event-detail"><span class="event-label">Dress Code:</span> Whatever you want!</p>
     </div>
 
     <!-- Cocktail Hour -->
-    <div class="event-block mb-4">
-      <p style="font-family:'Montserrat', sans-serif; color:#2d2f3f; font-size:1.2rem; margin:0;">
-        After Ceremony – Cocktail Hour
-      </p>
+    <div class="event-block">
+      <p class="event-title">Following Ceremony – Cocktail Hour & Dinner</p>
+      <p class="event-detail"><span class="event-label">Location:</span> Biltmore Ballrooms</p>
     </div>
 
-    <!-- Dinner & Dancing -->
-    <div class="event-block mb-4">
-      <p style="font-family:'Montserrat', sans-serif; color:#2d2f3f; font-size:1.2rem; margin:0;">
-        Dinner & Dancing – Following Cocktail Hour
-      </p>
-    </div>
+   
+
   </div>
 
 </div>
 
 <style>
-.event-day h2 {
-  border-bottom: 2px solid #af8e6e;
-  display: inline-block;
-  padding-bottom: 4px;
-}
-
+/* ========================= */
+/* EVENT BLOCKS */
+/* ========================= */
 .event-block {
-  background-color: #faf9f7;
-  padding: 12px 16px;
+  background: #faf9f7;
+  padding: 18px 22px;
   border-radius: 12px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-  margin-bottom: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  margin-bottom: 16px;
 }
 
-@media (max-width: 768px) {
-  .event-block {
-    display: block !important;
-    text-align: left;
+.event-title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 1.2rem;
+  margin-bottom: 6px;
+  color: #2d2f3f;
+}
+
+.event-detail {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  color: #514131;
+  margin: 2px 0;
+}
+
+.event-label {
+  font-weight: 500;
+  color: #2d2f3f;
+  margin-right: 4px;
+}
+
+.flex-event {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.event-icon {
+  height:50px;
+  margin:0 12px;
+}
+
+.event-text {
+  flex:1;
+}
+
+a {
+  color:#af8e6e;
+  text-decoration:underline;
+}
+
+/* ========================= */
+/* MOBILE RESPONSIVE */
+/* ========================= */
+@media (max-width:768px){
+  .flex-event {
+    display:block;
+    text-align:left;
   }
-  .event-block img {
-    display: inline-block;
-    margin: 4px 6px 0 0;
+  .event-icon {
+    display:inline-block;
+    margin:6px 0 8px 0;
   }
 }
 </style>
