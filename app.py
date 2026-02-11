@@ -82,6 +82,10 @@ def contact():
 def pi_mile():
     return render_template("pi_mile.html", app_data=app_data)
 
+@app.route("/travel")
+def travel():
+    return render_template("travel.html", app_data=app_data)
+    
 @app.route("/api/lookup", methods=["POST"])
 def lookup():
     data = request.get_json()
