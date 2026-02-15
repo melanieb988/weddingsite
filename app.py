@@ -131,7 +131,6 @@ def lookup():
 
     return jsonify(guests_list)
 
-
 @app.route("/api/household", methods=["POST"])
 def household():
     data = request.get_json()
@@ -142,8 +141,9 @@ def household():
     conn = get_db_connection()
     cur = conn.cursor()
 
+    # Include guest_id in the SELECT
     cur.execute("""
-        SELECT name, attending, meal_choice, plus_one_allowed, plus_one_name, song_rec
+        SELECT guest_id, name, attending, meal_choice, plus_one_allowed, plus_one_name, song_rec
         FROM guests
         WHERE household_id = %s
     """, (household_id,))
@@ -152,14 +152,16 @@ def household():
     cur.close()
     conn.close()
 
+    # Build list including guest_id
     household_list = [
         {
-            "name": r[0],
-            "attending": r[1],
-            "meal_choice": r[2],
-            "plus_one_allowed": r[3],
-            "plus_one_name": r[4],
-            "song_rec": r[5]
+            "guest_id": r[0],       # <-- ADD THIS
+            "name": r[1],
+            "attending": r[2],
+            "meal_choice": r[3],
+            "plus_one_allowed": r[4],
+            "plus_one_name": r[5],
+            "song_rec": r[6]
         }
         for r in results
     ]
@@ -172,7 +174,7 @@ def household():
 @app.route("/api/rsvp", methods=["POST"])
 def rsvp():
     data = request.get_json()
-    guests = data.get("guests")  # list of guests with updates
+    guests = data.get("guests")  # list of guest updates
 
     if not guests:
         return jsonify({"error": "No guest data provided"}), 400
@@ -181,16 +183,34 @@ def rsvp():
     cur = conn.cursor()
 
     for g in guests:
+        guest_id = g.get("guest_id")
+        if guest_id is None:
+            continue  # skip guests with missing ID
+
+        # Make sure to handle None values properly
+        attending = g.get("attending")
+        meal_choice = g.get("meal_choice") or None
+        dietary_restriction = g.get("dietary_restriction") or None
+        plus_one_name = g.get("plus_one_name") or None
+        song_rec = g.get("song_rec") or None
+
         cur.execute("""
             UPDATE guests
-            SET attending=%s, meal_choice=%s, plus_one_name=%s, song_rec=%s
-            WHERE name=%s
+            SET attending=%s,
+                meal_choice=%s,
+                dietary_restriction=%s,
+                plus_one_name=%s,
+                song_rec=%s,
+                last_updated_time=%s
+            WHERE guest_id=%s
         """, (
-            g.get("attending"),
-            g.get("meal_choice"),
-            g.get("plus_one_name"),
-            g.get("song_rec"),
-            g.get("name")
+            attending,
+            meal_choice,
+            dietary_restriction,
+            plus_one_name,
+            song_rec,
+            datetime.utcnow(),
+            guest_id
         ))
 
     conn.commit()
@@ -214,3 +234,4 @@ def keepalive():
 
 if __name__ == "__main__":
     app.run(debug=DEVELOPMENT_ENV)
+
