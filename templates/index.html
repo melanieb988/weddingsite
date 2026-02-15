@@ -431,9 +431,27 @@
     });
   </script>
   
-    
   <script>
+    const guestNameInput = document.getElementById("guestName");
+    const searchBtn = document.getElementById("searchBtn");
+
+// Trigger search on Enter key
+    guestNameInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+        e.preventDefault();  // prevent form submission / page reload
+        searchBtn.click();   // trigger the existing click event
+    }
+});
     const container = document.getElementById("householdContainer");
+    
+    // CONFIG: toggle fields on/off easily
+    const FIELD_CONFIG = {
+        attending: true,
+        meal_choice: true,
+        dietary_restriction: false,
+        plus_one_name: true,
+        song_rec: true
+    };
     
     /* SEARCH BUTTON */
     document.getElementById("searchBtn").addEventListener("click", async () => {
@@ -456,13 +474,11 @@
             return;
         }
     
-        // Single match → load household
         if (matches.length === 1) {
             loadHousehold(matches[0]);
             return;
         }
     
-        // Multiple matches → user selects which one they are
         container.innerHTML = "<p class='fw-bold'>Multiple matches found. Which one are you?</p>";
         matches.forEach(m => {
             const btn = document.createElement("button");
@@ -494,8 +510,52 @@
         guests.forEach(g => {
             const div = document.createElement("div");
             div.className = "border rounded p-3 mb-3";
+            div.dataset.guestId = g.guest_id;
     
-            const plusOneHTML = g.plus_one_allowed ? `
+            let html = `
+            <div class="fw-bold mb-2">${g.name}</div>
+        `;
+            
+            // ATTENDING / NOT ATTENDING radio buttons
+            if (FIELD_CONFIG.attending) {
+                const attendingYesChecked = g.attending === true || g.attending === "t" ? "checked" : "";
+                const attendingNoChecked = !g.attending || g.attending === false || g.attending === "f" ? "checked" : "";
+    
+                html += `
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input attending" type="radio" name="attending-${g.guest_id}" value="true" ${attendingYesChecked}>
+                    <label class="form-check-label">Attending</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input attending" type="radio" name="attending-${g.guest_id}" value="false" ${attendingNoChecked}>
+                    <label class="form-check-label">Not Attending</label>
+                </div>
+                `;
+            }
+    
+            // MEAL CHOICE
+            if (FIELD_CONFIG.meal_choice) {
+                html += `
+                <input class="form-control mt-2 meal"
+                      placeholder="Meal selection — check back later"
+                      value="${g.meal_choice || ""}"
+                      readonly
+                      style="background-color:#e9ecef; cursor:not-allowed;">
+                `;
+            }
+    
+            // DIETARY RESTRICTION
+            if (FIELD_CONFIG.dietary_restriction) {
+                html += `
+                <input class="form-control mt-2 dietary_restriction"
+                       placeholder="Dietary restriction"
+                       value="${g.dietary_restriction || ""}">
+                `;
+            }
+    
+            // PLUS ONE NAME
+            if (FIELD_CONFIG.plus_one_name && g.plus_one_allowed) {
+                html += `
                 <label class="form-label mt-2">Bringing a plus one?</label>
                 <select class="form-select plus-one-toggle">
                     <option value="no" ${!g.plus_one_name ? "selected" : ""}>No</option>
@@ -505,25 +565,19 @@
                        placeholder="Plus One Name"
                        value="${g.plus_one_name || ""}"
                        style="display:${g.plus_one_name ? "block" : "none"}">
-            ` : "";
+                `;
+            }
     
-            div.innerHTML = `
-                <div class="form-check">
-                    <input class="form-check-input attending" type="checkbox" ${g.attending ? "checked" : ""}>
-                    <label class="form-check-label fw-bold">${g.name}</label>
-                </div>
-    
-                <input class="form-control mt-2 meal"
-                       placeholder="Meal choice"
-                       value="${g.meal_choice || ""}">
-    
-                ${plusOneHTML}
-    
+            // SONG REQUEST
+            if (FIELD_CONFIG.song_rec) {
+                html += `
                 <input class="form-control mt-2 song"
                        placeholder="Song request"
                        value="${g.song_rec || ""}">
-            `;
+                `;
+            }
     
+            div.innerHTML = html;
             container.appendChild(div);
         });
     }
@@ -542,33 +596,57 @@
     });
     
     /* SUBMIT RSVP */
- /* ========================= */
-/* SUBMIT RSVP (COMING SOON) */
-/* ========================= */
-document.getElementById("submitRsvpBtn").addEventListener("click", () => {
-    const cards = document.querySelectorAll("#householdContainer > div");
+    document.getElementById("submitRsvpBtn").addEventListener("click", async () => {
+        const cards = document.querySelectorAll("#householdContainer > div");
     
-    if (!cards.length) {
-        alert("Please search for your invitation first.");
-        return;
-    }
-
-    // Collect guest info (optional for future use)
-    const guests = Array.from(cards).map(card => ({
-        name: card.querySelector(".form-check-label").innerText,
-        attending: card.querySelector(".attending").checked,
-        meal_choice: card.querySelector(".meal").value,
-        plus_one_name: card.querySelector(".plus-one-name")
-            ? card.querySelector(".plus-one-name").value
-            : null,
-        song_rec: card.querySelector(".song").value
-    }));
-
-    // For now, just show coming soon
-    alert("Too soon to RSPV! Check back later");
-});
-
+        if (!cards.length) {
+            alert("Please search for your invitation first.");
+            return;
+        }
+    
+        // Collect guest info
+        const guests = Array.from(cards).map(card => {
+            // Attending boolean
+            const attendingRadio = card.querySelector("input[name='attending-" + card.dataset.guestId + "']:checked");
+            return {
+                guest_id: card.dataset.guestId ? parseInt(card.dataset.guestId) : null,
+                attending: attendingRadio ? attendingRadio.value === "true" : null,
+                meal_choice: card.querySelector(".meal") ? card.querySelector(".meal").value : null,
+                dietary_restriction: card.querySelector(".dietary_restriction") ? card.querySelector(".dietary_restriction").value : null,
+                plus_one_name: card.querySelector(".plus-one-name") ? card.querySelector(".plus-one-name").value : null,
+                song_rec: card.querySelector(".song") ? card.querySelector(".song").value : null
+            };
+        });
+    
+        try {
+            const res = await fetch("/api/rsvp", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ guests })
+            });
+    
+            const data = await res.json();
+    
+            if (data.status === "success") {
+                alert("RSVP submitted successfully! Check back later to make meal selection");
+    
+                // Auto-close modal
+                const rsvpModalEl = document.getElementById("rsvpModal");
+                const modalInstance = bootstrap.Modal.getInstance(rsvpModalEl) || new bootstrap.Modal(rsvpModalEl);
+                modalInstance.hide();
+            } else if (data.error) {
+                alert(`Error: ${data.error}`);
+            } else {
+                alert("Unexpected response from server. Check console.");
+                console.log(data);
+            }
+        } catch (err) {
+            console.error("Error submitting RSVP:", err);
+            alert("There was an error submitting your RSVP. Check the console.");
+        }
+    });
     </script>
+    
 {% endblock %}
 
 
