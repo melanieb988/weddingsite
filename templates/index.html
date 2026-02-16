@@ -91,7 +91,7 @@
       aspect-ratio: 4 / 3; /* overridden per rotation */
       overflow: hidden;
       background: #faf9f7;
-      max-height:70vh;
+      max-height:90vh;
     }
     
     /* All images fill their boxes */
@@ -129,11 +129,11 @@
     .save-the-date {
       font-family: 'Great Vibes', cursive;
       font-size: 4rem;
-      color: #2d2f3f;
+      color: rgb(46, 90, 89);
     }
     
     .logo-inline img {
-      height: 74px;
+      height: 125px;
       margin: 0 15px 16px;
       vertical-align: middle;
       opacity: 0.8;
@@ -141,27 +141,27 @@
     
     .names {
       font-family: serif;
-      font-size: 3rem;
+      font-size: 2rem;
       color: #514131;
       line-height: 1.1;
       margin-bottom: 16px;
     }
     
     .ampersand {
-      color: #8a685d;
-      font-size: 2.2rem;
+      color: #514131;
+      font-size: 2rem;
     }
     
     .date {
       font-family: 'Montserrat', sans-serif;
       letter-spacing: 0.18em;
-      color: #514131;
+      color: rgb(46, 90, 89);
       margin-bottom: 4px;
     }
     
     .location {
       font-family: 'Montserrat', sans-serif;
-      color: #2d2f3f;
+      color: rgb(46, 90, 89);
       margin-bottom: 24px;
     }
     
@@ -238,10 +238,11 @@
       {
         aspectRatio: '4 / 3',
         images: [
-          'yellowstone.JPG',
-          'liftsnow.jpg',
-          'banff.jpg',
-          'parents.jpg'
+        'banff.jpg',
+        
+        'liftsnow.jpg',
+        'grun.JPG',
+        'parents.jpg'
         ],
         layout: [
           { top: 0,  left: 0,  width: 50, height: 50 },
@@ -252,30 +253,46 @@
         rotate: [-2, 2]
       },
       {
-        aspectRatio: '3 / 4',
+        aspectRatio: '4 / 5',
         images: [
-          'guatamaladock.jpg',
-          'rafting.jpeg',
-          'party.jpg'
+          'banffrun.jpg',
+          'ggp.jpg',
+          'proposal.jpg'
+          
         ],
         layout: [
-          { top: 0,  left: 0,  width: 40, height: 100 },
-          { top: 0,  left: 40, width: 60, height: 50 },
-          { top: 50, left: 40, width: 60, height: 50 }
+          { top: 0,  left: 0, width: 55, height: 100 },
+          { top: 0,  left: 50,  width: 55, height: 50 },
+          { top: 50, left: 50,  width: 50, height: 50 }
         ],
         rotate: [-1.5, 1.5]
       },
       {
         aspectRatio: '3 / 4',
         images: [
-          'dipsea.jpg',
-          'ski.jpg',
-          'hbike.JPG'
+        'colluseum.JPG',
+          'party.jpg',
+          'bike.jpg'
+          
         ],
         layout: [
-          { top: 0,  left: 60, width: 40, height: 100 },
-          { top: 0,  left: 0,  width: 60, height: 50 },
-          { top: 50, left: 0,  width: 60, height: 50 }
+          { top: 0,  left: 0,  width: 48, height: 100 },
+          { top: 0,  left: 45, width: 55, height: 50 },
+          { top: 50, left: 45, width: 55, height: 50 }
+        ],
+        rotate: [-1.5, 1.5]
+      },
+      {
+        aspectRatio: '3 / 4',
+        images: [
+        'dipsea.jpg',
+          'ski.jpg',
+          'guatamalastreet.jpg'
+        ],
+        layout: [
+          { top: 0,  left: 50, width: 50, height: 100 },
+          { top: 0,  left: 0,  width: 52, height: 50 },
+          { top: 50, left: 0,  width: 52, height: 50 }
         ],
         rotate: [-1.5, 1.5]
       }
@@ -628,7 +645,7 @@
             const data = await res.json();
     
             if (data.status === "success") {
-                alert("RSVP submitted but not complete! Check back later to make meal selection");
+                alert("RSVP submitted successfully! Check back later to make meal selection");
     
                 // Auto-close modal
                 const rsvpModalEl = document.getElementById("rsvpModal");
@@ -648,7 +665,6 @@
     </script>
     
 {% endblock %}
-
 
 
 
