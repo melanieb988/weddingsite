@@ -1,8 +1,261 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-    <h1>comming soon..</h1>
 
-    <!-- <p class="lead"> - <a href="https://github.com/petersimeth" target="_blank" >https://github.com/petersimeth</a></p> -->
+<div class="container py-5" style="max-width: 750px;">
+
+  <div class="text-center mb-4">
+    <h2 style="letter-spacing:0.1em;">RSVP</h2>
+    <p>Please enter your name to find your invitation.</p>
+  </div>
+
+  <!-- SEARCH SECTION -->
+  <div class="mb-4">
+    <input type="text" id="guestName" class="form-control mb-3" placeholder="Enter your name">
+    <button id="searchBtn" class="btn btn-outline-dark w-100">Find My Invitation</button>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="householdContainer"></div>
+
+  <!-- SUBMIT -->
+  <div class="text-center mt-4">
+    <button id="submitRsvpBtn" class="btn btn-dark px-5">
+      Submit RSVP
+    </button>
+  </div>
+
+</div>
+
+
+<script>
+const guestNameInput = document.getElementById("guestName");
+const searchBtn = document.getElementById("searchBtn");
+const container = document.getElementById("householdContainer");
+
+/* ========================= */
+/* ENTER KEY SEARCH */
+/* ========================= */
+guestNameInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+        e.preventDefault();
+        searchBtn.click();
+    }
+});
+
+/* ========================= */
+/* FIELD CONFIG */
+/* ========================= */
+const FIELD_CONFIG = {
+    attending: true,
+    meal_choice: true,
+    dietary_restriction: false,
+    plus_one_name: true,
+    song_rec: true
+};
+
+/* ========================= */
+/* SEARCH BUTTON */
+/* ========================= */
+searchBtn.addEventListener("click", async () => {
+    const name = guestNameInput.value.trim();
+    if (!name) return alert("Please enter your name.");
+
+    container.innerHTML = "<p>Searching...</p>";
+
+    const res = await fetch("/api/lookup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name })
+    });
+
+    const matches = await res.json();
+    container.innerHTML = "";
+
+    if (!matches.length) {
+        container.innerHTML = "<p>No invitation found. Please check spelling.</p>";
+        return;
+    }
+
+    if (matches.length === 1) {
+        loadHousehold(matches[0]);
+        return;
+    }
+
+    container.innerHTML = "<p class='fw-bold'>Multiple matches found. Which one are you?</p>";
+    matches.forEach(m => {
+        const btn = document.createElement("button");
+        btn.className = "btn btn-outline-primary w-100 mb-2";
+        btn.innerText = `${m.name} (${m.household_id})`;
+        btn.onclick = () => loadHousehold(m);
+        container.appendChild(btn);
+    });
+});
+
+/* ========================= */
+/* LOAD HOUSEHOLD */
+/* ========================= */
+async function loadHousehold(selectedPerson) {
+    container.innerHTML = "<p>Loading your household...</p>";
+
+    const res = await fetch("/api/household", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ household_id: selectedPerson.household_id })
+    });
+
+    const guests = await res.json();
+    renderHousehold(guests);
+}
+
+/* ========================= */
+/* RENDER HOUSEHOLD */
+/* ========================= */
+function renderHousehold(guests) {
+    container.innerHTML = "";
+
+    guests.forEach(g => {
+        const div = document.createElement("div");
+        div.className = "border rounded p-3 mb-3";
+        div.dataset.guestId = g.guest_id;
+
+        let html = `<div class="fw-bold mb-2">${g.name}</div>`;
+
+        /* ATTENDING */
+        /* ATTENDING */
+        if (FIELD_CONFIG.attending) {
+
+        let attendingYesChecked = "";
+        let attendingNoChecked = "";
+
+        if (g.attending === true || g.attending === "t") {
+            attendingYesChecked = "checked";
+        } else if (g.attending === false || g.attending === "f") {
+            attendingNoChecked = "checked";
+        } else {
+            // Default when null/undefined
+            attendingYesChecked = "checked";
+        }
+
+        html += `
+        <div class="form-check form-check-inline">
+            <input class="form-check-input attending" type="radio" name="attending-${g.guest_id}" value="true" ${attendingYesChecked}>
+            <label class="form-check-label">Attending</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input attending" type="radio" name="attending-${g.guest_id}" value="false" ${attendingNoChecked}>
+            <label class="form-check-label">Not Attending</label>
+        </div>
+        `;
+        }
+
+        /* MEAL */
+        if (FIELD_CONFIG.meal_choice) {
+            html += `
+            <input class="form-control mt-2 meal"
+                placeholder="Meal selection — check back later"
+                value="${g.meal_choice || ""}"
+                readonly
+                style="background-color:#e9ecef; cursor:not-allowed;">
+            `;
+        }
+
+        /* DIETARY */
+        if (FIELD_CONFIG.dietary_restriction) {
+            html += `
+            <input class="form-control mt-2 dietary_restriction"
+                placeholder="Dietary restriction"
+                value="${g.dietary_restriction || ""}">
+            `;
+        }
+
+        /* PLUS ONE */
+        if (FIELD_CONFIG.plus_one_name && g.plus_one_allowed) {
+            html += `
+            <label class="form-label mt-2">Bringing a plus one?</label>
+            <select class="form-select plus-one-toggle">
+                <option value="no" ${!g.plus_one_name ? "selected" : ""}>No</option>
+                <option value="yes" ${g.plus_one_name ? "selected" : ""}>Yes</option>
+            </select>
+            <input class="form-control mt-2 plus-one-name"
+                placeholder="Plus One Name"
+                value="${g.plus_one_name || ""}"
+                style="display:${g.plus_one_name ? "block" : "none"}">
+            `;
+        }
+
+        /* SONG */
+        if (FIELD_CONFIG.song_rec) {
+            html += `
+            <input class="form-control mt-2 song"
+                placeholder="Song request"
+                value="${g.song_rec || ""}">
+            `;
+        }
+
+        div.innerHTML = html;
+        container.appendChild(div);
+    });
+}
+
+/* ========================= */
+/* PLUS ONE TOGGLE */
+/* ========================= */
+document.addEventListener("change", e => {
+    if (e.target.classList.contains("plus-one-toggle")) {
+        const input = e.target.nextElementSibling;
+        if (e.target.value === "yes") {
+            input.style.display = "block";
+        } else {
+            input.style.display = "none";
+            input.value = "";
+        }
+    }
+});
+
+/* ========================= */
+/* SUBMIT RSVP */
+/* ========================= */
+document.getElementById("submitRsvpBtn").addEventListener("click", async () => {
+    const cards = document.querySelectorAll("#householdContainer > div");
+
+    if (!cards.length) {
+        alert("Please search for your invitation first.");
+        return;
+    }
+
+    const guests = Array.from(cards).map(card => {
+        const attendingRadio = card.querySelector(
+            "input[name='attending-" + card.dataset.guestId + "']:checked"
+        );
+
+        return {
+            guest_id: card.dataset.guestId ? parseInt(card.dataset.guestId) : null,
+            attending: attendingRadio ? attendingRadio.value === "true" : null,
+            meal_choice: card.querySelector(".meal")?.value || null,
+            dietary_restriction: card.querySelector(".dietary_restriction")?.value || null,
+            plus_one_name: card.querySelector(".plus-one-name")?.value || null,
+            song_rec: card.querySelector(".song")?.value || null
+        };
+    });
+
+    const res = await fetch("/api/rsvp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ guests })
+    });
+
+    const data = await res.json();
+
+    if (data.status === "success") {
+        alert("RSVP submitted successfully! Check back later to make meal selection");
+        container.innerHTML = "";
+        guestNameInput.value = "";
+    } else {
+        alert("There was an error submitting your RSVP.");
+        console.log(data);
+    }
+});
+</script>
+
 {% endblock %}
-
