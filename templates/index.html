@@ -46,7 +46,7 @@
       </div>
 
       <div class="modal-body">
-        <input type="text" id="guestName" class="form-control mb-3" placeholder="Enter your name">
+        <input type="text" id="guestName" class="form-control mb-3" placeholder="Enter your first name">
         <button id="searchBtn" class="btn btn-outline-dark mb-3">Find My Invitation</button>
         <div id="householdContainer"></div>
       </div>
@@ -473,7 +473,7 @@
     /* SEARCH BUTTON */
     document.getElementById("searchBtn").addEventListener("click", async () => {
         const name = document.getElementById("guestName").value.trim();
-        if (!name) return alert("Please enter your name.");
+        if (!name) return alert("Please enter your first name.");
     
         container.innerHTML = "<p>Searching...</p>";
     
