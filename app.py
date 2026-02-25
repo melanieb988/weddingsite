@@ -172,7 +172,7 @@ def household():
 
 # ===== API: Submit RSVP =====
 @app.route("/api/rsvp", methods=["POST"])
-def rsvp():
+def submit_rsvp():
     data = request.get_json()
     guests = data.get("guests")  # list of guest updates
 
