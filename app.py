@@ -74,9 +74,9 @@ def event():
 
 
 
-@app.route("/contact")
+@app.route("/rsvp")
 def contact():
-    return render_template("contact.html", app_data=app_data)
+    return render_template("rsvp.html", app_data=app_data)
 
 @app.route("/pi_mile")
 def pi_mile():
