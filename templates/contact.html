@@ -247,11 +247,18 @@ document.getElementById("submitRsvpBtn").addEventListener("click", async () => {
 
     const data = await res.json();
 
-    if (data.status === "success") {
-        alert("RSVP submitted successfully! Check back later to make meal selection");
-        container.innerHTML = "";
-        guestNameInput.value = "";
+    if (anyAttending) {
+        message = `Thanks ${primaryGuestName}! We can't wait to see you there 💛`;
     } else {
+        message = `We will miss you ${primaryGuestName}! Thank you for letting us know 🤍`;
+    }
+
+    alert(message);
+
+    container.innerHTML = "";
+    guestNameInput.value = "";
+    }
+    else {
         alert("There was an error submitting your RSVP.");
         console.log(data);
     }
@@ -259,3 +266,4 @@ document.getElementById("submitRsvpBtn").addEventListener("click", async () => {
 </script>
 
 {% endblock %}
+
