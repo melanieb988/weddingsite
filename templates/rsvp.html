@@ -27,7 +27,6 @@
 
 </div>
 
-
 <script>
 const guestNameInput = document.getElementById("guestName");
 const searchBtn = document.getElementById("searchBtn");
@@ -122,31 +121,28 @@ function renderHousehold(guests) {
         let html = `<div class="fw-bold mb-2">${g.name}</div>`;
 
         /* ATTENDING */
-        /* ATTENDING */
         if (FIELD_CONFIG.attending) {
+            let attendingYesChecked = "";
+            let attendingNoChecked = "";
 
-        let attendingYesChecked = "";
-        let attendingNoChecked = "";
+            if (g.attending === true || g.attending === "t") {
+                attendingYesChecked = "checked";
+            } else if (g.attending === false || g.attending === "f") {
+                attendingNoChecked = "checked";
+            } else {
+                attendingYesChecked = "checked";
+            }
 
-        if (g.attending === true || g.attending === "t") {
-            attendingYesChecked = "checked";
-        } else if (g.attending === false || g.attending === "f") {
-            attendingNoChecked = "checked";
-        } else {
-            // Default when null/undefined
-            attendingYesChecked = "checked";
-        }
-
-        html += `
-        <div class="form-check form-check-inline">
-            <input class="form-check-input attending" type="radio" name="attending-${g.guest_id}" value="true" ${attendingYesChecked}>
-            <label class="form-check-label">Attending</label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input attending" type="radio" name="attending-${g.guest_id}" value="false" ${attendingNoChecked}>
-            <label class="form-check-label">Not Attending</label>
-        </div>
-        `;
+            html += `
+            <div class="form-check form-check-inline">
+                <input class="form-check-input attending" type="radio" name="attending-${g.guest_id}" value="true" ${attendingYesChecked}>
+                <label class="form-check-label">Attending</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input attending" type="radio" name="attending-${g.guest_id}" value="false" ${attendingNoChecked}>
+                <label class="form-check-label">Not Attending</label>
+            </div>
+            `;
         }
 
         /* MEAL */
@@ -214,7 +210,7 @@ document.addEventListener("change", e => {
 });
 
 /* ========================= */
-/* SUBMIT RSVP */
+/* SUBMIT RSVP (FIXED) */
 /* ========================= */
 document.getElementById("submitRsvpBtn").addEventListener("click", async () => {
     const cards = document.querySelectorAll("#householdContainer > div");
@@ -239,31 +235,30 @@ document.getElementById("submitRsvpBtn").addEventListener("click", async () => {
         };
     });
 
-    const res = await fetch("/api/rsvp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ guests })
-    });
+    try {
+        const res = await fetch("/api/rsvp", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ guests })
+        });
 
-    const data = await res.json();
+        const data = await res.json();
 
-    if (anyAttending) {
-        message = `Thanks ${primaryGuestName}! We can't wait to see you there 💛`;
-    } else {
-        message = `We will miss you ${primaryGuestName}! Thank you for letting us know 🤍`;
-    }
-
-    alert(message);
-
-    container.innerHTML = "";
-    guestNameInput.value = "";
-    }
-    else {
-        alert("There was an error submitting your RSVP.");
-        console.log(data);
+        if (data.status === "success") {
+            alert("RSVP submitted successfully!");
+            container.innerHTML = "";
+            guestNameInput.value = "";
+        } else {
+            alert("There was an error submitting your RSVP.");
+            console.log(data);
+        }
+    } catch (err) {
+        console.error("Error submitting RSVP:", err);
+        alert("There was an error submitting your RSVP. Check the console.");
     }
 });
 </script>
 
 {% endblock %}
+
 
