@@ -1,12 +1,11 @@
-<nav class="navbar navbar-expand-lg fixed-top" style="background-color: #fff;">
-  <!-- <nav class="navbar navbar-expand-lg fixed-top" style="background-color: #faf9f7;"> -->
+<nav class="navbar navbar-expand-lg fixed-top custom-navbar">
   <div class="container-fluid">
 
     <!-- Brand Image (always left) -->
     <a class="navbar-brand" href="/">
       <img src="{{ url_for('static', filename='images/navbar.jpg') }}"
            alt="Logo"
-           style="height:40px; width:auto;">
+           class="navbar-logo">
     </a>
 
     <!-- Mobile toggle -->
@@ -52,7 +51,23 @@
 </nav>
 
 <style>
-  /* NAVBAR ACTIVE / HOVER */
+  /* ========================= */
+  /* NAVBAR SIZE + FADE */
+  /* ========================= */
+
+  .custom-navbar {
+    background: linear-gradient(to bottom, #ffffff 85%, rgba(255,255,255,0));
+    padding-top: 6px;
+    padding-bottom: 6px;
+    backdrop-filter: blur(4px);
+  }
+
+  .navbar-logo {
+    height: 34px; /* smaller logo */
+    width: auto;
+  }
+
+  /* ACTIVE / HOVER */
   .navbar-nav .nav-link.active {
     color: #af8e6e !important;
     font-weight: 600;
