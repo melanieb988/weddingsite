@@ -535,20 +535,28 @@
             
             // ATTENDING / NOT ATTENDING radio buttons
             if (FIELD_CONFIG.attending) {
-                const attendingYesChecked = g.attending === true || g.attending === "t" ? "checked" : "";
-                const attendingNoChecked = !g.attending || g.attending === false || g.attending === "f" ? "checked" : "";
-    
-                html += `
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input attending" type="radio" name="attending-${g.guest_id}" value="true" ${attendingYesChecked}>
-                    <label class="form-check-label">Attending</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input attending" type="radio" name="attending-${g.guest_id}" value="false" ${attendingNoChecked}>
-                    <label class="form-check-label">Not Attending</label>
-                </div>
-                `;
+            let attendingYesChecked = "";
+            let attendingNoChecked = "";
+
+            if (g.attending === true || g.attending === "t") {
+                attendingYesChecked = "checked";
+            } else if (g.attending === false || g.attending === "f") {
+                attendingNoChecked = "checked";
+            } else {
+                attendingYesChecked = "checked";
             }
+
+            html += `
+            <div class="form-check form-check-inline">
+                <input class="form-check-input attending" type="radio" name="attending-${g.guest_id}" value="true" ${attendingYesChecked}>
+                <label class="form-check-label">Attending</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input attending" type="radio" name="attending-${g.guest_id}" value="false" ${attendingNoChecked}>
+                <label class="form-check-label">Not Attending</label>
+            </div>
+            `;
+        }
     
             // MEAL CHOICE
             if (FIELD_CONFIG.meal_choice) {
