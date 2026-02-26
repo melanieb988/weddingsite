@@ -1,9 +1,12 @@
-<nav class="navbar navbar-expand-lg fixed-top" style="background-color: #faf9f7;">
-  <div class="container-fluid"> <!-- full-width container -->
+<nav class="navbar navbar-expand-lg fixed-top" style="background-color: #fff;">
+  <!-- <nav class="navbar navbar-expand-lg fixed-top" style="background-color: #faf9f7;"> -->
+  <div class="container-fluid">
 
-    <!-- Brand (always left) -->
-    <a class="navbar-brand" href="/" style="color:#af8e6e; font-weight:400;">
-      {{ app_data['project_name'] }}
+    <!-- Brand Image (always left) -->
+    <a class="navbar-brand" href="/">
+      <img src="{{ url_for('static', filename='images/navbar.jpg') }}"
+           alt="Logo"
+           style="height:40px; width:auto;">
     </a>
 
     <!-- Mobile toggle -->
@@ -29,15 +32,13 @@
         </li>
         <li class="nav-item">
           <a class="nav-link {% if request.path == '/pi_mile' %}active{% endif %}" 
-             href="/pi_mile" style="color:#2d2f3f;" >Pi Mile Race
-          </a>
+             href="/pi_mile" style="color:#2d2f3f;">Pi Mile Race</a>
         </li>
         <li class="nav-item">
           <a class="nav-link {% if request.path == '/gallery' %}active{% endif %}" 
              href="/gallery" style="color:#2d2f3f;">Gallery</a>
-        
         </li>
-          <li class="nav-item">
+        <li class="nav-item">
           <a class="nav-link {% if request.path == '/travel' %}active{% endif %}" 
              href="/travel" style="color:#2d2f3f;">Travel</a>
         </li>
@@ -51,33 +52,28 @@
 </nav>
 
 <style>
-  /* ========================= */
   /* NAVBAR ACTIVE / HOVER */
-  /* ========================= */
   .navbar-nav .nav-link.active {
-    color: #af8e6e !important; /* matches brand color */
+    color: #af8e6e !important;
     font-weight: 600;
     border-bottom: 2px solid #af8e6e;
   }
 
   .navbar-nav .nav-link:hover {
-    color: #8a685d !important; /* subtle hover color */
+    color: #8a685d !important;
   }
 
-  /* Optional: adjust mobile toggle icon color */
   .navbar-toggler {
     border-color: #af8e6e;
   }
+
   .navbar-toggler-icon {
     background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(175, 142, 110, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
   }
 
-  /* Optional: adjust spacing for nav items on desktop */
   @media (min-width: 992px) {
     .navbar-nav .nav-item {
       margin-left: 16px;
     }
   }
 </style>
-
-
