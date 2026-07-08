@@ -14,9 +14,9 @@
   <div class="travel-section mb-5">
     <h2 class="section-title">Flights</h2>
     <div class="event-block d-flex align-items-center">
-      <img src="{{ url_for('static', filename='images/united_logo1.png') }}" alt="United Airlines" style="height:50px; margin-right:16px;">
+      <img src="{{ url_for('static', filename='images/united_logo1.png') }}" alt="United Airlines" style="height:40px; margin-right:16px;">
       <p style="margin:0; font-size:1rem;">
-       <a href="https://www.united.com" target="_blank" class="highlight-link">United Airlines</a>
+        Book your flights with <a href="https://www.united.com" target="_blank" class="highlight-link">United Airlines</a>
       </p>
     </div>
   </div>
@@ -28,10 +28,43 @@
       Book travel in advance! Here are several hotels within walking distance of The Biltmore Ballrooms:
     </p>
 
+    <!-- Official Hotel Block (Featured, image left / text right) -->
+    <div class="featured-hotel-section">
+      <div class="featured-hotel-card">
+
+        <div class="hotel-carousel featured-carousel" id="carousel-official">
+          <div class="carousel-images">
+            <img src="{{ url_for('static', filename='images/travel/marriot_ren_hotel.jpg') }}" alt="Renaissance Hotel">
+            <img src="{{ url_for('static', filename='images/travel/marriot_ren_din.jpg') }}" alt="Hotel Dining">
+            <img src="{{ url_for('static', filename='images/travel/marriot_ren_room.jpg') }}" alt="Guest Room">
+          </div>
+          <button class="carousel-btn left" onclick="prevSlide('carousel-official')">&#10094;</button>
+          <button class="carousel-btn right" onclick="nextSlide('carousel-official')">&#10095;</button>
+        </div>
+
+        <div class="featured-hotel-content">
+          <span class="official-badge">Official Hotel Block</span>
+          <h3>Renaissance Atlanta Midtown Marriott</h3>
+          <p>
+            We have reserved a <strong>hotel room block</strong> at the
+            <strong>Renaissance Atlanta Midtown Marriott</strong>. and would love for you to join us there for the weekend.
+          </p>
+          <a href="https://www.marriott.com/event-reservations/reservation-link.mi?id=1776089155214&key=GRP&app=resvlink&_branch_match_id=1603525811292214297&_branch_referrer=H4sIAAAAAAAAA8soKSkottLXTywo0MtNLCrKzC8p0UvOz9UvSi3OyczLtgdK2ALZZSCOWmaKraG5uZmBhaWhqamRoYladmqlrXtQgFpdUWpaKlB3Xnp8UlF%2BeXFqka1rSnoqALHYfCleAAAA&inventoryMissing=true" target="_blank" class="hotel-block-btn">
+            Reserve with the Conference Hotel Block →
+          </a>
+          <p class="fine-print">
+            The discounted rate is available while rooms remain in the block. We recommend
+            booking as early as possible.
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Other Hotels Grid -->
     <div class="hotel-grid">
       <!-- Georgia Tech Hotel -->
       <div class="hotel-card">
-        <h5><a class="hotel-link" href="http://www.gatechhotel.com/" target="_blank">Georgia Tech Hotel & Conference Center →</a></h5>
         <div class="hotel-carousel" id="carousel-gatech">
           <div class="carousel-images">
             <img src="{{ url_for('static', filename='images/travel/gatech_hotel.jpg') }}" alt="Georgia Tech Hotel 1">
@@ -41,53 +74,53 @@
           <button class="carousel-btn left" onclick="prevSlide('carousel-gatech')">&#10094;</button>
           <button class="carousel-btn right" onclick="nextSlide('carousel-gatech')">&#10095;</button>
         </div>
+        <h5><a class="hotel-link" href="http://www.gatechhotel.com/" target="_blank">Georgia Tech Hotel & Conference Center →</a></h5>
       </div>
 
       <!-- Renaissance Atlanta Midtown Marriott -->
       <div class="hotel-card">
-        <h5><a class="hotel-link" href="https://www.marriott.com/en-us/hotels/atlbd-renaissance-atlanta-midtown-hotel/overview/" target="_blank">Renaissance Atlanta Midtown Marriott →</a></h5>
         <div class="hotel-carousel" id="carousel-renaissance">
           <div class="carousel-images">
             <img src="{{ url_for('static', filename='images/travel/marriot_ren_hotel.jpg') }}" alt="Renaissance Hotel 1">
             <img src="{{ url_for('static', filename='images/travel/marriot_ren_din.jpg') }}" alt="Renaissance Hotel 2">
-              <img src="{{ url_for('static', filename='images/travel/marriot_ren_room.jpg') }}" alt="Renaissance Hotel 2">
+            <img src="{{ url_for('static', filename='images/travel/marriot_ren_room.jpg') }}" alt="Renaissance Hotel 3">
           </div>
           <button class="carousel-btn left" onclick="prevSlide('carousel-renaissance')">&#10094;</button>
           <button class="carousel-btn right" onclick="nextSlide('carousel-renaissance')">&#10095;</button>
         </div>
+        <h5><a class="hotel-link" href="https://www.marriott.com/en-us/hotels/atlbd-renaissance-atlanta-midtown-hotel/overview/" target="_blank">Renaissance Atlanta Midtown Marriott →</a></h5>
       </div>
 
       <!-- Hyatt Centric Midtown Atlanta -->
       <div class="hotel-card">
-        <h5><a class="hotel-link" href="http://atlantamidtown.hyatt.com/" target="_blank">Hyatt Centric Midtown Atlanta →</a></h5>
         <div class="hotel-carousel" id="carousel-hyatt">
           <div class="carousel-images">
             <img src="{{ url_for('static', filename='images/travel/hyatt_hotel.jpg') }}" alt="Hyatt Hotel 1">
             <img src="{{ url_for('static', filename='images/travel/hyatt_lobby.jpg') }}" alt="Hyatt Hotel 2">
-            <img src="{{ url_for('static', filename='images/travel/hyatt_room.jpg') }}" alt="Hyatt Hotel 2">
+            <img src="{{ url_for('static', filename='images/travel/hyatt_room.jpg') }}" alt="Hyatt Hotel 3">
           </div>
           <button class="carousel-btn left" onclick="prevSlide('carousel-hyatt')">&#10094;</button>
           <button class="carousel-btn right" onclick="nextSlide('carousel-hyatt')">&#10095;</button>
         </div>
+        <h5><a class="hotel-link" href="http://atlantamidtown.hyatt.com/" target="_blank">Hyatt Centric Midtown Atlanta →</a></h5>
       </div>
 
       <!-- The Georgian Terrace -->
       <div class="hotel-card">
-        <h6><a class="hotel-link" href="https://thegeorgianterrace.com/" target="_blank">The Georgian Terrace →</a></h6>
         <div class="hotel-carousel" id="carousel-georgian">
           <div class="carousel-images">
             <img src="{{ url_for('static', filename='images/travel/georgian_hotel.jpg') }}" alt="Georgian Terrace 1">
             <img src="{{ url_for('static', filename='images/travel/georgian_hotel_din.jpg') }}" alt="Georgian Terrace 2">
-              <img src="{{ url_for('static', filename='images/travel/georgian_hotel_room.jpg') }}" alt="Georgian Terrace 2">
+            <img src="{{ url_for('static', filename='images/travel/georgian_hotel_room.jpg') }}" alt="Georgian Terrace 3">
           </div>
           <button class="carousel-btn left" onclick="prevSlide('carousel-georgian')">&#10094;</button>
           <button class="carousel-btn right" onclick="nextSlide('carousel-georgian')">&#10095;</button>
         </div>
+        <h5><a class="hotel-link" href="https://thegeorgianterrace.com/" target="_blank">The Georgian Terrace →</a></h5>
       </div>
 
       <!-- Hilton Garden Inn Midtown -->
       <div class="hotel-card">
-        <h5><a class="hotel-link" href="https://www.hilton.com/en/hotels/atlamgi-hilton-garden-inn-atlanta-midtown/" target="_blank">Hilton Garden Inn Atlanta Midtown →</a></h5>
         <div class="hotel-carousel" id="carousel-hilton">
           <div class="carousel-images">
             <img src="{{ url_for('static', filename='images/travel/hilton_garden.jpg') }}" alt="Hilton Garden Inn 1">
@@ -96,6 +129,7 @@
           <button class="carousel-btn left" onclick="prevSlide('carousel-hilton')">&#10094;</button>
           <button class="carousel-btn right" onclick="nextSlide('carousel-hilton')">&#10095;</button>
         </div>
+        <h5><a class="hotel-link" href="https://www.hilton.com/en/hotels/atlamgi-hilton-garden-inn-atlanta-midtown/" target="_blank">Hilton Garden Inn Atlanta Midtown →</a></h5>
       </div>
     </div>
   </div>
@@ -200,7 +234,7 @@
 /* ================= SECTION TITLE ================= */
 
 .section-title {
- 
+  font-family: 'BickhamScriptPro', cursive;
   color: #8a685d;
   font-size: 2rem;
   margin-bottom: 20px;
@@ -221,12 +255,103 @@
 }
 
 
+/* ================= FEATURED / OFFICIAL HOTEL BLOCK (image left, text right) ================= */
+
+.featured-hotel-section {
+  margin-bottom: 40px;
+}
+
+.featured-hotel-card {
+  display: flex;
+  align-items: stretch;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+}
+
+.featured-carousel {
+  flex: 0 0 45%;
+  border-radius: 0;
+}
+
+.featured-carousel .carousel-images img {
+  height: 100%;
+  min-height: 320px;
+  border-radius: 0;
+}
+
+.featured-hotel-content {
+  flex: 1;
+  padding: 32px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.official-badge {
+  display: inline-block;
+  align-self: flex-start;
+  background: #af8e6e;
+  color: #fff;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.featured-hotel-content h3 {
+  color: #2d2f3f;
+  margin-bottom: 14px;
+  font-size: 1.5rem;
+}
+
+.featured-hotel-content p {
+  font-size: 1rem;
+  color: #514131;
+  margin-bottom: 18px;
+  line-height: 1.6;
+}
+
+.featured-hotel-content .hotel-block-btn {
+  align-self: flex-start;
+}
+
+.featured-hotel-content .fine-print {
+  margin-top: 16px;
+  margin-bottom: 0;
+  font-size: 0.85rem;
+  color: #999;
+}
+
+
 /* ================= HOTEL GRID ================= */
 
 .hotel-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 18px;
+}
+
+.hotel-block-btn {
+  display: inline-block;
+  background: #af8e6e;
+  color: #fff;
+  padding: 12px 26px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.hotel-block-btn:hover {
+  background: #8a685d;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
 }
 
 
@@ -236,10 +361,10 @@
   background: #fffaf7;
   border-radius: 14px;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-  padding: 18px;
+  overflow: hidden;
   display: flex;
-  flex-direction: column;     /* important */
-  height: 100%;               /* makes all cards equal height */
+  flex-direction: column;
+  height: 100%;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
@@ -248,38 +373,37 @@
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
 }
 
-
-/* ================= CARD CONTENT ================= */
-
-.hotel-card h3,
-.hotel-card p {
-  margin-bottom: 10px;
+.hotel-card h5,
+.hotel-card h6 {
+  margin: 14px 16px 16px;
 }
+
+
+/* ================= HOTEL LINK ================= */
 
 .hotel-link {
   display: inline-block;
-  margin-top: auto; /* keeps link aligned nicely */
   color: #af8e6e;
-  padding: 8px 12px;
-  border-radius: 6px;
   text-decoration: none;
   font-weight: 600;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease;
 }
 
 .hotel-link:hover {
-  background: #8a685d;
-  color: #fff;
+  color: #8a685d;
+  text-decoration: underline;
 }
 
 
-/* ================= CAROUSEL ================= */
+/* ================= CAROUSEL (shared: grid cards + featured) ================= */
 
 .hotel-carousel {
   position: relative;
   overflow: hidden;
-  border-radius: 12px;
-  margin-top: auto; /* pushes carousel to bottom */
+}
+
+.hotel-card .hotel-carousel {
+  border-radius: 14px 14px 0 0;
 }
 
 .carousel-images {
@@ -289,10 +413,9 @@
 
 .carousel-images img {
   width: 100%;
-  height: 200px;        /* uniform image height */
-  object-fit: cover;    /* keeps proportions */
+  height: 200px;
+  object-fit: cover;
   flex-shrink: 0;
-  border-radius: 12px;
 }
 
 
@@ -313,8 +436,8 @@
   transition: background 0.2s ease;
 }
 
-.carousel-btn.left { left: 10px; }
-.carousel-btn.right { right: 10px; }
+.carousel-btn.left { left: 14px; }
+.carousel-btn.right { right: 14px; }
 
 .carousel-btn:hover {
   background: rgba(0, 0, 0, 0.75);
@@ -334,16 +457,33 @@
 @media (max-width: 768px) {
 
   .hotel-grid {
-    grid-template-columns: repeat(2, 1fr);  /* always 2 columns */
+    grid-template-columns: repeat(2, 1fr);
     gap: 14px;
   }
 
-  .hotel-card {
-    padding: 14px;
+  .carousel-images img {
+    height: 150px;
   }
 
-  .carousel-images img {
-    height: 150px; /* slightly smaller images on mobile */
+  .featured-hotel-card {
+    flex-direction: column;
+  }
+
+  .featured-carousel {
+    flex: none;
+  }
+
+  .featured-carousel .carousel-images img {
+    height: 220px;
+    min-height: 0;
+  }
+
+  .featured-hotel-content {
+    padding: 22px 20px;
+  }
+
+  .featured-hotel-content h3 {
+    font-size: 1.25rem;
   }
 
   .carousel-btn {
@@ -355,6 +495,7 @@
 </style>
 
 {% endblock %}
+
 
 
 
