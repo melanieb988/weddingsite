@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<div class="event-page-wrapper" style="padding: 40px 20px; max-width: 1000px; margin: 0 auto; font-family:'Montserrat', sans-serif; color:#2d2f3f;">
+<div class="event-page-wrapper" style="padding: 40px 20px; max-width: 800px; margin: 0 auto; font-family:'Montserrat', sans-serif; color:#2d2f3f;">
 
   <!-- HEADER -->
   <div class="text-center mb-5">
@@ -12,117 +12,240 @@
 
   <!-- FRIDAY -->
   <div class="event-day mb-5">
-    <h2 style=" color:#8a685d; font-size:2rem; margin-bottom:16px; border-bottom:2px solid #af8e6e; display:inline-block; padding-bottom:4px;">
-      Friday, October 23
-    </h2>
+    <h2 class="section-title">Friday, October 23</h2>
 
-    <div class="event-block">
-      <p class="event-title">Welcome Gathering</p>
-      <p><span class="event-label">Time:</span> TBD</p>
-      <p><span class="event-label">Location:</span> TBD</p>
+    <div class="timeline">
+      <div class="timeline-item">
+        <span class="timeline-dot"></span>
+        <div class="timeline-card">
+          <span class="timeline-time">Time TBD</span>
+          <p class="event-title">Welcome Gathering</p>
+          <p class="event-detail">Join us for a welcome gathering at the <strong>Renaissance Atlanta Midtown Marriott</strong> hotel.</p>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- SATURDAY -->
   <div class="event-day mb-5">
-    <h2 style=" cursive; color:#8a685d; font-size:2rem; margin-bottom:16px; border-bottom:2px solid #af8e6e; display:inline-block; padding-bottom:4px;">
-      Saturday, October 24
-    </h2>
+    <h2 class="section-title">Saturday, October 24</h2>
 
-    <!-- Pi Mile Race -->
-    <div class="event-block flex-event">
-      <img src="{{ url_for('static', filename='images/runner2.jpeg') }}" alt="Runner" class="event-icon">
-      <div class="event-text">
-        <p class="event-title">Time TBD (AM) – <a href="{{ url_for('pi_mile') }}">Pi Mile Race</a></p>
-        <p class="event-detail">3.14-mile loop around Georgia Tech campus</p>
+    <div class="timeline">
+
+      <!-- Pi Mile Race -->
+      <div class="timeline-item">
+        <span class="timeline-dot"></span>
+        <div class="timeline-card">
+          <span class="timeline-time">9:00 AM</span>
+          <p class="event-title event-title-with-link">
+            Pi Mile Race
+            <a class="event-more-info" href="{{ url_for('pi_mile') }}">More Info <span class="link-arrow">→</span></a>
+          </p>
+          <p class="event-detail">Lace up and join us for a 3.14 race around Georgia Tech's campus before the festivities begin.</p>
+        </div>
       </div>
-  
 
-    <!-- Wedding Ceremony -->
-    <div class="event-block">
-      <p class="event-title">5:00 PM – Wedding Ceremony</p>
-      <p class="event-detail"><span class="event-label">Location:</span> The Biltmore Ballrooms, Imperial Room, 817 W Peachtree St NW #208, Atlanta, GA 30308</p>
-      <!-- <p class="event-detail"><span class="event-label">Dress Code:</span> Whatever you want!</p> -->
+      <!-- Wedding Ceremony -->
+      <div class="timeline-item">
+        <span class="timeline-dot"></span>
+        <div class="timeline-card">
+          <span class="timeline-time">5:00 PM</span>
+          <p class="event-title">Wedding Ceremony</p>
+          <p class="event-detail">
+            <span class="event-label">Location:</span> The Biltmore Ballrooms, <em>Imperial Room</em><br>
+            817 W Peachtree St NW #208, Atlanta, GA 30308
+          </p>
+          <p class="event-note">
+            Doors open at 4:30 PM. We kindly ask that all guests be seated by 4:45 PM, as the
+            ceremony will begin promptly at 5:00 PM.
+          </p>
+        </div>
+      </div>
+
+      <!-- Reception -->
+      <div class="timeline-item">
+        <span class="timeline-dot"></span>
+        <div class="timeline-card">
+          <span class="timeline-time">Following the Ceremony</span>
+          <p class="event-title">Cocktail Hour &amp; Reception</p>
+          <p class="event-detail">
+            A cocktail hour will begin immediately following the ceremony, followed by a
+            seated dinner.
+          </p>
+        </div>
+      </div>
+
     </div>
-
-    <!-- Cocktail Hour -->
-    <div class="event-block">
-      <p class="event-title">Following Ceremony – Cocktail Hour & Dinner</p>
-      <p class="event-detail"><span class="event-label">Location:</span> Biltmore Ballrooms</p>
-    </div>
-
-   
-
   </div>
 
 </div>
 
 <style>
-/* ========================= */
-/* EVENT BLOCKS */
-/* ========================= */
-.event-block {
-  background: #faf9f7;
-  padding: 18px 22px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  margin-bottom: 16px;
+
+/* ================= SECTION TITLE (matches travel.html) ================= */
+
+.section-title {
+  font-family: 'BickhamScriptPro', cursive;
+  color: #8a685d;
+  font-size: 2rem;
+  margin-bottom: 24px;
+  border-bottom: 2px solid #af8e6e;
+  display: inline-block;
+  padding-bottom: 6px;
+}
+
+
+/* ================= TIMELINE ================= */
+
+.timeline {
+  position: relative;
+  padding-left: 34px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: #e6ddd1;
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 28px;
+}
+
+.timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: -34px;
+  top: 6px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #af8e6e;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 2px #af8e6e, 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+
+/* ================= TIMELINE CARD ================= */
+
+.timeline-card {
+  background: #fffaf7;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  padding: 22px 26px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.timeline-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+}
+
+.timeline-time {
+  display: block;
+  color: #af8e6e;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 8px;
 }
 
 .event-title {
   font-family: 'Montserrat', sans-serif;
-  font-weight: 400;
-  font-size: 1.2rem;
-  margin-bottom: 6px;
+  font-weight: 500;
+  font-size: 1.25rem;
+  margin: 0 0 8px;
   color: #2d2f3f;
+}
+
+.event-title-with-link {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.event-more-info {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  color: #af8e6e;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease;
+}
+
+.event-more-info:hover {
+  color: #8a685d;
+}
+
+.event-more-info:hover .link-arrow {
+  transform: translateX(4px);
+}
+
+.link-arrow {
+  display: inline-block;
+  transition: transform 0.25s ease;
 }
 
 .event-detail {
   font-family: 'Montserrat', sans-serif;
-  font-weight: 500;
-  font-size: 1rem;
+  font-weight: 400;
+  font-size: 0.98rem;
   color: #514131;
   margin: 2px 0;
+  line-height: 1.6;
 }
 
 .event-label {
-  font-weight: 500;
+  font-weight: 600;
   color: #2d2f3f;
   margin-right: 4px;
 }
 
-.flex-event {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
+.event-note {
+  font-family: 'Montserrat', sans-serif;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: #83786a;
+  margin: 14px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid #e6ddd1;
+  line-height: 1.6;
 }
 
-.event-icon {
-  height:50px;
-  margin:0 12px;
-}
 
-.event-text {
-  flex:1;
-}
+/* ================= MOBILE ================= */
 
-a {
-  color:#af8e6e;
-  text-decoration:underline;
-}
-
-/* ========================= */
-/* MOBILE RESPONSIVE */
-/* ========================= */
-@media (max-width:768px){
-  .flex-event {
-    display:block;
-    text-align:left;
+@media (max-width: 768px) {
+  .timeline {
+    padding-left: 26px;
   }
-  .event-icon {
-    display:inline-block;
-    margin:6px 0 8px 0;
+
+  .timeline-dot {
+    left: -26px;
+    width: 14px;
+    height: 14px;
+  }
+
+  .timeline-card {
+    padding: 18px 20px;
+  }
+
+  .event-title {
+    font-size: 1.1rem;
   }
 }
+
 </style>
 {% endblock %}
