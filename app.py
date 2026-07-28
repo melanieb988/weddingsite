@@ -143,7 +143,8 @@ def household():
 
     # Include guest_id in the SELECT
     cur.execute("""
-        SELECT guest_id, name, attending, meal_choice, plus_one_allowed, plus_one_name, song_rec
+         SELECT guest_id, name, attending, meal_choice, plus_one_allowed, plus_one_name, 
+               dietary_restriction, email, join_pi_mile
         FROM guests
         WHERE household_id = %s
     """, (household_id,))
@@ -161,7 +162,10 @@ def household():
             "meal_choice": r[3],
             "plus_one_allowed": r[4],
             "plus_one_name": r[5],
-            "song_rec": r[6]
+            
+            "dietary_restriction": r[6],
+            "email": r[7],
+            "join_pi_mile": r[8]
         }
         for r in results
     ]
@@ -186,21 +190,25 @@ def submit_rsvp():
         guest_id = g.get("guest_id")
         if guest_id is None:
             continue  # skip guests with missing ID
-
+ 
         # Make sure to handle None values properly
         attending = g.get("attending")
         meal_choice = g.get("meal_choice") or None
         dietary_restriction = g.get("dietary_restriction") or None
         plus_one_name = g.get("plus_one_name") or None
-        song_rec = g.get("song_rec") or None
-
+       
+        email = g.get("email") or None
+        join_pi_mile = g.get("join_pi_mile")
+ 
         cur.execute("""
             UPDATE guests
             SET attending=%s,
                 meal_choice=%s,
                 dietary_restriction=%s,
                 plus_one_name=%s,
-                song_rec=%s,
+                
+                email=%s,
+                join_pi_mile=%s,
                 last_updated_time=%s
             WHERE guest_id=%s
         """, (
@@ -208,7 +216,9 @@ def submit_rsvp():
             meal_choice,
             dietary_restriction,
             plus_one_name,
-            song_rec,
+          
+            email,
+            join_pi_mile,
             datetime.utcnow(),
             guest_id
         ))
@@ -234,4 +244,5 @@ def keepalive():
 
 if __name__ == "__main__":
     app.run(debug=DEVELOPMENT_ENV)
+
 
