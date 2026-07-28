@@ -26,12 +26,19 @@
                           _external=True) }}">
   <!-- Fonts -->
   <link href="https://fonts.cdnfonts.com/css/bickham-script-pro" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
         crossorigin="anonymous">
+
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      color: #2d2f3f;
+    }
+  </style>
 
 </head>
 
@@ -60,14 +67,14 @@
       <a href="{{ url_for('pi_mile') }}" class="footer-link">Pi Mile Race</a> ·
       <a href="{{ url_for('gallery') }}" class="footer-link">Gallery</a> ·
         <a href="{{ url_for('travel') }}" class="footer-link">Travel</a> ·
- 
+
     </div>
-  
+
     <!-- Website by -->
     <div class="footer-center">
       © <span id="current-year"></span> · Website by <strong>Melanie & Isaac</strong>
     </div>
-  
+
     <!-- GitHub link -->
     <div class="footer-github-container">
       <a href="https://github.com/melanieb988/weddingsite" target="_blank" rel="noopener"
@@ -79,46 +86,47 @@
       </a>
     </div>
   </footer>
-  
+
   <style>
   .site-footer {
     width: 100%;
-    padding: 24px 8px;
+    padding: 24px 16px;
     background: transparent;
     color: #6b6b6b;
     font-size: 0.85rem;
-    text-align: center; /* center everything */
+    text-align: center;
+    margin-top: 20px;
   }
-  
+
   .footer-links {
     margin-bottom: 12px;
     font-size: 0.85rem;
   }
-  
+
   .footer-links .footer-link {
     color: #8a685d;
     text-decoration: none;
     margin: 0 6px;
     transition: color 0.25s ease;
   }
-  
+
   .footer-links .footer-link:hover {
     color: #514131;
   }
-  
+
   .footer-center {
     margin-bottom: 12px;
   }
-  
+
   .footer-center strong {
     color: #514131;
     font-weight: 500;
   }
-  
+
   .footer-github-container {
     margin-top: 8px;
   }
-  
+
   .footer-github {
     display: inline-flex;
     align-items: center;
@@ -127,101 +135,32 @@
     text-decoration: none;
     transition: color 0.25s ease, transform 0.25s ease;
   }
-  
+
   .footer-github svg {
     width: 18px;
     height: 18px;
     fill: currentColor;
     opacity: 0.8;
   }
-  
+
   .footer-github:hover {
     color: #2d2f3f;
     transform: translateY(-1px);
   }
+
+  @media (max-width: 768px) {
+    .footer-inner {
+      flex-direction: column;
+      text-align: center;
+    }
+    .footer-right {
+      margin-top: 8px;
+    }
+  }
   </style>
-  
+
   <script>
   document.getElementById("current-year").textContent = new Date().getFullYear();
-  </script>
-  
-  
-  
-
-  <!-- ========================= -->
-  <!-- FOOTER CSS -->
-  <!-- ========================= -->
-  <style>
-    .site-footer {
-      width: 100%;
-      padding: 24px 16px;
-      background: transparent;
-      color: #6b6b6b;
-      font-size: 0.85rem;
-      margin-top: 20px;
-    }
-
-    .footer-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .footer-left {
-      line-height: 1.4;
-    }
-
-    .footer-left strong {
-      color: #514131;
-      font-weight: 500;
-    }
-
-    .footer-sub {
-      font-size: 0.75rem;
-      color: #9a9a9a;
-    }
-
-    .footer-github {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: #514131;
-      text-decoration: none;
-      letter-spacing: 0.04em;
-      transition: color 0.25s ease, transform 0.25s ease;
-    }
-
-    .footer-github svg {
-      width: 18px;
-      height: 18px;
-      fill: currentColor;
-      opacity: 0.8;
-    }
-
-    .footer-github:hover {
-      color: #2d2f3f;
-      transform: translateY(-1px);
-    }
-
-    @media (max-width: 768px) {
-      .footer-inner {
-        flex-direction: column;
-        text-align: center;
-      }
-      .footer-right {
-        margin-top: 8px;
-      }
-    }
-  </style>
-
-  <!-- ========================= -->
-  <!-- FOOTER YEAR JS -->
-  <!-- ========================= -->
-  <script>
-    document.getElementById("current-year").textContent = new Date().getFullYear();
   </script>
 
   <!-- Bootstrap JS -->
@@ -230,7 +169,6 @@
           crossorigin="anonymous"></script>
 </body>
 </html>
-
 
 
 
