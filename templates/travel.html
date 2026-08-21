@@ -1,17 +1,26 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<div class="travel-page-wrapper" style="padding: 40px 20px; max-width: 1000px; margin: 0 auto; font-family:'Montserrat', sans-serif; color:#2d2f3f;">
+<div class="travel-page-wrapper" style="padding: 40px 20px 8px; max-width: 1000px; margin: 0 auto; font-family:'Montserrat', sans-serif; color:#2d2f3f;">
 
   <!-- HEADER -->
-  <div class="text-center mb-5">
+  <div class="text-center mb-4">
     <img src="{{ url_for('static', filename='images/biltmore1.png') }}" alt="Biltmore Logo" style="height:60px; margin-bottom:16px; opacity:0.85;">
-    <h1 style="font-family:'Great Vibes', cursive; font-size:3.8rem; margin-bottom:0; color:#2d2f3f;">Travel Info</h1>
+    <h1 style="font-family:'Great Vibes', cursive;  font-weight: 400; font-size:3.4rem; margin-bottom:0; color:#2d2f3f;">Travel Info</h1>
     <p style="font-size:1.1rem; color:#514131; margin-top:4px;">Flights, Hotels & Transportation</p>
   </div>
 
+  <!-- QUICK-JUMP NAV -->
+  <nav class="pills-nav" id="pillsNav">
+    <a class="pill-link" data-target="s-flights">Flights</a>
+    <a class="pill-link" data-target="s-hotels">Hotels</a>
+    <a class="pill-link" data-target="s-map">Map</a>
+    <a class="pill-link" data-target="s-transit">Public Transit</a>
+    <a class="pill-link" data-target="s-parking">Venue &amp; Parking</a>
+  </nav>
+
   <!-- FLIGHTS -->
-  <div class="travel-section mb-5">
+  <div class="travel-section mb-5" id="s-flights">
     <h2 class="section-title">Flights</h2>
     <div class="event-block d-flex align-items-center">
       <img src="{{ url_for('static', filename='images/united_logo1.png') }}" alt="United Airlines" style="height:40px; margin-right:16px;">
@@ -22,10 +31,10 @@
   </div>
 
   <!-- HOTELS -->
-  <div class="travel-section mb-5">
+  <div class="travel-section mb-5" id="s-hotels">
     <h2 class="section-title">Hotels</h2>
     <p style="font-size:1rem; margin-bottom:20px; color:#514131;">
-      Book travel in advance! Here are several hotels within walking distance of The Biltmore Ballrooms:
+      Here are several hotels within walking distance of The Biltmore Ballrooms:
     </p>
 
     <!-- Official Hotel Block (Featured, image left / text right) -->
@@ -43,7 +52,7 @@
         </div>
 
         <div class="featured-hotel-content">
-        
+
           <h3>Renaissance Atlanta Midtown Marriott</h3>
           <p>
             We have reserved a <strong>hotel room block</strong> at the
@@ -53,7 +62,7 @@
             Reserve with the Hotel Block →
           </a>
           <p class="fine-print">
-           
+
           </p>
         </div>
 
@@ -74,20 +83,6 @@
           <button class="carousel-btn right" onclick="nextSlide('carousel-gatech')">&#10095;</button>
         </div>
         <h5><a class="hotel-link" href="http://www.gatechhotel.com/" target="_blank">Georgia Tech Hotel & Conference Center →</a></h5>
-      </div>
-
-      <!-- Renaissance Atlanta Midtown Marriott -->
-      <div class="hotel-card">
-        <div class="hotel-carousel" id="carousel-renaissance">
-          <div class="carousel-images">
-            <img src="{{ url_for('static', filename='images/travel/marriot_ren_hotel.jpg') }}" alt="Renaissance Hotel 1">
-            <img src="{{ url_for('static', filename='images/travel/marriot_ren_din.jpg') }}" alt="Renaissance Hotel 2">
-            <img src="{{ url_for('static', filename='images/travel/marriot_ren_room.jpg') }}" alt="Renaissance Hotel 3">
-          </div>
-          <button class="carousel-btn left" onclick="prevSlide('carousel-renaissance')">&#10094;</button>
-          <button class="carousel-btn right" onclick="nextSlide('carousel-renaissance')">&#10095;</button>
-        </div>
-        <h5><a class="hotel-link" href="https://www.marriott.com/event-reservations/reservation-link.mi?id=1776089155214&key=GRP&app=resvlink&_branch_match_id=1603525811292214297&_branch_referrer=H4sIAAAAAAAAA8soKSkottLXTywo0MtNLCrKzC8p0UvOz9UvSi3OyczLtgdK2ALZZSCOWmaKraG5uZmBhaWhqamRoYladmqlrXtQgFpdUWpaKlB3Xnp8UlF%2BeXFqka1rSnoqALHYfCleAAAA&inventoryMissing=true" target="_blank">Renaissance Atlanta Midtown Marriott →</a></h5>
       </div>
 
       <!-- Hyatt Centric Midtown Atlanta -->
@@ -134,13 +129,18 @@
   </div>
 
   <!-- MAP -->
-  <div class="travel-map-wrapper mb-5">
+  <div class="travel-map-wrapper mb-5" id="s-map">
     <h2 class="section-title">Map of Hotels & Venue</h2>
-    <div id="map" style="height:450px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1);"></div>
+    <div id="map" style="height:450px;"></div>
+    <div class="map-legend">
+      <span><span class="legend-dot legend-venue"></span> The Biltmore (Venue)</span>
+      <span><span class="legend-dot legend-hotel"></span> Hotels</span>
+      <span><span class="legend-dot legend-publix"></span> Publix</span>
+    </div>
   </div>
 
   <!-- PUBLIC TRANSIT -->
-  <div class="travel-section mb-5">
+  <div class="travel-section mb-5" id="s-transit">
     <h2 class="section-title">Public Transit</h2>
     <div class="event-block">
       <p style="margin:0; font-size:1rem;">
@@ -150,8 +150,7 @@
   </div>
 
   <!-- VENUE & PARKING -->
-<!-- VENUE & PARKING -->
-<div class="travel-section mb-5">
+<div class="travel-section mb-2" id="s-parking">
   <h2 class="section-title">Venue & Parking</h2>
 
   <div class="event-block venue-parking-card">
@@ -159,12 +158,16 @@
     <div class="venue-parking-section">
       <span class="venue-parking-label">Venue</span>
 
-      <h4 class="venue-parking-title">The Biltmore Ballrooms</h4>
+      <h4 class="venue-parking-title">The Biltmore</h4>
       <p class="venue-parking-subtitle">Imperial Room</p>
 
       <p class="venue-parking-address">
         817 W Peachtree St NW #208<br>
         Atlanta, GA 30308
+      </p>
+
+      <p class="venue-parking-note">
+        Use this address if you're walking from a nearby hotel.
       </p>
     </div>
 
@@ -174,6 +177,7 @@
       <span class="venue-parking-label">Parking</span>
 
       <h4 class="venue-parking-title">$15 Event Parking</h4>
+      <p class="venue-parking-subtitle" aria-hidden="true" style="visibility:hidden;">&nbsp;</p>
 
       <p class="venue-parking-address">
         30 5th Street NE<br>
@@ -196,40 +200,103 @@
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
 <script>
-  // Initialize map
-  var map = L.map('map').setView([33.776, -84.387], 15);
+  // Initialize map (zoom control moved to bottom-right so it doesn't crowd the legend)
+  var map = L.map('map', { zoomControl: false });
+  L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-  // Add OpenStreetMap tiles
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  // Modern, minimal, monochrome-leaning basemap instead of the default OSM colors
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      subdomains: 'abcd',
+      maxZoom: 19
   }).addTo(map);
 
-  // Marker data
+  var venueLatLng = [33.776912, -84.386817];
+
+  // Soft dashed ring communicating "everything is within walking distance"
+  L.circle(venueLatLng, {
+    radius: 800,
+    color: '#af8e6e',
+    weight: 1,
+    fillColor: '#af8e6e',
+    fillOpacity: 0.06,
+    dashArray: '4 6'
+  }).addTo(map);
+
+  var venueIcon = L.divIcon({
+    className: '',
+    html: '<div class="venue-marker"></div>',
+    iconSize: [26, 26],
+    iconAnchor: [13, 13],
+    popupAnchor: [0, -14]
+  });
+
+  var hotelIcon = L.divIcon({
+    className: '',
+    html: '<div class="hotel-marker"></div>',
+    iconSize: [16, 16],
+    iconAnchor: [8, 8],
+    popupAnchor: [0, -10]
+  });
+
+  var publixIcon = L.divIcon({
+    className: '',
+    html: '<div class="publix-marker"></div>',
+    iconSize: [16, 16],
+    iconAnchor: [8, 8],
+    popupAnchor: [0, -10]
+  });
+
+  // Marker data — last item is the short label shown permanently on the map
   var locations = [
-    ["Biltmore Ballrooms", 33.776912, -84.386817, "Event Venue — The Biltmore Ballrooms are right near Georgia Tech Hotel & Conference Center in Midtown Atlanta", null, "venue"],
-    ["Georgia Tech Hotel & Conference Center", 33.77645, -84.38926, "0.2 mi from venue", "http://www.gatechhotel.com/", "hotel"],
-    ["Renaissance Atlanta Midtown Marriott", 33.7782109710563, -84.3876380324036, "0.3 mi from venue", "https://www.marriott.com/en-us/hotels/atlbd-renaissance-atlanta-midtown-hotel/overview/", "hotel"],
-    ["Hyatt Centric Midtown Atlanta", 33.78152, -84.38298, "0.5 mi from venue", "http://atlantamidtown.hyatt.com/", "hotel"],
-    ["The Georgian Terrace", 33.7728702, -84.3845859, "0.4 mi from venue", "https://thegeorgianterrace.com/", "hotel"],
-    ["Hilton Garden Inn Atlanta Midtown", 33.7820119, -84.390355, "0.6 mi from venue", "https://www.hilton.com/en/hotels/atlamgi-hilton-garden-inn-atlanta-midtown/", "hotel"]
+    ["The Biltmore", 33.776912, -84.386817, "Event Venue", null, "venue", "The Biltmore"],
+    ["Georgia Tech Hotel & Conference Center", 33.77645, -84.38926, "0.2 mi from venue", "http://www.gatechhotel.com/", "hotel", "Georgia Tech Hotel"],
+    ["Renaissance Atlanta Midtown Marriott", 33.7782109710563, -84.3876380324036, "0.3 mi from venue", "https://www.marriott.com/en-us/hotels/atlbd-renaissance-atlanta-midtown-hotel/overview/", "hotel", "Renaissance Marriott"],
+    ["Hyatt Centric Midtown Atlanta", 33.78152, -84.38298, "0.5 mi from venue", "http://atlantamidtown.hyatt.com/", "hotel", "Hyatt Centric"],
+    ["The Georgian Terrace", 33.7728702, -84.3845859, "0.4 mi from venue", "https://thegeorgianterrace.com/", "hotel", "Georgian Terrace"],
+    ["Hilton Garden Inn Atlanta Midtown", 33.7820119, -84.390355, "0.6 mi from venue", "https://www.hilton.com/en/hotels/atlamgi-hilton-garden-inn-atlanta-midtown/", "hotel", "Hilton Garden Inn"],
+    ["Publix", 33.780445, -84.388798, "950 W Peachtree St NW", "https://www.publix.com/locations/1061-the-plaza-midtown", "publix", "Publix"]
   ];
 
+  // Zoom to the closest view that still keeps every marker on screen
+  var bounds = L.latLngBounds(locations.map(function(loc){ return [loc[1], loc[2]]; }));
+  map.fitBounds(bounds, { padding: [46, 46], maxZoom: 16 });
+
   locations.forEach(function(loc){
-    var iconColor = loc[5] === "venue" ? "red" : "blue"; 
-    var markerIcon = L.icon({
-      iconUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers/img/marker-icon-' + iconColor + '.png',
-      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/images/marker-shadow.png',
-      iconSize: [25,41],
-      iconAnchor: [12,41],
-      popupAnchor: [1,-34],
-      shadowSize: [41,41]
-    });
+    var isVenue = loc[5] === "venue";
+    var isPublix = loc[5] === "publix";
+    var tagLabel = isVenue ? 'Venue' : (isPublix ? 'Grocery' : 'Hotel');
+    var tagStyle = isVenue ? '' : (isPublix ? ' style="background:#4c8c4a;"' : ' style="background:#2d2f3f;"');
+    var popupContent = '<div class="popup-tag"' + tagStyle + '>' + tagLabel + '</div>' +
+      '<div class="popup-title">' + loc[0] + '</div>' +
+      '<div class="popup-distance">' + loc[3] + '</div>';
+    if (loc[4]) popupContent += '<a class="popup-link" href="' + loc[4] + '" target="_blank">View ' + (isPublix ? 'Store' : 'Hotel') + ' &rarr;</a>';
 
-    var popupContent = "<strong>" + loc[0] + "</strong><br>" + loc[3];
-    if(loc[4]) popupContent += `<br><a href="${loc[4]}" target="_blank">View Hotel</a>`;
+    var icon = isVenue ? venueIcon : (isPublix ? publixIcon : hotelIcon);
 
-    L.marker([loc[1], loc[2]], {icon: markerIcon}).addTo(map)
-      .bindPopup(popupContent);
+    // The Georgia Tech Hotel sits right next to The Biltmore, so its label
+    // is dropped below the marker instead of to the right — otherwise it
+    // overlaps the venue's own label.
+    var isGTHotel = loc[0] === "Georgia Tech Hotel & Conference Center";
+    var tooltipDirection = isGTHotel ? 'bottom' : 'right';
+    var tooltipOffset = isGTHotel ? [0, 12] : (isVenue ? [15, 0] : [9, 0]);
+
+    L.marker([loc[1], loc[2]], { icon: icon }).addTo(map)
+      .bindPopup(popupContent)
+      .bindTooltip(loc[6], {
+        permanent: true,
+        direction: tooltipDirection,
+        offset: tooltipOffset,
+        className: isVenue ? 'map-label map-label-venue' : 'map-label'
+      });
+  });
+
+  // Safety net: re-measure and re-fit once everything on the page (fonts,
+  // hotel photos above the map) has fully loaded and settled, in case that
+  // shifts the map container's real size after the initial fitBounds above.
+  window.addEventListener('load', function () {
+    map.invalidateSize();
+    map.fitBounds(bounds, { padding: [46, 46], maxZoom: 16 });
   });
 
   // Hotel carousel logic
@@ -253,18 +320,256 @@
   }
 </script>
 
+<!-- Scrollspy lives in its OWN <script> tag, separate from the Leaflet map /
+     carousel code above — so if anything in the map setup errors out (a
+     blocked CDN, a bad marker, etc.), it can't take the pills nav down with it. -->
+<script>
+  (function () {
+    const pillLinks = document.querySelectorAll('.pill-link');
+    const travelSections = document.querySelectorAll('#s-flights, #s-hotels, #s-map, #s-transit, #s-parking');
+
+    if (!pillLinks.length || !travelSections.length) return;
+
+    function setActivePill(id) {
+      pillLinks.forEach(el => el.classList.toggle('is-active', el.dataset.target === id));
+    }
+
+    const pillObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) setActivePill(entry.target.id);
+      });
+    }, { rootMargin: '-160px 0px -60% 0px', threshold: 0 });
+
+    travelSections.forEach(sec => pillObserver.observe(sec));
+    setActivePill(travelSections[0].id);
+
+    pillLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        const target = document.getElementById(link.dataset.target);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  })();
+</script>
+
 <style>
+
+/* ================= MAP ================= */
+
+#map {
+  height: 450px;
+  border-radius: 16px;
+  box-shadow: 0 8px 26px rgba(0,0,0,0.1);
+  border: 1px solid #e6ddd1;
+}
+
+.map-legend {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 16px;
+  font-size: 0.82rem;
+  color: #514131;
+}
+.map-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.legend-venue { background: #af8e6e; box-shadow: 0 0 0 2px #fff, 0 0 0 3px #af8e6e; }
+.legend-hotel { background: #fff; border: 2px solid #2d2f3f; }
+.legend-publix { background: #4c8c4a; box-shadow: 0 0 0 2px #fff, 0 0 0 3px #4c8c4a; }
+
+.venue-marker {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: #af8e6e;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 2px #af8e6e, 0 3px 10px rgba(0,0,0,0.3);
+}
+.hotel-marker {
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2.5px solid #2d2f3f;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+.publix-marker {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: #4c8c4a;
+  border: 2.5px solid #fff;
+  box-shadow: 0 0 0 1.5px #4c8c4a, 0 2px 6px rgba(0,0,0,0.25);
+}
+
+.leaflet-tooltip.map-label {
+  background: rgba(255,255,255,0.94);
+  border: 1px solid #e6ddd1;
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #2d2f3f;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  white-space: nowrap;
+}
+.leaflet-tooltip.map-label-venue {
+  background: #af8e6e;
+  border-color: #af8e6e;
+  color: #fff;
+  font-weight: 700;
+}
+.leaflet-tooltip.map-label::before {
+  display: none;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  padding: 2px;
+}
+.leaflet-popup-content {
+  margin: 14px 16px;
+  font-family: 'Montserrat', sans-serif;
+}
+.popup-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #2d2f3f;
+  margin-bottom: 3px;
+}
+.popup-tag {
+  display: inline-block;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  background: #af8e6e;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-bottom: 6px;
+}
+.popup-distance {
+  font-size: 0.8rem;
+  color: #83786a;
+  margin-top: 4px;
+}
+.popup-link {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #af8e6e;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.leaflet-popup-tip {
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.leaflet-control-zoom a {
+  border-radius: 8px !important;
+  color: #2d2f3f !important;
+}
+.leaflet-control-attribution {
+  font-size: 0.65rem !important;
+  background: rgba(255,255,255,0.7) !important;
+}
+
+/* ================= QUICK-JUMP PILLS NAV ================= */
+
+.pills-nav {
+  position: sticky;
+  top: 76px;
+  z-index: 80;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 12px;
+  margin-bottom: 36px;
+  background: transparent;
+  overflow-x: auto;
+  -ms-overflow-style: none;   /* hide scrollbar: Edge/IE */
+  scrollbar-width: none;      /* hide scrollbar: Firefox */
+}
+
+.pills-nav::-webkit-scrollbar {
+  display: none;              /* hide scrollbar: Chrome/Safari */
+}
+
+.pill-link {
+  flex-shrink: 0;
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: #fff;
+  border: 1px solid #e6ddd1;
+  color: #514131;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.pill-link:hover {
+  border-color: rgba(175, 142, 110, 0.5);
+  color: #2d2f3f;
+}
+
+.pill-link.is-active {
+  background: #af8e6e;
+  border-color: #af8e6e;
+  color: #fff;
+}
+
+#s-flights, #s-hotels, #s-map, #s-transit, #s-parking {
+  scroll-margin-top: 130px;
+}
+
+@media (max-width: 600px) {
+  .pills-nav {
+    top: 68px;
+    gap: 5px;
+    padding: 8px 14px;
+    margin-bottom: 28px;
+    justify-content: flex-start;
+  }
+
+  .pill-link {
+    font-size: 0.62rem;
+    padding: 5px 10px;
+    letter-spacing: 0.02em;
+  }
+}
 
 /* ================= SECTION TITLE ================= */
 
 .section-title {
-  font-family: 'BickhamScriptPro', cursive;
-  color: #8a685d;
-  font-size: 2rem;
+
+
+
   margin-bottom: 20px;
-  border-bottom: 2px solid #af8e6e;
+  border-bottom: 1px solid #af8e6e;
   display: inline-block;
   padding-bottom: 6px;
+  font-family: 'Instrument Serif', serif;   /* switched from Montserrat */
+  font-style: italic;
+  font-weight: 400;
+  color: #8a685d;
+  font-size: 1.9rem;
+  letter-spacing: 0.01em;
 }
 
 
@@ -338,9 +643,11 @@
   background: rgba(175, 142, 110, 0.3);
 }
 
-
-/* MOBILE */
-@media (max-width: 768px) {
+/* Venue & Parking stays side-by-side down to a much narrower width than the
+   rest of the page — the content on each side is short (a title + a
+   two-line address), so it holds up fine as narrow columns. Only true
+   phone-width screens switch it to stacked. */
+@media (max-width: 480px) {
 
   .venue-parking-card {
     grid-template-columns: 1fr;
@@ -595,7 +902,6 @@
 </style>
 
 {% endblock %}
-
 
 
 
