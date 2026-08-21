@@ -57,6 +57,652 @@
   </main>
 
   <!-- ========================= -->
+  <!-- GLOBAL PERSISTENT RSVP BUTTON + MODAL (every page except /rsvp itself) -->
+  <!-- ========================= -->
+  {% if request.path != url_for('rsvp') %}
+  <button class="float-rsvp" id="quickFloatRsvpBtn" data-bs-toggle="modal" data-bs-target="#quickRsvpModal">
+    RSVP <span class="float-rsvp-arrow">&rarr;</span>
+  </button>
+  {% endif %}
+
+  <div class="modal fade" id="quickRsvpModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content rsvp-modal-content">
+        <div class="modal-header rsvp-modal-header">
+          <h5 class="modal-title rsvp-modal-title">Rsvp</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body">
+          <input type="text" id="quickGuestName" class="rsvp-input mb-3" placeholder="Enter your first name">
+          <button id="quickSearchBtn" class="rsvp-btn-outline w-100 mb-3">Find My Invitation</button>
+          <div id="quickHouseholdContainer"></div>
+        </div>
+
+        <div class="modal-footer">
+          <button id="quickSubmitRsvpBtn" class="rsvp-btn-solid">Submit RSVP</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* ========================= */
+    /* GLOBAL PERSISTENT RSVP BUTTON */
+    /* ========================= */
+    .float-rsvp {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      z-index: 1030;
+      display: inline-flex;
+      align-items: center;
+      background: #af8e6e;
+      color: #fff;
+      border: none;
+      padding: 13px 22px 13px 24px;
+      border-radius: 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(45, 47, 63, 0.18);
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+      transition: opacity 0.35s ease, transform 0.35s ease, background 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .float-rsvp.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .float-rsvp:hover {
+      background: #8a685d;
+      box-shadow: 0 8px 22px rgba(45, 47, 63, 0.24);
+    }
+
+    .float-rsvp-arrow {
+      display: inline-block;
+      margin-left: 7px;
+      font-size: 0.85rem;
+      transition: transform 0.25s ease;
+    }
+
+    .float-rsvp:hover .float-rsvp-arrow {
+      transform: translateX(3px);
+    }
+
+    @media (max-width: 768px) {
+      .float-rsvp {
+        right: 16px;
+        bottom: 16px;
+        padding: 12px 18px 12px 20px;
+        font-size: 0.7rem;
+      }
+    }
+
+    /* ========================= */
+    /* GLOBAL RSVP MODAL */
+    /* ========================= */
+    .rsvp-modal-content {
+      border-radius: 16px;
+      border: none;
+      font-family: 'Montserrat', sans-serif;
+      color: #2d2f3f;
+    }
+
+    .rsvp-modal-header {
+      border-bottom: 1px solid #e6ddd1;
+      position: relative;
+      justify-content: center;
+    }
+
+    .rsvp-modal-title {
+      font-family: 'BickhamScriptPro', cursive;
+      font-size: 2.2rem;
+      color: #2d2f3f;
+      text-align: center;
+      width: 100%;
+    }
+
+    .rsvp-modal-header .btn-close {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .rsvp-status-text {
+      text-align: center;
+      color: #514131;
+      font-size: 1rem;
+    }
+
+    .rsvp-input,
+    .rsvp-select {
+      width: 100%;
+      background: #fff;
+      border: 1px solid #e6ddd1;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.95rem;
+      color: #2d2f3f;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .rsvp-input:focus,
+    .rsvp-select:focus {
+      outline: none;
+      border-color: #af8e6e;
+      box-shadow: 0 0 0 3px rgba(175, 142, 110, 0.15);
+    }
+
+    .rsvp-input.mt-2 {
+      margin-top: 8px;
+    }
+
+    .rsvp-btn-outline,
+    .rsvp-btn-solid {
+      display: inline-block;
+      border-radius: 30px;
+      padding: 12px 26px;
+      font-weight: 600;
+      font-family: 'Montserrat', sans-serif;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-align: center;
+      border: 1.5px solid #af8e6e;
+    }
+
+    .rsvp-btn-outline {
+      background: transparent;
+      color: #af8e6e;
+    }
+
+    .rsvp-btn-outline:hover {
+      background: #af8e6e;
+      color: #fff;
+    }
+
+    .rsvp-btn-solid {
+      background: #af8e6e;
+      color: #fff;
+      border: none;
+      padding: 12px 40px;
+    }
+
+    .rsvp-btn-solid:hover {
+      background: #8a685d;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+    }
+
+    .guest-card {
+      background: #fffaf7;
+      border-radius: 14px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+      padding: 24px 28px;
+      margin-bottom: 20px;
+    }
+
+    .guest-name {
+      border-bottom: 1px solid #af8e6e;
+      display: inline-block;
+      padding-bottom: 6px;
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 400;
+      color: #8a685d;
+      font-size: 1.9rem;
+      letter-spacing: 0.01em;
+      margin-bottom: 14px;
+    }
+
+    .field-group {
+      margin-top: 18px;
+    }
+
+    .field-group:first-of-type {
+      margin-top: 0;
+    }
+
+    .field-group.hidden {
+      display: none;
+    }
+
+    .field-label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #514131;
+      margin-bottom: 8px;
+    }
+
+    .radio-row {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .radio-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.95rem;
+      color: #2d2f3f;
+      cursor: pointer;
+    }
+
+    .radio-pill input[type="radio"] {
+      accent-color: #af8e6e;
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    .household-email-block {
+      background: #faf9f7;
+      border: 1px solid #e6ddd1;
+      border-radius: 14px;
+      padding: 24px 28px;
+      margin-top: 28px;
+    }
+
+    .rsvp-email-label {
+      display: block;
+      font-family: Georgia, 'Times New Roman', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: #2d2f3f;
+      margin-bottom: 2px;
+    }
+
+    .rsvp-email-sublabel {
+      font-size: 0.85rem;
+      color: #83786a;
+      margin-bottom: 12px;
+    }
+
+    .rsvp-email-input {
+      width: 100%;
+      border: none;
+      border-bottom: 1px solid #af8e6e;
+      border-radius: 0;
+      background: transparent;
+      padding: 8px 4px;
+      font-size: 1rem;
+      font-family: 'Montserrat', sans-serif;
+      color: #2d2f3f;
+    }
+
+    .rsvp-email-input:focus {
+      outline: none;
+      box-shadow: none;
+      border-bottom: 2px solid #8a685d;
+    }
+
+    @media (max-width: 600px) {
+      .guest-card,
+      .household-email-block {
+        padding: 20px 18px;
+      }
+    }
+  </style>
+
+  <!-- ---------------------- -->
+  <!-- GLOBAL RSVP MODAL LOGIC (namespaced so it never collides with a page's
+       own RSVP script, e.g. the dedicated /rsvp page) -->
+  <!-- ---------------------- -->
+  <script>
+  (function () {
+    const guestNameInput = document.getElementById("quickGuestName");
+    const searchBtn = document.getElementById("quickSearchBtn");
+    const container = document.getElementById("quickHouseholdContainer");
+    const submitBtn = document.getElementById("quickSubmitRsvpBtn");
+
+    if (!guestNameInput || !searchBtn || !container || !submitBtn) return;
+
+    guestNameInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        searchBtn.click();
+      }
+    });
+
+    const FIELD_CONFIG = {
+      attending: true,
+      meal_choice: true,
+      dietary_restriction: true,
+      plus_one_name: true,
+      join_pi_mile: true
+    };
+
+    const MEAL_OPTIONS = ["Beef", "Chicken", "Vegetarian"];
+
+    searchBtn.addEventListener("click", async () => {
+      const name = guestNameInput.value.trim();
+      if (!name) return alert("Please enter your first name.");
+
+      container.innerHTML = "<p class='rsvp-status-text'>Searching...</p>";
+
+      const res = await fetch("/api/lookup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name })
+      });
+
+      const matches = await res.json();
+      container.innerHTML = "";
+
+      if (!matches.length) {
+        container.innerHTML = "<p class='rsvp-status-text'>No invitation found. Please check spelling.</p>";
+        return;
+      }
+
+      if (matches.length === 1) {
+        loadHousehold(matches[0]);
+        return;
+      }
+
+      container.innerHTML = "<p class='rsvp-status-text fw-bold'>Multiple matches found. Which one are you?</p>";
+      matches.forEach(m => {
+        const btn = document.createElement("button");
+        btn.className = "rsvp-btn-outline w-100 mb-2";
+        btn.innerText = `${m.name} (${m.household_id})`;
+        btn.onclick = () => loadHousehold(m);
+        container.appendChild(btn);
+      });
+    });
+
+    async function loadHousehold(selectedPerson) {
+      container.innerHTML = "<p class='rsvp-status-text'>Loading your household...</p>";
+
+      const res = await fetch("/api/household", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ household_id: selectedPerson.household_id })
+      });
+
+      const guests = await res.json();
+      renderHousehold(guests);
+    }
+
+    function renderHousehold(guests) {
+      container.innerHTML = "";
+
+      guests.forEach(g => {
+        const div = document.createElement("div");
+        div.className = "guest-card";
+        div.dataset.guestId = g.guest_id;
+
+        const isAttendingYes = g.attending === true || g.attending === "t";
+        const isAttendingNo = g.attending === false || g.attending === "f";
+
+        let html = `<div class="guest-name">${g.name}</div>`;
+
+        if (FIELD_CONFIG.attending) {
+          html += `
+          <div class="field-group">
+              <label class="field-label">Will you be attending?</label>
+              <div class="radio-row">
+                  <label class="radio-pill">
+                      <input type="radio" class="attending" name="attending-${g.guest_id}" value="true" ${isAttendingYes ? "checked" : ""}>
+                      Attending
+                  </label>
+                  <label class="radio-pill">
+                      <input type="radio" class="attending" name="attending-${g.guest_id}" value="false" ${isAttendingNo ? "checked" : ""}>
+                      Not Attending
+                  </label>
+              </div>
+          </div>
+          `;
+        }
+
+        if (FIELD_CONFIG.meal_choice) {
+          const mealOptionsHtml = MEAL_OPTIONS.map(opt => {
+            const selected = g.meal_choice === opt ? "selected" : "";
+            return `<option value="${opt}" ${selected}>${opt}</option>`;
+          }).join("");
+
+          html += `
+          <div class="field-group meal-block ${isAttendingYes ? "" : "hidden"}">
+              <label class="field-label">Meal Selection</label>
+              <select class="rsvp-select meal">
+                  <option value="" disabled ${!g.meal_choice ? "selected" : ""}>Choose an entrée</option>
+                  ${mealOptionsHtml}
+              </select>
+          </div>
+          `;
+        }
+
+        if (FIELD_CONFIG.dietary_restriction) {
+          const mealAlreadyChosen = !!g.meal_choice;
+          html += `
+          <div class="field-group dietary-block ${mealAlreadyChosen ? "" : "hidden"}">
+              <label class="field-label">Dietary restrictions or allergies?</label>
+              <input class="rsvp-input dietary_restriction"
+                  placeholder="e.g., gluten-free, nut allergy, none"
+                  value="${g.dietary_restriction || ""}">
+          </div>
+          `;
+        }
+
+        if (FIELD_CONFIG.plus_one_name && g.plus_one_allowed) {
+          html += `
+          <div class="field-group">
+              <label class="field-label">Bringing a plus one?</label>
+              <select class="rsvp-select plus-one-toggle">
+                  <option value="no" ${!g.plus_one_name ? "selected" : ""}>No</option>
+                  <option value="yes" ${g.plus_one_name ? "selected" : ""}>Yes</option>
+              </select>
+              <input class="rsvp-input mt-2 plus-one-name"
+                  placeholder="Plus One Name"
+                  value="${g.plus_one_name || ""}"
+                  style="display:${g.plus_one_name ? "block" : "none"}">
+          </div>
+          `;
+        }
+
+        if (FIELD_CONFIG.join_pi_mile) {
+          let piYesChecked = "";
+          let piNoChecked = "";
+
+          if (g.join_pi_mile === true || g.join_pi_mile === "t") {
+            piYesChecked = "checked";
+          } else if (g.join_pi_mile === false || g.join_pi_mile === "f") {
+            piNoChecked = "checked";
+          }
+
+          html += `
+          <div class="field-group pi-mile-block ${isAttendingYes ? "" : "hidden"}">
+              <label class="field-label">Joining the Pi Mile Race Saturday morning?</label>
+              <div class="radio-row">
+                  <label class="radio-pill">
+                      <input type="radio" class="pi-mile" name="pi-mile-${g.guest_id}" value="true" ${piYesChecked}>
+                      Yes
+                  </label>
+                  <label class="radio-pill">
+                      <input type="radio" class="pi-mile" name="pi-mile-${g.guest_id}" value="false" ${piNoChecked}>
+                      No
+                  </label>
+              </div>
+          </div>
+          `;
+        }
+
+        div.innerHTML = html;
+        container.appendChild(div);
+      });
+
+      const existingEmail = guests.find(g => g.email)?.email || "";
+      const emailBlock = document.createElement("div");
+      emailBlock.className = "household-email-block";
+      emailBlock.innerHTML = `
+          <label class="rsvp-email-label" for="quickHouseholdEmail">Contact Email</label>
+          <div class="rsvp-email-sublabel">For your RSVP confirmation and any additional details</div>
+          <input type="email" id="quickHouseholdEmail" class="rsvp-email-input"
+              placeholder="you@example.com" value="${existingEmail}">
+      `;
+      container.appendChild(emailBlock);
+    }
+
+    container.addEventListener("change", e => {
+      if (e.target.classList.contains("plus-one-toggle")) {
+        const input = e.target.nextElementSibling;
+        if (e.target.value === "yes") {
+          input.style.display = "block";
+        } else {
+          input.style.display = "none";
+          input.value = "";
+        }
+      }
+
+      if (e.target.classList.contains("attending")) {
+        const card = e.target.closest(".guest-card");
+        const mealBlock = card.querySelector(".meal-block");
+        const dietaryBlock = card.querySelector(".dietary-block");
+        const piMileBlock = card.querySelector(".pi-mile-block");
+
+        if (e.target.value === "true") {
+          if (mealBlock) mealBlock.classList.remove("hidden");
+          if (piMileBlock) piMileBlock.classList.remove("hidden");
+        } else {
+          if (mealBlock) mealBlock.classList.add("hidden");
+          if (dietaryBlock) dietaryBlock.classList.add("hidden");
+          if (piMileBlock) piMileBlock.classList.add("hidden");
+          const mealSelect = card.querySelector(".meal");
+          if (mealSelect) mealSelect.value = "";
+        }
+      }
+
+      if (e.target.classList.contains("meal")) {
+        const card = e.target.closest(".guest-card");
+        const dietaryBlock = card.querySelector(".dietary-block");
+        if (dietaryBlock) {
+          if (e.target.value) {
+            dietaryBlock.classList.remove("hidden");
+          } else {
+            dietaryBlock.classList.add("hidden");
+          }
+        }
+      }
+    });
+
+    submitBtn.addEventListener("click", async () => {
+      const cards = container.querySelectorAll(".guest-card");
+
+      if (!cards.length) {
+        alert("Please search for your invitation first.");
+        return;
+      }
+
+      const householdEmail = document.getElementById("quickHouseholdEmail")?.value.trim() || null;
+
+      const missingMeal = [];
+
+      const guests = Array.from(cards).map(card => {
+        const attendingRadio = card.querySelector(
+          "input[name='attending-" + card.dataset.guestId + "']:checked"
+        );
+        const piMileRadio = card.querySelector(
+          "input[name='pi-mile-" + card.dataset.guestId + "']:checked"
+        );
+        const isAttending = attendingRadio ? attendingRadio.value === "true" : false;
+        const mealValue = card.querySelector(".meal")?.value || null;
+
+        if (isAttending && !mealValue) {
+          const guestName = card.querySelector(".guest-name")?.textContent || "A guest";
+          missingMeal.push(guestName);
+        }
+
+        return {
+          guest_id: card.dataset.guestId ? parseInt(card.dataset.guestId) : null,
+          attending: attendingRadio ? attendingRadio.value === "true" : null,
+          meal_choice: mealValue,
+          dietary_restriction: card.querySelector(".dietary_restriction")?.value || null,
+          plus_one_name: card.querySelector(".plus-one-name")?.value || null,
+          join_pi_mile: piMileRadio ? piMileRadio.value === "true" : null,
+          email: householdEmail
+        };
+      });
+
+      if (missingMeal.length) {
+        alert(`Please select a meal for: ${missingMeal.join(", ")}`);
+        return;
+      }
+
+      const anyoneAttending = guests.some(g => g.attending === true);
+
+      try {
+        const res = await fetch("/api/rsvp", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ guests })
+        });
+
+        const data = await res.json();
+
+        if (data.status === "success") {
+          alert(anyoneAttending ? "See you there!" : "We will miss you!");
+
+          container.innerHTML = "";
+          guestNameInput.value = "";
+
+          const rsvpModalEl = document.getElementById("quickRsvpModal");
+          const modalInstance = bootstrap.Modal.getInstance(rsvpModalEl) || new bootstrap.Modal(rsvpModalEl);
+          modalInstance.hide();
+        } else if (data.error) {
+          alert(`Error: ${data.error}`);
+        } else {
+          alert("Unexpected response from server. Check console.");
+          console.log(data);
+        }
+      } catch (err) {
+        console.error("Error submitting RSVP:", err);
+        alert("There was an error submitting your RSVP. Check the console.");
+      }
+    });
+  })();
+  </script>
+
+  <!-- ---------------------- -->
+  <!-- SCROLL-TRIGGER FOR THE FLOATING BUTTON
+       On the homepage (which has a .page-grid hero with its own inline RSVP
+       button) the floating button waits until you scroll past the hero.
+       On every other page there's no hero to duplicate, so it shows right away. -->
+  <!-- ---------------------- -->
+  <script>
+  (function () {
+    const floatRsvpBtn = document.getElementById('quickFloatRsvpBtn');
+    if (!floatRsvpBtn) return;
+
+    const heroWrapper = document.querySelector('.page-grid');
+
+    function toggleFloatRsvp() {
+      if (heroWrapper) {
+        const showAfter = heroWrapper.offsetHeight - 120;
+        if (window.scrollY > showAfter) {
+          floatRsvpBtn.classList.add('is-visible');
+        } else {
+          floatRsvpBtn.classList.remove('is-visible');
+        }
+      } else {
+        floatRsvpBtn.classList.add('is-visible');
+      }
+    }
+
+    window.addEventListener('scroll', toggleFloatRsvp, { passive: true });
+    toggleFloatRsvp();
+  })();
+  </script>
+
+  <!-- ========================= -->
   <!-- FOOTER -->
   <!-- ========================= -->
   <footer class="site-footer">
@@ -170,8 +816,6 @@
           crossorigin="anonymous"></script>
 </body>
 </html>
-
-
 
 
 
