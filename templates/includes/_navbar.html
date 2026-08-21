@@ -22,28 +22,25 @@
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link {% if request.path == '/' %}active{% endif %}" 
-             href="/" style="color:#2d2f3f;">Home</a>
+          <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if request.path == '/event' %}active{% endif %}" 
-             href="/event" style="color:#2d2f3f;">Event Details</a>
+          <a class="nav-link {% if request.path == '/travel' %}active{% endif %}" href="/travel">Travel</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if request.path == '/pi_mile' %}active{% endif %}" 
-             href="/pi_mile" style="color:#2d2f3f;">Pi Mile Race</a>
+          <a class="nav-link {% if request.path == '/pi_mile' %}active{% endif %}" href="/pi_mile">Pi Mile Race</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if request.path == '/gallery' %}active{% endif %}" 
-             href="/gallery" style="color:#2d2f3f;">Gallery</a>
+          <a class="nav-link {% if request.path == '/gallery' %}active{% endif %}" href="/gallery">Gallery</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if request.path == '/travel' %}active{% endif %}" 
-             href="/travel" style="color:#2d2f3f;">Travel</a>
+          <a class="nav-link {% if request.path == '/registry' %}active{% endif %}" href="/registry">Registry</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if request.path == '/rsvp' %}active{% endif %}" 
-             href="/rsvp" style="color:#2d2f3f;">RSVP</a>
+          <a class="nav-link {% if request.path == '/faq' %}active{% endif %}" href="/faq">FAQ</a>
+        </li>
+        <li class="nav-item nav-item-cta">
+          <a class="nav-link nav-link-cta {% if request.path == '/rsvp' %}active{% endif %}" href="/rsvp">RSVP</a>
         </li>
       </ul>
     </div>
@@ -52,30 +49,89 @@
 
 <style>
   /* ========================= */
-  /* NAVBAR SIZE + FADE */
+  /* NAVBAR */
   /* ========================= */
 
   .custom-navbar {
-    background: linear-gradient(to bottom, #ffffff 85%, rgba(255,255,255,0));
-    padding-top: 6px;
-    padding-bottom: 6px;
-    backdrop-filter: blur(4px);
+    background: linear-gradient(to bottom, #ffffff 88%, rgba(255,255,255,0));
+    padding-top: 10px;
+    padding-bottom: 10px;
+    backdrop-filter: blur(6px);
   }
 
   .navbar-logo {
-    height: 34px; /* smaller logo */
+    height: 32px;
     width: auto;
   }
 
-  /* ACTIVE / HOVER */
-  .navbar-nav .nav-link.active {
-    color: #af8e6e !important;
+  .navbar-nav .nav-link {
+    color: #2d2f3f;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.78rem;
     font-weight: 600;
-    border-bottom: 2px solid #af8e6e;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    padding: 8px 0 !important;
+    position: relative;
+    transition: color 0.2s ease;
+  }
+
+  .navbar-nav .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 2px;
+    height: 1.5px;
+    background: #af8e6e;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.25s ease;
   }
 
   .navbar-nav .nav-link:hover {
-    color: #8a685d !important;
+    color: #8a685d;
+  }
+
+  .navbar-nav .nav-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .navbar-nav .nav-link.active {
+    color: #af8e6e;
+  }
+
+  .navbar-nav .nav-link.active::after {
+    transform: scaleX(1);
+  }
+
+  /* RSVP stands apart as the one action item */
+  .nav-item-cta {
+    margin-left: 6px;
+  }
+
+  .navbar-nav .nav-link-cta {
+    background: #af8e6e;
+    color: #fff !important;
+    padding: 8px 20px !important;
+    border-radius: 30px;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+
+  .navbar-nav .nav-link-cta::after {
+    display: none;
+  }
+
+  .navbar-nav .nav-link-cta:hover {
+    background: #8a685d;
+    color: #fff;
+    transform: translateY(-1px);
+  }
+
+  .navbar-nav .nav-link-cta.active {
+    background: #8a685d;
+    color: #fff;
   }
 
   .navbar-toggler {
@@ -88,7 +144,34 @@
 
   @media (min-width: 992px) {
     .navbar-nav .nav-item {
-      margin-left: 16px;
+      margin-left: 22px;
+    }
+
+    .nav-item-cta {
+      margin-left: 26px;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .navbar-collapse {
+      margin-top: 12px;
+      padding-bottom: 8px;
+    }
+
+    .navbar-nav .nav-item {
+      margin-bottom: 4px;
+    }
+
+    .navbar-nav .nav-link {
+      padding: 10px 4px !important;
+    }
+
+    .nav-item-cta {
+      margin-top: 8px;
+    }
+
+    .navbar-nav .nav-link-cta {
+      display: inline-block;
     }
   }
 </style>
