@@ -1,0 +1,181 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="faq-page-wrapper" style="padding: 40px 20px; max-width: 800px; margin: 0 auto; font-family:'Montserrat', sans-serif; color:#2d2f3f;">
+
+  <!-- HEADER -->
+  <div class="text-center mb-5">
+    <img src="{{ url_for('static', filename='images/biltmore1.png') }}" alt="Biltmore Logo" style="height:60px; margin-bottom:16px; opacity:0.85;">
+    <h1 style="font-family:'Great Vibes', cursive; font-size:3.8rem; margin-bottom:0; color:#2d2f3f;">FAQ</h1>
+    <p style="font-size:1.1rem; color:#514131; margin-top:4px;">All the extra info</p>
+  </div>
+
+  <!-- FAQ ACCORDION -->
+  <div class="accordion faq-accordion" id="faqAccordion">
+
+    <div class="faq-item">
+      <button class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq1">
+        What should I wear?
+        <span class="faq-chevron">⌄</span>
+      </button>
+      <div id="faq1" class="collapse" data-bs-parent="#faqAccordion">
+        <div class="faq-answer">Formal attire is encouraged. The ceremony and reception will be indoors </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq2">
+        Are kids welcome?
+        <span class="faq-chevron">⌄</span>
+      </button>
+      <div id="faq2" class="collapse" data-bs-parent="#faqAccordion">
+        <div class="faq-answer">Check your RSVP to see who’s included in your invitation!</div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq3">
+          Is there parking at the venue?
+          <span class="faq-chevron">⌄</span>
+        </button>
+      
+        <div id="faq3" class="collapse" data-bs-parent="#faqAccordion">
+          <div class="faq-answer">
+            Yes. Parking is available at The Biltmore Ballrooms for $15. If you're staying at our hotel
+            block at the Renaissance Atlanta Midtown, the venue is directly across the street and easily
+            walkable. Many other Midtown hotels are also within walking distance. See the
+            <a href="{{ url_for('travel') }}">Travel</a> page for more details.
+      
+            <div class="faq-note">
+              <span class="faq-note-label">Parking Address</span>
+              30 5th Street NE<br>
+              Atlanta, GA 30308
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <div class="faq-item">
+      <button class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq4">
+        What time should I arrive?
+        <span class="faq-chevron">⌄</span>
+      </button>
+      <div id="faq4" class="collapse" data-bs-parent="#faqAccordion">
+        <div class="faq-answer">Doors open at 4:30 PM. We kindly ask that all guests be seated by 4:45 PM, as the ceremony begins promptly at 5:00 PM.</div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq5">
+        Can I bring a plus one?
+        <span class="faq-chevron">⌄</span>
+      </button>
+      <div id="faq5" class="collapse" data-bs-parent="#faqAccordion">
+        <div class="faq-answer">Check your RSVP! If a plus one is included with your invitation, you’ll see the option to add them when you RSVP.</div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq6">
+        Who do I contact with more questions?
+        <span class="faq-chevron">⌄</span>
+      </button>
+      <div id="faq6" class="collapse" data-bs-parent="#faqAccordion">
+        <div class="faq-answer">Feel free to reach out to either of us directly — we're happy to help!</div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<style>
+
+.faq-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.faq-item {
+  background: #fffaf7;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.faq-question {
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 20px 24px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: #2d2f3f;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.faq-chevron {
+  color: #af8e6e;
+  font-size: 1.3rem;
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+  margin-left: 12px;
+}
+
+.faq-question[aria-expanded="true"] .faq-chevron,
+.faq-question:not(.collapsed) .faq-chevron {
+  transform: rotate(180deg);
+}
+
+.faq-answer {
+  padding: 0 24px 20px;
+  font-size: 0.98rem;
+  color: #514131;
+  line-height: 1.65;
+}
+
+.faq-answer a {
+  color: #af8e6e;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.faq-answer a:hover {
+  color: #8a685d;
+}
+
+@media (max-width: 600px) {
+  .faq-question {
+    padding: 16px 18px;
+    font-size: 1rem;
+  }
+
+  .faq-answer {
+    padding: 0 18px 16px;
+  }
+}
+.faq-note {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid #DED7C8;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #718078;
+}
+
+.faq-note-label {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #948045;
+}
+</style>
+{% endblock %}
