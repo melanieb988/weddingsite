@@ -59,7 +59,7 @@
             <strong>Renaissance Atlanta Midtown Marriott</strong>. and would love for you to join us there for the weekend.
           </p>
           <a href="https://www.marriott.com/event-reservations/reservation-link.mi?id=1776089155214&key=GRP&app=resvlink&_branch_match_id=1603525811292214297&_branch_referrer=H4sIAAAAAAAAA8soKSkottLXTywo0MtNLCrKzC8p0UvOz9UvSi3OyczLtgdK2ALZZSCOWmaKraG5uZmBhaWhqamRoYladmqlrXtQgFpdUWpaKlB3Xnp8UlF%2BeXFqka1rSnoqALHYfCleAAAA&inventoryMissing=true" target="_blank" class="hotel-block-btn">
-            Reserve with the Hotel Block →
+            Reserve Hotel Block →
           </a>
           <p class="fine-print">
 
@@ -541,16 +541,16 @@
 @media (max-width: 600px) {
   .pills-nav {
     top: 68px;
-    gap: 5px;
-    padding: 8px 14px;
+    gap: 3px;
+    padding: 8px 8px;
     margin-bottom: 28px;
-    justify-content: flex-start;
+    justify-content: center;
   }
 
   .pill-link {
-    font-size: 0.62rem;
-    padding: 5px 10px;
-    letter-spacing: 0.02em;
+    font-size: 0.54rem;
+    padding: 4px 7px;
+    letter-spacing: 0.01em;
   }
 }
 
@@ -643,21 +643,48 @@
   background: rgba(175, 142, 110, 0.3);
 }
 
-/* Venue & Parking stays side-by-side down to a much narrower width than the
-   rest of the page — the content on each side is short (a title + a
-   two-line address), so it holds up fine as narrow columns. Only true
-   phone-width screens switch it to stacked. */
+/* Venue & Parking stays side-by-side all the way down to real phone widths
+   (iPhone SE at 375px and up) — the columns just get tighter and the type
+   scales down, instead of stacking into a single column. */
 @media (max-width: 480px) {
 
   .venue-parking-card {
-    grid-template-columns: 1fr;
-    gap: 22px;
-    padding: 24px;
+    grid-template-columns: 1fr 1px 1fr;
+    gap: 14px;
+    padding: 18px 14px;
   }
 
   .venue-parking-divider {
-    width: 100%;
-    height: 1px;
+    width: 1px;
+    height: 100%;
+  }
+
+  .venue-parking-label {
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+  }
+
+  .venue-parking-title {
+    font-size: 0.85rem;
+    line-height: 1.25;
+  }
+
+  .venue-parking-subtitle {
+    font-size: 0.72rem;
+    margin-bottom: 10px;
+  }
+
+  .venue-parking-address {
+    font-size: 0.72rem;
+    line-height: 1.5;
+  }
+
+  .venue-parking-note {
+    font-size: 0.62rem;
+    line-height: 1.4;
+    margin-top: 8px;
+    padding-top: 8px;
   }
 
 }
@@ -782,7 +809,8 @@
 
 .hotel-card h5,
 .hotel-card h6 {
-  margin: 14px 16px 16px;
+  margin: 12px 16px 14px;
+  font-size: 0.95rem;
 }
 
 
@@ -902,7 +930,6 @@
 </style>
 
 {% endblock %}
-
 
 
 
