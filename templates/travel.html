@@ -43,7 +43,7 @@
         </div>
 
         <div class="featured-hotel-content">
-          <span class="official-badge">Official Hotel Block</span>
+        
           <h3>Renaissance Atlanta Midtown Marriott</h3>
           <p>
             We have reserved a <strong>hotel room block</strong> at the
@@ -53,7 +53,7 @@
             Reserve with the Hotel Block →
           </a>
           <p class="fine-print">
-            The discounted rate is available while rooms remain in the block.
+           
           </p>
         </div>
 
@@ -150,18 +150,43 @@
   </div>
 
   <!-- VENUE & PARKING -->
-  <div class="travel-section mb-5">
-    <h2 class="section-title">Venue & Parking</h2>
-    <div class="event-block">
-      <p style="margin:4px 0; font-size:1rem;">
-        <strong>Address:</strong> The Biltmore Ballrooms, Imperial Room<br>
-        817 W Peachtree St NW #208, Atlanta, GA 30308
-      </p>
-      <p style="margin:4px 0; font-size:1rem;">
-        Parking available for <strong>$15</strong>.
+<!-- VENUE & PARKING -->
+<div class="travel-section mb-5">
+  <h2 class="section-title">Venue & Parking</h2>
+
+  <div class="event-block venue-parking-card">
+
+    <div class="venue-parking-section">
+      <span class="venue-parking-label">Venue</span>
+
+      <h4 class="venue-parking-title">The Biltmore Ballrooms</h4>
+      <p class="venue-parking-subtitle">Imperial Room</p>
+
+      <p class="venue-parking-address">
+        817 W Peachtree St NW #208<br>
+        Atlanta, GA 30308
       </p>
     </div>
+
+    <div class="venue-parking-divider"></div>
+
+    <div class="venue-parking-section">
+      <span class="venue-parking-label">Parking</span>
+
+      <h4 class="venue-parking-title">$15 Event Parking</h4>
+
+      <p class="venue-parking-address">
+        30 5th Street NE<br>
+        Atlanta, GA 30308
+      </p>
+
+      <p class="venue-parking-note">
+        Use this address for the parking garage.
+      </p>
+    </div>
+
   </div>
+</div>
 
 </div>
 
@@ -252,7 +277,83 @@
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
   margin-bottom: 20px;
 }
+/* ================= VENUE + PARKING ================= */
 
+.venue-parking-card {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  gap: 32px;
+  padding: 28px 32px;
+  background: #faf9f7;
+}
+
+.venue-parking-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.venue-parking-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: #af8e6e;
+  margin-bottom: 8px;
+}
+
+.venue-parking-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #2d2f3f;
+  margin: 0 0 3px;
+}
+
+.venue-parking-subtitle {
+  margin: 0 0 16px;
+  font-family: Georgia, serif;
+  font-size: 0.95rem;
+  font-style: italic;
+  color: #8a685d;
+}
+
+.venue-parking-address {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: #514131;
+}
+
+.venue-parking-note {
+  margin: 12px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid rgba(175, 142, 110, 0.3);
+  font-size: 0.82rem;
+  color: #8a817b;
+}
+
+.venue-parking-divider {
+  width: 1px;
+  height: 100%;
+  background: rgba(175, 142, 110, 0.3);
+}
+
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+  .venue-parking-card {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    padding: 24px;
+  }
+
+  .venue-parking-divider {
+    width: 100%;
+    height: 1px;
+  }
+
+}
 
 /* ================= FEATURED / OFFICIAL HOTEL BLOCK (image left, text right) ================= */
 
@@ -494,6 +595,8 @@
 </style>
 
 {% endblock %}
+
+
 
 
 
