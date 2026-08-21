@@ -1,0 +1,116 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="registry-page-wrapper" style="padding: 40px 20px; max-width: 900px; margin: 0 auto; font-family:'Montserrat', sans-serif; color:#2d2f3f;">
+
+  <!-- HEADER -->
+  <div class="text-center mb-5">
+    <img src="{{ url_for('static', filename='images/biltmore1.png') }}" alt="Biltmore Logo" style="height:60px; margin-bottom:16px; opacity:0.85;">
+    <h1 style="font-family:'Great Vibes', cursive; font-size:3.8rem; margin-bottom:0; color:#2d2f3f;">Our Registry</h1>
+    <p style="font-size:1.1rem; color:#514131; margin-top:4px;">For the life & adventures ahead</p>
+  </div>
+
+  <!-- INTRO CARD -->
+  <div class="registry-intro">
+    <p>
+        Having you there to celebrate with us means the most. 
+    </p>
+  </div>
+
+  <!-- ZOLA REGISTRY EMBED -->
+  <div class="registry-embed-card">
+    <!--
+      Replace the two placeholders below with your real Zola info:
+        - MY_ZOLA_URL           -> your full registry URL, e.g. https://www.zola.com/registry/melanieandisaac
+        - MY_ZOLA_REGISTRY_KEY  -> the part after zola.com/registry/, e.g. melanieandisaac
+      This uses Zola's official embed widget, so the registry renders right on this page.
+    -->
+    <a class="zola-registry-embed"
+       href="https://www.zola.com/registry/"
+       data-registry-key="melanieandisaac2026">
+       Our Zola Wedding Registry
+    </a>
+    <script>
+      !function(e,t,n){var s,a=e.getElementsByTagName(t)[0];e.getElementById(n)||(s=e.createElement(t),s.id=n,s.async=!0,s.src="https://widget.zola.com/js/widget.js",a.parentNode.insertBefore(s,a))}(document,"script","zola-wjs");
+    </script>
+
+    <!-- Fallback, in case the widget doesn't load (ad blockers, etc.) -->
+    <noscript>
+      <a href="MY_ZOLA_URL" target="_blank" class="registry-fallback-btn">View Our Registry on Zola →</a>
+    </noscript>
+  </div>
+
+  <!-- ALWAYS-VISIBLE BACKUP LINK -->
+  <div class="text-center registry-backup-link-wrap">
+    <a href="MY_ZOLA_URL" target="_blank" class="registry-backup-link">
+      Prefer to view it directly on Zola? Click here →
+    </a>
+  </div>
+
+</div>
+
+<style>
+
+.registry-intro {
+  background: #faf9f7;
+  border-radius: 14px;
+  padding: 24px 28px;
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.registry-intro p {
+  font-size: 1.05rem;
+  color: #514131;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.registry-embed-card {
+  background: #fffaf7;
+  border-radius: 16px;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.12);
+  padding: 32px;
+  min-height: 200px;
+}
+
+.registry-fallback-btn {
+  display: inline-block;
+  background: #af8e6e;
+  color: #fff;
+  padding: 12px 26px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.registry-fallback-btn:hover {
+  background: #8a685d;
+  color: #fff;
+}
+
+.registry-backup-link-wrap {
+  margin-top: 24px;
+}
+
+.registry-backup-link {
+  font-size: 0.9rem;
+  color: #8a685d;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.registry-backup-link:hover {
+  color: #514131;
+}
+
+@media (max-width: 600px) {
+  .registry-intro,
+  .registry-embed-card {
+    padding: 20px 18px;
+  }
+}
+
+</style>
+{% endblock %}
