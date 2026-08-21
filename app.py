@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify,url_for,redirect
 import os
 import psycopg2
 import random
@@ -66,12 +66,18 @@ def index():
         collage_images=collage_images
     )
 
-
-@app.route("/event")
+@app.route('/event')
 def event():
-    return render_template("event.html", app_data=app_data)
-
-
+    return redirect(url_for('index') + '#schedule')
+ 
+ 
+@app.route("/faq")
+def faq():
+    return render_template("faq.html", app_data=app_data)
+    
+@app.route("/registry")
+def registry():
+    return render_template("registry.html", app_data=app_data)
 
 
 @app.route("/rsvp")
@@ -244,5 +250,4 @@ def keepalive():
 
 if __name__ == "__main__":
     app.run(debug=DEVELOPMENT_ENV)
-
 
