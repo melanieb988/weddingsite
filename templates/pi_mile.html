@@ -4,7 +4,7 @@
 
   <!-- Page Header -->
   <div class="text-center mb-5">
-    <h1 style="font-family:'Great Vibes', cursive; font-size:4rem; color:#2d2f3f; margin-bottom:0;">
+    <h1 style="font-family:'Great Vibes', cursive; font-weight: 400; font-size:3.4rem; margin-bottom:0; color:#2d2f3f;">
       Pi Mile Race
     </h1>
     <p style="font-family:'Montserrat', sans-serif; color:#514131; font-size:1.2rem; margin-top:6px;">
@@ -13,7 +13,7 @@
   </div>
 
   <!-- Small Sidewalk Image Above Intro -->
-  <div class="text-center mb-4">
+  <div class="text-center mb-5">
     <img
       src="{{ url_for('static', filename='images/pi_mile_sidewalk.jpg') }}"
       alt="Pi Mile markers along course"
@@ -25,26 +25,34 @@
         opacity:0.95;
       "
     >
-    <p style="font-family:'Montserrat', sans-serif; color:#514131; font-size:0.85rem; margin-top:6px;">
+    <p style="font-family:'Montserrat', sans-serif; color:#83786a; font-style:italic; font-size:0.85rem; margin-top:8px;">
       Pi Mile markers along course
     </p>
   </div>
 
-  <!-- Intro Section -->
-  
-
   <!-- Course Description -->
-  <div class="mb-5" style="max-width: 900px; margin: 0 auto;">
-    <h2 style="font-family:'Montserrat', sans-serif; font-size:1.85rem; color:#2d2f3f; margin-bottom:16px;">
-      The Course
-    </h2>
-    <p style="font-family:'Montserrat', sans-serif; font-size:1.05rem; color:#2d2f3f; line-height:1.6;">
-        Runners will complete a <strong>3.14-mile loop</strong> around Georgia Tech’s campus and battle it out to the finish.
+  <div class="pi-mile-section mb-5" style="max-width: 900px; margin: 0 auto;">
+    <h2 class="section-title">The Course</h2>
+    <div class="event-block pi-mile-course-block text-center">
+
+      <div class="pi-mile-distance-badge">
+        <span class="pi-mile-distance-symbol">&pi;</span>
+        <span class="pi-mile-distance-number">3.14</span>
+        <span class="pi-mile-distance-unit">Miles</span>
+      </div>
+
+      <p style="font-family:'Montserrat', sans-serif; font-size:1.05rem; color:#2d2f3f; line-height:1.6; margin:0 0 10px;">
+        Runners will complete a <strong>3.14-mile loop</strong> around Georgia Tech's campus and battle it out to the finish.
       </p>
-      
-    <p style="font-family:'Montserrat', sans-serif; font-size:1.05rem; color:#2d2f3f; line-height:1.75;">
-      The winner will recieve a prize. 
-    </p>
+      <p style="font-family:'Montserrat', sans-serif; font-size:0.85rem; color:#83786a; font-style:italic; line-height:1.6; margin:0;">
+        The winner will receive a prize.
+      </p>
+
+      <a class="pi-mile-history-link" href="https://news.gatech.edu/archive/features/pi-mile-road-race.shtml" target="_blank" rel="noopener">
+        History of the Pi Mile Race <span class="link-arrow">&rarr;</span>
+      </a>
+
+    </div>
   </div>
 
   <!-- Course Map -->
@@ -62,38 +70,221 @@
   </div>
 
   <!-- Start Location -->
-  <div class="text-center mb-4">
-    <h2 style="font-family:'Montserrat', sans-serif; font-size:1.85rem; color:#2d2f3f;">
-      Start Location
-    </h2>
-    <p style="font-family:'Montserrat', sans-serif; font-size:1.05rem; color:#2d2f3f; margin-bottom:14px;">
-        Race Start Time: TBD
-      </p>
-    <p style="font-family:'Montserrat', sans-serif; font-size:1.05rem; color:#2d2f3f; margin-bottom:14px;">
-      The race will begin at:
-    </p>
+  <div class="pi-mile-section mb-4" style="max-width: 900px; margin: 0 auto;">
 
-    <div style="
-      display:inline-block;
-      padding:16px 26px;
-      background:#faf9f7;
-      border-radius:10px;
-      border:1px solid #e6e3de;
-      font-family:'Montserrat', sans-serif;
-      color:#2d2f3f;
-      font-size:1.05rem;
-      line-height:1.5;
-    ">
-      225 North Ave NW<br>
-      Atlanta, GA 30332
+      <h2 class="section-title">Start Location</h2>
     </div>
 
-    <p style="font-family:'Montserrat', sans-serif; font-size:0.95rem; color:#514131; margin-top:16px;">
-      More miles to follow after. 
-    </p>
+    <div class="event-block text-center">
+
+      <span class="pi-mile-time-label">Race Start Time</span>
+      <p class="pi-mile-time-value">9:00 AM</p>
+
+      <p style="font-family:'Montserrat', sans-serif; font-size:1rem; color:#514131; margin-bottom:20px;">
+        The race will begin at:
+      </p>
+
+      <a
+        class="pi-mile-address"
+        href="https://www.google.com/maps/search/?api=1&query=225+North+Ave+NW,+Atlanta,+GA+30332"
+        target="_blank"
+        rel="noopener"
+      >
+        <span class="pi-mile-address-pin">📍</span>
+        <span class="pi-mile-address-text">
+          225 North Ave NW<br>
+          Atlanta, GA 30332
+        </span>
+        <span class="pi-mile-address-arrow">Get Directions →</span>
+      </a>
+
+      <p style="font-family:'Montserrat', sans-serif; font-size:0.9rem; color:#83786a; font-style:italic; margin-top:22px;">
+        More miles to follow after.
+      </p>
+    </div>
   </div>
 
 </div>
-{% endblock %}
 
+<style>
+
+/* ================= SECTION TITLE (matches the cursive accent headers used on
+   travel.html / gallery.html / faq.html) ================= */
+
+   .section-title {
+  font-family: 'Instrument Serif', serif;   /* switched from Montserrat */
+  font-style: italic;
+  font-weight: 400;
+  color: #8a685d;
+  font-size: 1.9rem;
+  letter-spacing: 0.01em;
+  border-bottom: 1px solid #af8e6e;  /* thinner than the 2px it has now — serif italic doesn't want a heavy rule */
+  display: inline-block;
+  padding-bottom: 6px;
+  margin-bottom: 24px;
+}
+/* ================= CONTENT CARD (matches travel.html's event-block) ================= */
+
+.event-block {
+  background: #faf9f7;
+  padding: 24px 28px;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+/* ================= COURSE CARD ================= */
+
+.pi-mile-distance-badge {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 7px;
+  margin-bottom: 22px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(175, 142, 110, 0.25);
+}
+
+.pi-mile-distance-symbol {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-style: italic;
+  font-size: 1.7rem;
+  color: #af8e6e;
+}
+
+.pi-mile-distance-number {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 2.4rem;
+  color: #2d2f3f;
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+
+.pi-mile-distance-unit {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #83786a;
+}
+
+.pi-mile-history-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid #e6ddd1;
+  width: 100%;
+  justify-content: center;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #af8e6e;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease;
+}
+
+.pi-mile-history-link:hover {
+  color: #8a685d;
+}
+
+.pi-mile-history-link .link-arrow {
+  display: inline-block;
+  transition: transform 0.25s ease;
+}
+
+.pi-mile-history-link:hover .link-arrow {
+  transform: translateX(4px);
+}
+
+/* ================= START TIME ================= */
+
+.pi-mile-time-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: #af8e6e;
+  margin-bottom: 6px;
+}
+
+.pi-mile-time-value {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 1.35rem;
+  color: #2d2f3f;
+  margin-bottom: 20px;
+}
+
+/* ================= START ADDRESS CALLOUT (now a clickable Google Maps link) ================= */
+
+.pi-mile-address {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 26px;
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #e6e3de;
+  text-decoration: none;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.pi-mile-address:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.1);
+  border-color: rgba(175, 142, 110, 0.4);
+}
+
+.pi-mile-address-pin {
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.pi-mile-address-text {
+  font-family: 'Montserrat', sans-serif;
+  color: #2d2f3f;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.pi-mile-address-arrow {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #af8e6e;
+  white-space: nowrap;
+  transition: transform 0.25s ease;
+}
+
+.pi-mile-address:hover .pi-mile-address-arrow {
+  transform: translateX(4px);
+}
+
+@media (max-width: 600px) {
+  .event-block {
+    padding: 20px 20px;
+  }
+
+  .pi-mile-address {
+    flex-direction: column;
+    text-align: center;
+    gap: 8px;
+    padding: 18px 20px;
+  }
+
+  .pi-mile-address-text {
+    text-align: center;
+  }
+}
+
+</style>
+{% endblock %}
 
