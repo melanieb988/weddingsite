@@ -10,16 +10,19 @@
       <!-- Images injected dynamically via JS -->
     </div>
 
+    <!-- Small transition divider between the collage and the names —
+         hidden on desktop (collage and text sit side by side there),
+         shown on mobile where the collage stacks directly above the text. -->
+    <div class="collage-divider"><span class="collage-divider-mark">◆</span></div>
+
     <!-- RIGHT: INVITATION CONTENT -->
     <div class="invitation-content">
-      <p class="hero-kicker">
-        We're Getting Married
-      </p>
-
       <h1 class="names">
-        Melanie Bowden<br>
-        <span class="ampersand">&amp;</span><br>
-        Isaac Birocci
+        <!-- Full names stay in the markup (indexable by search engines,
+             readable by screen readers) even though only first names are
+             shown on screen below. -->
+        <span class="visually-hidden">Melanie Bowden &amp; Isaac Birocci</span>
+        <span aria-hidden="true">Melanie <span class="amp">&amp;</span> Isaac</span>
       </h1>
       <span class="logo-inline">
         <img src="{{ url_for('static', filename='images/biltmore1.png') }}" alt="Venue logo">
@@ -51,14 +54,14 @@
           <div class="timeline-card">
             <span class="timeline-time">Time TBD</span>
             <p class="event-title">Welcome Gathering</p>
-            <p class="event-detail">Join us for a welcome gathering at the <strong>Renaissance Atlanta Midtown Marriott</strong> hotel.</p>
+            <p class="event-detail">The <strong>Renaissance Atlanta Midtown Marriott</strong> hotel.</p>
           </div>
         </div>
       </div>
     </div>
 
     <!-- SATURDAY -->
-    <div class="event-day mb-5">
+    <div class="event-day mb-3">
       <h3 class="section-title">Saturday, October 24</h3>
 
       <div class="timeline">
@@ -72,7 +75,7 @@
               Pi Mile Race
               <a class="event-more-info" href="{{ url_for('pi_mile') }}">More Info <span class="link-arrow">→</span></a>
             </p>
-            <p class="event-detail">Lace up and join us for a 3.14 mile race around Georgia Tech's campus before the festivities begin.</p>
+            <p class="event-detail">Lace up for a 3.14 mile race around Georgia Tech's campus</p>
           </div>
         </div>
 
@@ -83,13 +86,24 @@
             <span class="timeline-time">5:00 PM</span>
             <p class="event-title">Wedding Ceremony</p>
             <p class="event-detail">
-              <span class="event-label">Location:</span> The Biltmore Ballrooms, <em>Imperial Room</em><br>
-              817 W Peachtree St NW #208, Atlanta, GA 30308
+              <span class="event-label">Location:</span> The Biltmore &middot; <a class="event-more-info" href="{{ url_for('travel') }}#s-parking">Venue &amp; Parking <span class="link-arrow">→</span></a><br>
+              <span class="event-address">817 W Peachtree St NW, Atlanta, GA</span>
             </p>
-            <p class="event-note">
-              Doors open at 4:30 PM. We kindly ask that all guests be seated by 4:45 PM, as the
-              ceremony will begin promptly at 5:00 PM.
-            </p>
+
+            <div class="event-subitems">
+              <div class="event-subitem">
+                <span class="event-subitem-time">4:30 PM</span>
+                <span class="event-subitem-label">Doors Open</span>
+              </div>
+              <div class="event-subitem">
+                <span class="event-subitem-time">4:45 PM</span>
+                <span class="event-subitem-label">Guests Seated</span>
+              </div>
+              <div class="event-subitem">
+                <span class="event-subitem-time">5:00 PM</span>
+                <span class="event-subitem-label">Ceremony Begins</span>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -99,10 +113,7 @@
           <div class="timeline-card">
             <span class="timeline-time">Following the Ceremony</span>
             <p class="event-title">Cocktail Hour &amp; Reception</p>
-            <p class="event-detail">
-              A cocktail hour will begin immediately following the ceremony, followed by a
-              seated dinner.
-            </p>
+            <p class="event-detail">Cocktails, dinner, and dancing.</p>
           </div>
         </div>
   <!-- Afterparty -->
@@ -168,9 +179,9 @@
 
     .page-grid {
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
+      grid-template-columns: 1.05fr auto 0.85fr;
       width: 100%;
-      gap: 44px;
+      gap: 36px;
       align-items: center;
       padding: 8px 8px 0;
     }
@@ -197,8 +208,8 @@
       pointer-events: none;
       background: radial-gradient(
         ellipse at center,
-        rgba(250, 249, 247, 0) 58%,
-        rgba(250, 249, 247, 0.9) 100%
+        rgba(250, 249, 247, 0) 72%,
+        rgba(250, 249, 247, 0.55) 100%
       );
     }
 
@@ -231,38 +242,63 @@
       margin-top: 10px;
     }
 
-    .hero-kicker {
-  font-family: 'Great Vibes', cursive;
-  font-size: 2.4rem;      /* slightly up from 2.2 */
-  font-weight: 400;
-  letter-spacing: 0.02em;
-  color: #2D5948;
-  margin-bottom: 6px;
-}
+    /* Visually hidden but still in the document — read by screen readers
+       and indexable by search engines, so the couple's full names stay
+       associated with the page even though only first names show below. */
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
 
     .logo-inline img {
-      height: 56px;
-      margin: 4px 15px 18px;
+      height: 44px;
+      margin: 4px 0 18px;
       vertical-align: middle;
       opacity: 0.85;
     }
 
-    .names {
-  font-family: 'Instrument Serif', serif;
-  font-weight: 300;        /* up slightly from 200, reads cleaner at larger size */
-  font-size: 2.4rem;       /* up from 2.1 — let this be the visual anchor */
-  color: #9C7B3F;
-  line-height: 1.15;
-  margin-bottom: 16px;
-  font-variant: small-caps;
-  text-transform: lowercase; /* Ensures only the first letter stays truly large */
-}
+    /* Vertical line-dot-line between the collage and text columns on
+       desktop. Reoriented to a horizontal version on mobile — see the
+       MOBILE section further down — where the collage and text stack. */
+    .collage-divider {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      height: 62%;
+      margin: 0 auto;
+    }
 
-    .ampersand {
-      font-family: 'BickhamScriptPro', cursive;
+    .collage-divider::before,
+    .collage-divider::after {
+      content: '';
+      flex: 1;
+      width: 1px;
+      background: #e6ddd1;
+    }
+
+    .collage-divider-mark {
+      color: #af8e6e;
+      font-size: 1rem;
+      transform: rotate(45deg);
+      flex-shrink: 0;
+    }
+
+    .names {
+      font-family: 'Instrument Serif', serif;
       font-weight: 400;
-      color: #9C7B3F;
-      font-size: 2.2rem;
+      font-size: 2.6rem;
+      color: #2d2f3f;
+      line-height: 1.15;
+      margin-bottom: 16px;
     }
 
     .date {
@@ -278,42 +314,37 @@
       margin-bottom: 28px;
     }
 
+    /* Minimal text-link style — no button chrome, just tracked type on a
+       thin underline with a small arrow that shifts on hover. */
     .rsvp-btn {
-      background: #af8e6e;
+      display: inline-block;
+      background: transparent;
       border: none;
-      color: #fff;
-      padding: 13px 42px;
-      border-radius: 30px;
-      letter-spacing: 0.12em;
+      border-bottom: 1px solid #2d2f3f;
+      color: #2d2f3f;
+      padding: 0 0 4px;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      font-size: 0.82rem;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.78rem;
       font-weight: 700;
-      transition: all 0.3s ease;
       cursor: pointer;
-      box-shadow: 0 8px 20px rgba(175, 142, 110, 0.35);
+      transition: color 0.2s ease, border-color 0.2s ease;
     }
 
     .rsvp-btn:hover {
-      background: #8a685d;
-      color: #faf9f7;
-      transform: translateY(-2px);
-      box-shadow: 0 10px 24px rgba(138, 104, 93, 0.4);
+      color: #af8e6e;
+      border-color: #af8e6e;
     }
 
     .rsvp-btn-arrow {
       display: inline-block;
-      margin-left: 6px;
-      transition: transform 0.3s ease;
-      animation: rsvp-arrow-nudge 2s ease-in-out infinite;
+      margin-left: 4px;
+      transition: transform 0.2s ease;
     }
 
     .rsvp-btn:hover .rsvp-btn-arrow {
-      transform: translateX(5px);
-    }
-
-    @keyframes rsvp-arrow-nudge {
-      0%, 100% { transform: translateX(0); }
-      50% { transform: translateX(4px); }
+      transform: translateX(4px);
     }
 
     /* ========================= */
@@ -322,7 +353,7 @@
     .schedule-section {
       max-width: 800px;
       margin: 0 auto;
-      padding: 46px 20px 20px;
+      padding: 46px 20px 0;
       scroll-margin-top: 90px;
     }
 
@@ -379,13 +410,23 @@
 
     .timeline-dot {
       position: absolute;
-      left: -34px;
-      top: 6px;
-      width: 16px;
-      height: 16px;
+      left: -30px;
+      top: 9px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
+      background: #fff;
+      border: 2px solid #e6ddd1;
+      box-shadow: 0 0 0 2px #fff, 0 2px 6px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.9s ease, border-color 0.9s ease, box-shadow 0.9s ease;
+    }
+
+    /* Fills in — and stays filled — once you've scrolled to that event, via
+       the IntersectionObserver below. Reads as a progress trail down the
+       day rather than a single spotlight that jumps around. */
+    .timeline-dot.is-active {
       background: #af8e6e;
-      border: 3px solid #fff;
+      border-color: #fff;
       box-shadow: 0 0 0 2px #af8e6e, 0 2px 6px rgba(0, 0, 0, 0.15);
     }
 
@@ -405,7 +446,7 @@
     .timeline-time {
       display: block;
       color: #af8e6e;
-      font-size: 0.8rem;
+      font-size: 0.72rem;
       letter-spacing: 2px;
       text-transform: uppercase;
       font-weight: 700;
@@ -415,7 +456,7 @@
     .event-title {
       font-family: 'Montserrat', sans-serif;
       font-weight: 500;
-      font-size: 1.25rem;
+      font-size: 1.05rem;
       margin: 0 0 8px;
       color: #2d2f3f;
     }
@@ -429,12 +470,13 @@
 
     .event-more-info {
       font-family: 'Montserrat', sans-serif;
-      font-size: 0.78rem;
+      font-size: 0.72rem;
       letter-spacing: 0.5px;
       font-weight: 600;
       color: #af8e6e;
       text-decoration: underline;
       text-underline-offset: 3px;
+      white-space: nowrap;
       transition: color 0.2s ease;
     }
 
@@ -454,7 +496,7 @@
     .event-detail {
       font-family: 'Montserrat', sans-serif;
       font-weight: 400;
-      font-size: 0.98rem;
+      font-size: 0.92rem;
       color: #514131;
       margin: 2px 0;
       line-height: 1.6;
@@ -466,10 +508,24 @@
       margin-right: 4px;
     }
 
+    /* Lighter, quieter treatment for a plain street address — it's a
+       supporting detail, not something that needs the same weight as the
+       venue name above it. */
+    .event-address {
+      display: inline-block;
+      margin-top: 2px;
+      font-family: 'Montserrat', sans-serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 0.85rem;
+      letter-spacing: 0.02em;
+      color: #a39a8c;
+    }
+
     .event-note {
       font-family: 'Montserrat', sans-serif;
       font-style: italic;
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       color: #83786a;
       margin: 14px 0 0;
       padding-top: 14px;
@@ -477,13 +533,50 @@
       line-height: 1.6;
     }
 
+    /* Compact, scannable breakdown for a card that has more than one small
+       fact to communicate — used instead of a prose paragraph so a card
+       never turns into a wall of text. */
+    /* Grid, not flex-wrap — guarantees exactly 3 columns side by side that
+       can never drop to a second row, even on narrow phones. A long label
+       wraps inside its own column instead of pushing the row to wrap. */
+    .event-subitems {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid #e6ddd1;
+    }
+
+    .event-subitem {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      min-width: 0;
+    }
+
+    .event-subitem-time {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.66rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #af8e6e;
+    }
+
+    .event-subitem-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.85rem;
+      color: #2d2f3f;
+    }
+
     /* ========================= */
     /* EXPLORE MORE SECTION */
     /* ========================= */
     .explore-section {
       max-width: 1000px;
-      margin: 24px auto 0;
-      padding: 32px 20px 56px;
+      margin: 0 auto;
+      padding: 12px 20px 56px;
     }
 
     .explore-grid {
@@ -596,11 +689,32 @@
       .collage-wrapper::after {
         background: linear-gradient(
           to bottom,
-          rgba(250,249,247,0.55) 0%,
-          rgba(250,249,247,0) 12%,
-          rgba(250,249,247,0) 78%,
-          rgba(250,249,247,0.95) 100%
+          rgba(250,249,247,0.28) 0%,
+          rgba(250,249,247,0) 16%,
+          rgba(250,249,247,0) 82%,
+          rgba(250,249,247,0.65) 100%
         );
+      }
+
+      /* Reorient the vertical desktop divider into a small horizontal
+         line-dot-line bridge between the collage and the names, so the
+         transition from photos to text isn't so abrupt on mobile. */
+      .collage-divider {
+        flex-direction: row;
+        width: 100%;
+        height: auto;
+        max-width: 200px;
+        margin: 16px auto 4px;
+      }
+
+      .collage-divider::before,
+      .collage-divider::after {
+        width: auto;
+        height: 1px;
+      }
+
+      .collage-divider-mark {
+        font-size: 0.9rem;
       }
 
       .schedule-section {
@@ -616,17 +730,47 @@
       }
 
       .timeline-dot {
-        left: -26px;
-        width: 14px;
-        height: 14px;
+        left: -21px;
+        width: 8px;
+        height: 8px;
       }
 
       .timeline-card {
         padding: 18px 20px;
       }
 
+      .timeline-time {
+        font-size: 0.66rem;
+      }
+
       .event-title {
-        font-size: 1.1rem;
+        font-size: 0.95rem;
+      }
+
+      .event-more-info {
+        font-size: 0.68rem;
+      }
+
+      .event-detail {
+        font-size: 0.86rem;
+      }
+
+      .event-note {
+        font-size: 0.74rem;
+      }
+
+      .event-subitems {
+        gap: 8px;
+      }
+
+      .event-subitem-time {
+        font-size: 0.58rem;
+        letter-spacing: 0.5px;
+      }
+
+      .event-subitem-label {
+        font-size: 0.72rem;
+        line-height: 1.25;
       }
 
       .explore-grid {
@@ -793,6 +937,46 @@
       renderRotation();
     });
   </script>
+
+<!-- ---------------------- -->
+<!-- TIMELINE DOT SCROLLSPY -->
+<!-- Kept in its own script block, separate from the collage code above, so
+     a collage error can never take this out too. -->
+<!-- ---------------------- -->
+<script>
+  (function () {
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    if (!timelineItems.length) return;
+
+    // Debounce: wait for the scroll to settle on an item for a beat before
+    // actually committing its highlight change, instead of reacting the
+    // instant it crosses the trigger band. Keeps fast scrolling from
+    // flickering through every dot on the way past.
+    const pendingTimers = new Map();
+    const HIGHLIGHT_DELAY = 250;
+
+    const dotObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const dot = entry.target.querySelector('.timeline-dot');
+        if (!dot) return;
+
+        clearTimeout(pendingTimers.get(entry.target));
+        const isIntersecting = entry.isIntersecting;
+        const timer = setTimeout(() => {
+          dot.classList.toggle('is-active', isIntersecting);
+        }, HIGHLIGHT_DELAY);
+        pendingTimers.set(entry.target, timer);
+      });
+    }, {
+      // A thin band through the middle of the viewport — a dot lights up
+      // whenever its card is crossing that band.
+      rootMargin: '-45% 0px -45% 0px',
+      threshold: 0
+    });
+
+    timelineItems.forEach((item) => dotObserver.observe(item));
+  })();
+</script>
 
 {% endblock %}
 
