@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<div class="travel-page-wrapper" style="padding: 40px 20px 8px; max-width: 1000px; margin: 0 auto; font-family:'Montserrat', sans-serif; color:#2d2f3f;">
+<div class="travel-page-wrapper" style="padding: 40px 20px 0; max-width: 1000px; margin: 0 auto; font-family:'Montserrat', sans-serif; color:#2d2f3f;">
 
   <!-- HEADER -->
   <div class="text-center mb-4">
@@ -10,14 +10,21 @@
     <p style="font-size:1.1rem; color:#514131; margin-top:4px;">Flights, Hotels & Transportation</p>
   </div>
 
-  <!-- QUICK-JUMP NAV -->
-  <nav class="pills-nav" id="pillsNav">
+</div>
+
+<!-- QUICK-JUMP NAV — full-bleed bar (edge to edge), tabs aligned to the
+     page's own content column, subtle underline instead of filled pills -->
+<nav class="pills-nav" id="pillsNav">
+  <div class="pills-nav-inner">
     <a class="pill-link" data-target="s-flights">Flights</a>
     <a class="pill-link" data-target="s-hotels">Hotels</a>
     <a class="pill-link" data-target="s-map">Map</a>
     <a class="pill-link" data-target="s-transit">Public Transit</a>
     <a class="pill-link" data-target="s-parking">Venue &amp; Parking</a>
-  </nav>
+  </div>
+</nav>
+
+<div class="travel-page-wrapper" style="padding: 32px 20px 8px; max-width: 1000px; margin: 0 auto; font-family:'Montserrat', sans-serif; color:#2d2f3f;">
 
   <!-- FLIGHTS -->
   <div class="travel-section mb-5" id="s-flights">
@@ -484,19 +491,21 @@
   background: rgba(255,255,255,0.7) !important;
 }
 
-/* ================= QUICK-JUMP PILLS NAV ================= */
+/* ================= QUICK-JUMP TAB NAV ================= */
+/* Full-bleed bar (edge to edge, breaks out of the .container-fluid px-2
+   gutter from layout.html) with a subtle underline on the active tab —
+   the same understated pattern as Amazon's Details/Reviews tabs, not a
+   filled pill/chip. */
 
 .pills-nav {
   position: sticky;
   top: 76px;
   z-index: 80;
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: center;
-  gap: 8px;
-  padding: 10px 12px;
-  margin-bottom: 36px;
-  background: transparent;
+  width: auto;
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
+  background: #fdfcfa;
+  border-bottom: 1px solid #ece4d8;
   overflow-x: auto;
   -ms-overflow-style: none;   /* hide scrollbar: Edge/IE */
   scrollbar-width: none;      /* hide scrollbar: Firefox */
@@ -506,32 +515,54 @@
   display: none;              /* hide scrollbar: Chrome/Safari */
 }
 
+.pills-nav-inner {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 28px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
 .pill-link {
   flex-shrink: 0;
-  padding: 8px 16px;
-  border-radius: 20px;
-  background: #fff;
-  border: 1px solid #e6ddd1;
-  color: #514131;
+  position: relative;
+  padding: 14px 1px;
+  background: transparent;
+  border: none;
+  color: #83786a;
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   font-weight: 600;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.01em;
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: color 0.2s ease;
+}
+
+.pill-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: transparent;
+  transition: background-color 0.2s ease;
 }
 
 .pill-link:hover {
-  border-color: rgba(175, 142, 110, 0.5);
   color: #2d2f3f;
 }
 
 .pill-link.is-active {
-  background: #af8e6e;
-  border-color: #af8e6e;
-  color: #fff;
+  color: #2d2f3f;
+}
+
+.pill-link.is-active::after {
+  background-color: #af8e6e;
 }
 
 #s-flights, #s-hotels, #s-map, #s-transit, #s-parking {
@@ -541,16 +572,16 @@
 @media (max-width: 600px) {
   .pills-nav {
     top: 68px;
-    gap: 3px;
-    padding: 8px 8px;
-    margin-bottom: 28px;
-    justify-content: center;
+  }
+
+  .pills-nav-inner {
+    gap: 16px;
+    padding: 0 16px;
   }
 
   .pill-link {
-    font-size: 0.54rem;
-    padding: 4px 7px;
-    letter-spacing: 0.01em;
+    font-size: 0.72rem;
+    padding: 12px 1px;
   }
 }
 
@@ -930,8 +961,6 @@
 </style>
 
 {% endblock %}
-
-
 
 
 
