@@ -31,7 +31,7 @@
     <h2 class="section-title">Flights</h2>
     <div class="event-block d-flex align-items-center">
       <img src="{{ url_for('static', filename='images/united_logo1.png') }}" alt="United Airlines" style="height:40px; margin-right:16px;">
-      <p style="margin:0; font-size:1rem;">
+      <p class="travel-body-text" style="margin:0;">
         Book your flights with <a href="https://www.united.com" target="_blank" class="highlight-link">United Airlines</a>
       </p>
     </div>
@@ -40,7 +40,7 @@
   <!-- HOTELS -->
   <div class="travel-section mb-5" id="s-hotels">
     <h2 class="section-title">Hotels</h2>
-    <p style="font-size:1rem; margin-bottom:20px; color:#514131;">
+    <p class="travel-body-text" style="margin-bottom:20px; color:#514131;">
       Here are several hotels within walking distance of The Biltmore Ballrooms:
     </p>
 
@@ -150,7 +150,7 @@
   <div class="travel-section mb-5" id="s-transit">
     <h2 class="section-title">Public Transit</h2>
     <div class="event-block">
-      <p style="margin:0; font-size:1rem;">
+      <p class="travel-body-text" style="margin:0;">
         From the airport, follow signs to MARTA and take the <strong>Red or Gold line</strong> to <strong>Georgia Tech / Midtown Station</strong>.
       </p>
     </div>
@@ -169,7 +169,7 @@
       <p class="venue-parking-subtitle">Imperial Room</p>
 
       <p class="venue-parking-address">
-        817 W Peachtree St NW #208<br>
+        817 W Peachtree St NW<br>
         Atlanta, GA 30308
       </p>
 
@@ -183,7 +183,7 @@
     <div class="venue-parking-section">
       <span class="venue-parking-label">Parking</span>
 
-      <h4 class="venue-parking-title">$15 Event Parking</h4>
+      <h4 class="venue-parking-title">$15 Biltmore Parking</h4>
       <p class="venue-parking-subtitle" aria-hidden="true" style="visibility:hidden;">&nbsp;</p>
 
       <p class="venue-parking-address">
@@ -613,6 +613,14 @@
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
   margin-bottom: 20px;
 }
+
+/* Shared body-copy size for the plain info paragraphs (Flights, Hotels
+   intro, Public Transit) — kept in one class so it scales down in step
+   with the rest of the cards on mobile instead of staying pinned at 1rem. */
+.travel-body-text {
+  font-size: 1rem;
+}
+
 /* ================= VENUE + PARKING ================= */
 
 .venue-parking-card {
@@ -676,8 +684,11 @@
 
 /* Venue & Parking stays side-by-side all the way down to real phone widths
    (iPhone SE at 375px and up) — the columns just get tighter and the type
-   scales down, instead of stacking into a single column. */
-@media (max-width: 480px) {
+   scales down, instead of stacking into a single column. Sizes here match
+   the same mobile scale used by the other cards below (.travel-body-text,
+   .featured-hotel-content, .hotel-card) so nothing on this page reads
+   smaller than the rest once you're on a phone. */
+@media (max-width: 600px) {
 
   .venue-parking-card {
     grid-template-columns: 1fr 1px 1fr;
@@ -691,28 +702,28 @@
   }
 
   .venue-parking-label {
-    font-size: 0.6rem;
+    font-size: 0.68rem;
     letter-spacing: 1px;
     margin-bottom: 5px;
   }
 
   .venue-parking-title {
-    font-size: 0.85rem;
+    font-size: 1rem;
     line-height: 1.25;
   }
 
   .venue-parking-subtitle {
-    font-size: 0.72rem;
+    font-size: 0.88rem;
     margin-bottom: 10px;
   }
 
   .venue-parking-address {
-    font-size: 0.72rem;
-    line-height: 1.5;
+    font-size: 0.88rem;
+    line-height: 1.45;
   }
 
   .venue-parking-note {
-    font-size: 0.62rem;
+    font-size: 0.75rem;
     line-height: 1.4;
     margin-top: 8px;
     padding-top: 8px;
@@ -790,6 +801,33 @@
   margin-bottom: 0;
   font-size: 0.85rem;
   color: #999;
+}
+
+/* Unified mobile type scale — brings the featured hotel card, the plain
+   info paragraphs (.travel-body-text) and the venue/parking card in line
+   with each other so nothing on this page reads smaller or bigger than
+   its neighbors once you're on a phone. */
+@media (max-width: 600px) {
+  .travel-body-text {
+    font-size: 0.88rem;
+  }
+
+  .featured-hotel-content h3 {
+    font-size: 1.15rem;
+  }
+
+  .featured-hotel-content p {
+    font-size: 0.88rem;
+  }
+
+  .featured-hotel-content .fine-print {
+    font-size: 0.75rem;
+  }
+
+  .hotel-card h5,
+  .hotel-card h6 {
+    font-size: 0.88rem;
+  }
 }
 
 
@@ -961,6 +999,4 @@
 </style>
 
 {% endblock %}
-
-
 
