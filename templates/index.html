@@ -33,6 +33,7 @@
       <button class="rsvp-btn" data-bs-toggle="modal" data-bs-target="#quickRsvpModal">
         RSVP <span class="rsvp-btn-arrow">→</span>
       </button>
+      <p class="rsvp-deadline">Please RSVP by September 24th</p>
     </div>
 
   </div>
@@ -54,7 +55,7 @@
           <div class="timeline-card">
             <span class="timeline-time">Time TBD</span>
             <p class="event-title">Welcome Gathering</p>
-            <p class="event-detail">The <strong>Renaissance Atlanta Midtown Marriott</strong> hotel.</p>
+            <p class="event-detail">Welcome gathering at the <strong>Renaissance Atlanta Midtown Marriott</strong> hotel.</p>
           </div>
         </div>
       </div>
@@ -314,37 +315,49 @@
       margin-bottom: 28px;
     }
 
-    /* Minimal text-link style — no button chrome, just tracked type on a
-       thin underline with a small arrow that shifts on hover. */
+    /* Solid, filled button — matches the gold pill used sitewide (the
+       floating RSVP button, the modal's submit button) instead of standing
+       apart as a bare text link. */
     .rsvp-btn {
-      display: inline-block;
-      background: transparent;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #af8e6e;
+      color: #fff;
       border: none;
-      border-bottom: 1px solid #2d2f3f;
-      color: #2d2f3f;
-      padding: 0 0 4px;
-      letter-spacing: 0.18em;
+      padding: 13px 32px;
+      border-radius: 8px;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
       font-family: 'Montserrat', sans-serif;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 700;
       cursor: pointer;
-      transition: color 0.2s ease, border-color 0.2s ease;
+      box-shadow: 0 6px 18px rgba(45, 47, 63, 0.14);
+      transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
     }
 
     .rsvp-btn:hover {
-      color: #af8e6e;
-      border-color: #af8e6e;
+      background: #8a685d;
+      box-shadow: 0 8px 22px rgba(45, 47, 63, 0.2);
+      transform: translateY(-2px);
     }
 
     .rsvp-btn-arrow {
       display: inline-block;
-      margin-left: 4px;
       transition: transform 0.2s ease;
     }
 
     .rsvp-btn:hover .rsvp-btn-arrow {
-      transform: translateX(4px);
+      transform: translateX(3px);
+    }
+
+    .rsvp-deadline {
+      margin: 10px 0 0;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.04em;
+      color: #a39a8c;
     }
 
     /* ========================= */
@@ -804,7 +817,7 @@
       },
       {
         aspectRatio: '4 / 5',
-        images: ['banffrun.jpg', 'ggp.jpg', 'proposal.jpg'],
+        images: ['banffrun.jpg', 'ggp.jpg', 'alaska2.jpg'],
         layout: [
           { top: 0,  left: 0, width: 55, height: 100 },
           { top: 0,  left: 50,  width: 55, height: 50 },
@@ -837,10 +850,10 @@
     const MOBILE_ROTATIONS = [
       {
         aspectRatio: '1 / 1',
-        images: ['banff.jpg', 'liftsnow.jpg', 'grun.JPG', 'parents.jpg'],
+        images: ['banff.jpg', 'liftsnow.jpg', 'grun.JPG','parents.jpg',],
         layout: [
-          { top: 0,  left: 0,  width: 50, height: 65 },
-          { top: 0,  left: 50, width: 50, height: 50 },
+          { top: 0,  left: 0,  width: 53, height: 65 },
+          { top: 0,  left: 50, width: 50, height: 52 },
           { top: 62, left: 0,  width: 50, height: 40 },
           { top: 50, left: 50, width: 50, height: 50 }
         ],
@@ -848,7 +861,7 @@
       },
       {
         aspectRatio: '4 / 5',
-        images: ['dipsea.jpg', 'ski.jpg', 'guatamalastreet.jpg'],
+        images: ['dipsea.jpg', 'alaska1.jpg', 'guatamalastreet.jpg'],
         layout: [
           { top: 0,  left: 45, width: 55, height: 100 },
           { top: 0,  left: 0,  width: 46, height: 50 },
@@ -868,7 +881,7 @@
       },
       {
         aspectRatio: '4 / 5',
-        images: ['banffrun.jpg', 'ggp.jpg', 'proposal.jpg'],
+        images: ['banffrun.jpg', 'alaska2.jpg', 'proposal.jpg'],
         layout: [
           { top: 0,  left: 0, width: 55, height: 100 },
           { top: 0,  left: 50,  width: 55, height: 50 },
@@ -878,7 +891,7 @@
       },
       {
         aspectRatio: '4 / 5',
-        images: ['guatamaladock.jpg', 'trun.JPG', 'brun.HEIC'],
+        images: ['guatamaladock.jpg',  'trun.jpg','brun.HEIC',],
         layout: [
           { top: 0,  left: 45, width: 55, height: 100 },
           { top: 0,  left: 0,  width: 55, height: 50 },
@@ -888,12 +901,12 @@
       },
       {
         aspectRatio: '1 / 1',
-        images: ['bballgame.jpeg', 'hbike.JPG', 'italybike.jpeg', 'yellowstone.JPG'],
+        images: ['kellyjorge.jpg','bballgame.jpeg',  'italybike.jpeg' ,'yellowstone.JPG'],
         layout: [
-          { top: 0,  left: 0,  width: 50, height: 60 },
+          { top: 0,  left: 0,  width: 52, height: 60 },
           { top: 0,  left: 50, width: 50, height: 50 },
           { top: 60, left: 0,  width: 50, height: 40 },
-          { top: 50, left: 50, width: 50, height: 50 }
+          { top: 48, left: 50, width: 50, height: 52 }
         ],
         rotate: [-1, 1]
       },
@@ -979,5 +992,4 @@
 </script>
 
 {% endblock %}
-
 
