@@ -13,10 +13,14 @@
     <!-- Small transition divider between the collage and the names —
          hidden on desktop (collage and text sit side by side there),
          shown on mobile where the collage stacks directly above the text. -->
-    <div class="collage-divider"><span class="collage-divider-mark">◆</span></div>
+         <div class="collage-divider"><span class="collage-divider-mark">◆</span></div>
+         <!-- <div class="collage-divider">
+          <img src="{{ url_for('static', filename='images/navbar_flower.png') }}" alt="" class="collage-divider-mark">
+        </div> -->
 
     <!-- RIGHT: INVITATION CONTENT -->
     <div class="invitation-content">
+
       <h1 class="names">
         <!-- Full names stay in the markup (indexable by search engines,
              readable by screen readers) even though only first names are
@@ -24,16 +28,16 @@
         <span class="visually-hidden">Melanie Bowden &amp; Isaac Birocci</span>
         <span aria-hidden="true">Melanie <span class="amp">&amp;</span> Isaac</span>
       </h1>
+
+      <p class="date">October 24, 2026</p>
+      <p class="location">Atlanta, Georgia</p>
       <span class="logo-inline">
         <img src="{{ url_for('static', filename='images/biltmore1.png') }}" alt="Venue logo">
       </span>
-      <p class="date">October 24, 2026</p>
-      <p class="location">Atlanta, Georgia</p>
-
       <button class="rsvp-btn" data-bs-toggle="modal" data-bs-target="#quickRsvpModal">
         RSVP <span class="rsvp-btn-arrow">→</span>
       </button>
-      <p class="rsvp-deadline">Please RSVP by September 24th</p>
+      <p class="rsvp-deadline">by September 24th</p>
     </div>
 
   </div>
@@ -259,8 +263,8 @@
     }
 
     .logo-inline img {
-      height: 44px;
-      margin: 4px 0 18px;
+      height: 84px;
+      margin: 4px 0 28px;
       vertical-align: middle;
       opacity: 0.85;
     }
@@ -286,13 +290,18 @@
       background: #e6ddd1;
     }
 
-    .collage-divider-mark {
-      color: #af8e6e;
-      font-size: 1rem;
-      transform: rotate(45deg);
-      flex-shrink: 0;
-    }
-
+    /* .collage-divider-mark {
+  width: 14px;
+  height: auto;
+  flex-shrink: 0;
+  opacity: 0.9;
+} */
+.collage-divider-mark {
+  color: #af8e6e;
+  font-size: 1rem;
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
     .names {
       font-family: 'Instrument Serif', serif;
       font-weight: 400;
@@ -312,34 +321,32 @@
     .location {
       font-family: 'Montserrat', sans-serif;
       color: #83786a;
-      margin-bottom: 28px;
+      margin-bottom: 18px;
     }
 
-    /* Solid, filled button — matches the gold pill used sitewide (the
-       floating RSVP button, the modal's submit button) instead of standing
-       apart as a bare text link. */
+    /* Outlined "ghost" pill — transparent with a gold border, fills solid
+       gold on hover. This is the only rule changed in this file. */
     .rsvp-btn {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      background: #af8e6e;
-      color: #fff;
-      border: none;
-      padding: 13px 32px;
-      border-radius: 8px;
+      gap: 9px;
+      background: transparent;
+      color: #af8e6e;
+      border: 1.5px solid #af8e6e;
+      padding: 14px 36px;
+      border-radius: 30px;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       font-family: 'Montserrat', sans-serif;
       font-size: 0.76rem;
       font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 6px 18px rgba(45, 47, 63, 0.14);
-      transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+      transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
     }
 
     .rsvp-btn:hover {
-      background: #8a685d;
-      box-shadow: 0 8px 22px rgba(45, 47, 63, 0.2);
+      background: #af8e6e;
+      color: #fff;
       transform: translateY(-2px);
     }
 
@@ -861,7 +868,7 @@
       },
       {
         aspectRatio: '4 / 5',
-        images: ['dipsea.jpg', 'alaska1.JPG', 'guatamalastreet.jpg'],
+        images: ['dipsea.jpg', 'alaska1.jpg', 'guatamalastreet.jpg'],
         layout: [
           { top: 0,  left: 45, width: 55, height: 100 },
           { top: 0,  left: 0,  width: 46, height: 50 },
@@ -881,7 +888,7 @@
       },
       {
         aspectRatio: '4 / 5',
-        images: ['banffrun.jpg', 'alaska2.JPG', 'proposal.jpg'],
+        images: ['banffrun.jpg', 'alaska2.jpg', 'proposal.jpg'],
         layout: [
           { top: 0,  left: 0, width: 55, height: 100 },
           { top: 0,  left: 50,  width: 55, height: 50 },
@@ -891,7 +898,7 @@
       },
       {
         aspectRatio: '4 / 5',
-        images: ['guatamaladock.jpg',  'trun.JPG','brun.jpeg',],
+        images: ['guatamaladock.jpg',  'trun.jpg','brun.HEIC',],
         layout: [
           { top: 0,  left: 45, width: 55, height: 100 },
           { top: 0,  left: 0,  width: 55, height: 50 },
