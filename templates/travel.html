@@ -1,19 +1,17 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<div class="travel-page-wrapper" style="padding: 40px 20px 0; max-width: 1000px; margin: 0 auto; font-family:'Montserrat', sans-serif; color:#2d2f3f;">
 
-  <!-- HEADER -->
-  <div class="text-center mb-4">
-    <img src="{{ url_for('static', filename='images/biltmore1.png') }}" alt="Biltmore Logo" style="height:60px; margin-bottom:16px; opacity:0.85;">
-    <h1 style="font-family:'Great Vibes', cursive;  font-weight: 400; font-size:3.4rem; margin-bottom:0; color:#2d2f3f;">Travel Info</h1>
-    <p style="font-size:1.1rem; color:#514131; margin-top:4px;">Flights, Hotels & Transportation</p>
+<div class="travel-page-wrapper travel-header-wrap">
+  <div class="trav-header">
+    <img src="{{ url_for('static', filename='images/biltmore1.png') }}" alt="Biltmore Logo" class="trav-logo-img">
+    <h1 class="trav-title">Travel Info</h1>
+    <p class="trav-subtitle">Flights, Hotels &amp; Transportation</p>
   </div>
-
 </div>
 
-<!-- QUICK-JUMP NAV — full-bleed bar (edge to edge), tabs aligned to the
-     page's own content column, subtle underline instead of filled pills -->
+<!-- QUICK-JUMP NAV — same position as before: full-bleed bar sitting right
+     below the header, above all the section content. -->
 <nav class="pills-nav" id="pillsNav">
   <div class="pills-nav-inner">
     <a class="pill-link" data-target="s-flights">Flights</a>
@@ -24,31 +22,33 @@
   </div>
 </nav>
 
-<div class="travel-page-wrapper" style="padding: 32px 20px 8px; max-width: 1000px; margin: 0 auto; font-family:'Montserrat', sans-serif; color:#2d2f3f;">
+<div class="travel-page-wrapper travel-body-wrap">
 
   <!-- FLIGHTS -->
-  <div class="travel-section mb-5" id="s-flights">
-    <h2 class="section-title">Flights</h2>
-    <div class="event-block d-flex align-items-center">
-      <img src="{{ url_for('static', filename='images/united_logo1.png') }}" alt="United Airlines" style="height:40px; margin-right:16px;">
-      <p class="travel-body-text" style="margin:0;">
-        Book your flights with <a href="https://www.united.com" target="_blank" class="highlight-link">United Airlines</a>
-      </p>
+  <div class="trav-group" id="s-flights">
+    <div class="trav-head"><span class="trav-head-text">Flights</span></div>
+    <div class="flight-row">
+      <img src="{{ url_for('static', filename='images/united_logo1.png') }}" alt="United Airlines" class="airline-logo">
+      <p class="travel-body-text">Fly <a href="https://www.united.com" target="_blank" class="highlight-link">United Airlines</a></p>
     </div>
   </div>
 
+  <hr class="trav-divider">
+
   <!-- HOTELS -->
-  <div class="travel-section mb-5" id="s-hotels">
-    <h2 class="section-title">Hotels</h2>
-    <p class="travel-body-text" style="margin-bottom:20px; color:#514131;">
-      Here are several hotels within walking distance of The Biltmore Ballrooms:
-    </p>
+  <div class="trav-group" id="s-hotels">
+    <div class="trav-head"><span class="trav-head-text">Hotels</span></div>
+    <p class="trav-subhead">Within walking distance of the venue. Our room block is at the Renaissance.</p>
 
-    <!-- Official Hotel Block (Featured, image left / text right) -->
-    <div class="featured-hotel-section">
-      <div class="featured-hotel-card">
+    <!-- All hotels — one horizontally-scrolling row of identically-sized
+         cards. The Renaissance (our reserved block) is simply first;
+         its card links straight to the reservation page instead of the
+         hotel's own site, but looks exactly like the others. -->
+    <div class="hotel-row">
 
-        <div class="hotel-carousel featured-carousel" id="carousel-official">
+      <div class="hotel-card">
+        <div class="hotel-carousel" id="carousel-official">
+          <a class="hotel-badge" href="https://www.marriott.com/event-reservations/reservation-link.mi?id=1776089155214&key=GRP&app=resvlink&_branch_match_id=1603525811292214297&_branch_referrer=H4sIAAAAAAAAA8soKSkottLXTywo0MtNLCrKzC8p0UvOz9UvSi3OyczLtgdK2ALZZSCOWmaKraG5uZmBhaWhqamRoYladmqlrXtQgFpdUWpaKlB3Xnp8UlF%2BeXFqka1rSnoqALHYfCleAAAA&inventoryMissing=true" target="_blank">Wedding Block</a>
           <div class="carousel-images">
             <img src="{{ url_for('static', filename='images/travel/marriot_ren_hotel.jpg') }}" alt="Renaissance Hotel">
             <img src="{{ url_for('static', filename='images/travel/marriot_ren_din.jpg') }}" alt="Hotel Dining">
@@ -57,28 +57,9 @@
           <button class="carousel-btn left" onclick="prevSlide('carousel-official')">&#10094;</button>
           <button class="carousel-btn right" onclick="nextSlide('carousel-official')">&#10095;</button>
         </div>
-
-        <div class="featured-hotel-content">
-
-          <h3>Renaissance Atlanta Midtown Marriott</h3>
-          <p>
-            We have reserved a <strong>hotel room block</strong> at the
-            <strong>Renaissance Atlanta Midtown Marriott</strong>. and would love for you to join us there for the weekend.
-          </p>
-          <a href="https://www.marriott.com/event-reservations/reservation-link.mi?id=1776089155214&key=GRP&app=resvlink&_branch_match_id=1603525811292214297&_branch_referrer=H4sIAAAAAAAAA8soKSkottLXTywo0MtNLCrKzC8p0UvOz9UvSi3OyczLtgdK2ALZZSCOWmaKraG5uZmBhaWhqamRoYladmqlrXtQgFpdUWpaKlB3Xnp8UlF%2BeXFqka1rSnoqALHYfCleAAAA&inventoryMissing=true" target="_blank" class="hotel-block-btn">
-            Reserve Hotel Block →
-          </a>
-          <p class="fine-print">
-
-          </p>
-        </div>
-
+        <h5><a class="hotel-link" href="https://www.marriott.com/event-reservations/reservation-link.mi?id=1776089155214&key=GRP&app=resvlink&_branch_match_id=1603525811292214297&_branch_referrer=H4sIAAAAAAAAA8soKSkottLXTywo0MtNLCrKzC8p0UvOz9UvSi3OyczLtgdK2ALZZSCOWmaKraG5uZmBhaWhqamRoYladmqlrXtQgFpdUWpaKlB3Xnp8UlF%2BeXFqka1rSnoqALHYfCleAAAA&inventoryMissing=true" target="_blank">Renaissance Atlanta Midtown Marriott &rarr;</a></h5>
       </div>
-    </div>
 
-    <!-- Other Hotels Grid -->
-    <div class="hotel-grid">
-      <!-- Georgia Tech Hotel -->
       <div class="hotel-card">
         <div class="hotel-carousel" id="carousel-gatech">
           <div class="carousel-images">
@@ -89,10 +70,9 @@
           <button class="carousel-btn left" onclick="prevSlide('carousel-gatech')">&#10094;</button>
           <button class="carousel-btn right" onclick="nextSlide('carousel-gatech')">&#10095;</button>
         </div>
-        <h5><a class="hotel-link" href="http://www.gatechhotel.com/" target="_blank">Georgia Tech Hotel & Conference Center →</a></h5>
+        <h5><a class="hotel-link" href="http://www.gatechhotel.com/" target="_blank">Georgia Tech Hotel &rarr;</a></h5>
       </div>
 
-      <!-- Hyatt Centric Midtown Atlanta -->
       <div class="hotel-card">
         <div class="hotel-carousel" id="carousel-hyatt">
           <div class="carousel-images">
@@ -103,10 +83,9 @@
           <button class="carousel-btn left" onclick="prevSlide('carousel-hyatt')">&#10094;</button>
           <button class="carousel-btn right" onclick="nextSlide('carousel-hyatt')">&#10095;</button>
         </div>
-        <h5><a class="hotel-link" href="http://atlantamidtown.hyatt.com/" target="_blank">Hyatt Centric Midtown Atlanta →</a></h5>
+        <h5><a class="hotel-link" href="http://atlantamidtown.hyatt.com/" target="_blank">Hyatt Centric Midtown Atlanta &rarr;</a></h5>
       </div>
 
-      <!-- The Georgian Terrace -->
       <div class="hotel-card">
         <div class="hotel-carousel" id="carousel-georgian">
           <div class="carousel-images">
@@ -117,10 +96,9 @@
           <button class="carousel-btn left" onclick="prevSlide('carousel-georgian')">&#10094;</button>
           <button class="carousel-btn right" onclick="nextSlide('carousel-georgian')">&#10095;</button>
         </div>
-        <h5><a class="hotel-link" href="https://thegeorgianterrace.com/" target="_blank">The Georgian Terrace →</a></h5>
+        <h5><a class="hotel-link" href="https://thegeorgianterrace.com/" target="_blank">The Georgian Terrace &rarr;</a></h5>
       </div>
 
-      <!-- Hilton Garden Inn Midtown -->
       <div class="hotel-card">
         <div class="hotel-carousel" id="carousel-hilton">
           <div class="carousel-images">
@@ -130,15 +108,18 @@
           <button class="carousel-btn left" onclick="prevSlide('carousel-hilton')">&#10094;</button>
           <button class="carousel-btn right" onclick="nextSlide('carousel-hilton')">&#10095;</button>
         </div>
-        <h5><a class="hotel-link" href="https://www.hilton.com/en/hotels/atlamgi-hilton-garden-inn-atlanta-midtown/" target="_blank">Hilton Garden Inn Atlanta Midtown →</a></h5>
+        <h5><a class="hotel-link" href="https://www.hilton.com/en/hotels/atlamgi-hilton-garden-inn-atlanta-midtown/" target="_blank">Hilton Garden Inn Atlanta Midtown &rarr;</a></h5>
       </div>
+
     </div>
   </div>
 
+  <hr class="trav-divider">
+
   <!-- MAP -->
-  <div class="travel-map-wrapper mb-5" id="s-map">
-    <h2 class="section-title">Map of Hotels & Venue</h2>
-    <div id="map" style="height:450px;"></div>
+  <div class="trav-group" id="s-map">
+    <div class="trav-head"><span class="trav-head-text">Map</span></div>
+    <div id="map"></div>
     <div class="map-legend">
       <span><span class="legend-dot legend-venue"></span> The Biltmore (Venue)</span>
       <span><span class="legend-dot legend-hotel"></span> Hotels</span>
@@ -146,58 +127,49 @@
     </div>
   </div>
 
+  <hr class="trav-divider">
+
   <!-- PUBLIC TRANSIT -->
-  <div class="travel-section mb-5" id="s-transit">
-    <h2 class="section-title">Public Transit</h2>
-    <div class="event-block">
-      <p class="travel-body-text" style="margin:0;">
-        From the airport, follow signs to MARTA and take the <strong>Red or Gold line</strong> to <strong>Georgia Tech / Midtown Station</strong>.
-      </p>
-    </div>
+  <div class="trav-group" id="s-transit">
+    <div class="trav-head"><span class="trav-head-text">Public Transit</span></div>
+    <p class="travel-body-text">
+      From the airport: MARTA <strong>Red or Gold line</strong> to <strong>Georgia Tech / Midtown</strong>.
+    </p>
   </div>
+
+  <hr class="trav-divider">
 
   <!-- VENUE & PARKING -->
-<div class="travel-section mb-2" id="s-parking">
-  <h2 class="section-title">Venue & Parking</h2>
+  <div class="trav-group" id="s-parking">
+    <div class="trav-head"><span class="trav-head-text">Venue &amp; Parking</span></div>
 
-  <div class="event-block venue-parking-card">
+    <div class="venue-parking-card">
 
-    <div class="venue-parking-section">
-      <span class="venue-parking-label">Venue</span>
+      <div class="venue-parking-section">
+        <span class="venue-parking-label">Venue</span>
+        <h4 class="venue-parking-title">The Biltmore</h4>
+        <p class="venue-parking-subtitle">Imperial Room</p>
+        <p class="venue-parking-address">
+          817 W Peachtree St NW<br>
+          Atlanta, GA 30308
+        </p>
+      </div>
 
-      <h4 class="venue-parking-title">The Biltmore</h4>
-      <p class="venue-parking-subtitle">Imperial Room</p>
+      <div class="venue-parking-divider"></div>
 
-      <p class="venue-parking-address">
-        817 W Peachtree St NW<br>
-        Atlanta, GA 30308
-      </p>
+      <div class="venue-parking-section">
+        <span class="venue-parking-label">Parking</span>
+        <h4 class="venue-parking-title">$15 Biltmore Parking</h4>
+        <p class="venue-parking-subtitle" aria-hidden="true" style="visibility:hidden;">&nbsp;</p>
+        <p class="venue-parking-address">
+          30 5th Street NE<br>
+          Atlanta, GA 30308
+        </p>
+      </div>
 
-      <p class="venue-parking-note">
-        Use this address if you're walking from a nearby hotel.
-      </p>
     </div>
-
-    <div class="venue-parking-divider"></div>
-
-    <div class="venue-parking-section">
-      <span class="venue-parking-label">Parking</span>
-
-      <h4 class="venue-parking-title">$15 Biltmore Parking</h4>
-      <p class="venue-parking-subtitle" aria-hidden="true" style="visibility:hidden;">&nbsp;</p>
-
-      <p class="venue-parking-address">
-        30 5th Street NE<br>
-        Atlanta, GA 30308
-      </p>
-
-      <p class="venue-parking-note">
-        Use this address for the parking garage.
-      </p>
-    </div>
-
   </div>
-</div>
+
 
 </div>
 
@@ -303,7 +275,7 @@
   // shifts the map container's real size after the initial fitBounds above.
   window.addEventListener('load', function () {
     map.invalidateSize();
-    map.fitBounds(bounds, { padding: [46, 46], maxZoom: 16 });
+    map.fitBounds(bounds, { padding: [22, 22], maxZoom: 46 });
   });
 
   // Hotel carousel logic
@@ -361,21 +333,333 @@
 
 <style>
 
+/* ========================= */
+/* BASE + PAGE WRAPPERS */
+/* ========================= */
+.travel-page-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px;
+  font-family: 'Montserrat', sans-serif;
+  color: #2d2f3f;
+}
+
+.travel-header-wrap {
+  padding-top: 28px;
+}
+
+.travel-body-wrap {
+  padding-top: 26px;
+  padding-bottom: 12px;
+}
+
+/* ================= HEADER ================= */
+
+.trav-header {
+  text-align: center;
+}
+
+.trav-logo-img {
+  height: 56px;
+  margin-bottom: 10px;
+  opacity: 0.85;
+}
+
+
+.trav-title {
+  font-family: 'Great Vibes', cursive;
+  font-weight: 400;
+  font-size: 3.8rem;
+  margin: 0;
+  color: #2d2f3f;
+}
+
+.trav-subtitle {
+  font-size: 1rem;
+  color: #514131;
+  margin: 2px 0 0;
+}
+
+/* ================= QUICK-JUMP TAB NAV ================= */
+/* Full-bleed bar (edge to edge, breaks out of the .container-fluid px-2
+   gutter from layout.html) with a subtle underline on the active tab. */
+
+.pills-nav {
+  position: sticky;
+  top: 76px;
+  z-index: 80;
+  width: auto;
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
+  margin-top: 22px;
+  background: #fdfcfa;
+  border-bottom: 1px solid #ece4d8;
+  overflow-x: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.pills-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.pills-nav-inner {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 28px;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.pill-link {
+  flex-shrink: 0;
+  position: relative;
+  padding: 14px 1px;
+  background: transparent;
+  border: none;
+  color: #83786a;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.pill-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: transparent;
+  transition: background-color 0.2s ease;
+}
+
+.pill-link:hover {
+  color: #2d2f3f;
+}
+
+.pill-link.is-active {
+  color: #2d2f3f;
+}
+
+.pill-link.is-active::after {
+  background-color: #af8e6e;
+}
+
+#s-flights, #s-hotels, #s-map, #s-transit, #s-parking {
+  scroll-margin-top: 130px;
+}
+
+@media (max-width: 600px) {
+  .pills-nav {
+    top: 68px;
+  }
+
+  .pills-nav-inner {
+    gap: 16px;
+    padding: 0 16px;
+  }
+
+  .pill-link {
+    font-size: 0.72rem;
+    padding: 12px 1px;
+  }
+}
+
+/* ================= SECTION LABEL + DIVIDER ================= */
+/* Quiet, dark, no underline — same italic-serif treatment index.html
+   uses for its "Friday, Oct 23" day labels, instead of a big gold
+   underlined title. */
+
+.trav-group {
+  padding: 0 2px;
+}
+
+.trav-head {
+  margin: 0 0 14px;
+}
+
+.trav-head-text {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.15rem;
+  color: #2d2f3f;
+}
+
+.trav-divider {
+  border: none;
+  border-top: 1px solid #e6ddd1f8;
+  margin: 34px 0;
+}
+
+.travel-body-text {
+  font-size: 0.9rem;
+  color: #514131;
+  margin: 0;
+}
+
+.travel-section a.highlight-link {
+  color: #af8e6e;
+  text-decoration: underline;
+}
+
+.trav-subhead {
+  font-size: 0.88rem;
+  color: #83786a;
+  margin: 0 0 16px;
+}
+
+/* ================= FLIGHTS ================= */
+
+.flight-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.airline-logo {
+  height: 38px;
+  flex-shrink: 0;
+}
+
+/* ================= HOTEL ROW (horizontal scroll, replaces the grid) ================= */
+/* One card component, reused for every hotel including the reserved
+   block — same size, same type scale, no exceptions. */
+
+.hotel-row {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  padding: 2px 2px 8px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hotel-row::-webkit-scrollbar {
+  display: none;
+}
+
+.hotel-card {
+  flex: 0 0 195px;
+  background: #fffaf7;
+  border: 1px solid #e6ddd1;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.hotel-card .hotel-carousel {
+  border-radius: 12px 12px 0 0;
+}
+
+.hotel-card .carousel-images img {
+  height: 118px;
+}
+
+.hotel-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 6;
+  background: #af8e6e;
+  color: #fff;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 20px;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.hotel-badge:hover {
+  background: #8a685d;
+  color: #fff;
+}
+
+.hotel-card h5 {
+  margin: 10px 12px 12px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.hotel-link {
+  display: inline-block;
+  color: #2d2f3f;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.hotel-link:hover {
+  color: #af8e6e;
+  text-decoration: underline;
+}
+
+/* ================= CAROUSEL (shared: official + row cards) ================= */
+
+.hotel-carousel {
+  position: relative;
+  overflow: hidden;
+}
+
+.carousel-images {
+  display: flex;
+  height: 100%;
+  transition: transform 0.4s ease;
+}
+
+.carousel-images img {
+  width: 100%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.45);
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  padding: 5px 9px;
+  cursor: pointer;
+  border-radius: 50%;
+  z-index: 10;
+  transition: background 0.2s ease;
+}
+
+.carousel-btn.left { left: 10px; }
+.carousel-btn.right { right: 10px; }
+
+.carousel-btn:hover {
+  background: rgba(0, 0, 0, 0.75);
+}
+
 /* ================= MAP ================= */
 
 #map {
-  height: 450px;
-  border-radius: 16px;
-  box-shadow: 0 8px 26px rgba(0,0,0,0.1);
+  height: 260px;
+  border-radius: 12px;
   border: 1px solid #e6ddd1;
 }
 
 .map-legend {
   display: flex;
   justify-content: center;
-  gap: 24px;
-  margin-top: 16px;
-  font-size: 0.82rem;
+  gap: 22px;
+  margin-top: 14px;
+  font-size: 0.85rem;
   color: #514131;
 }
 .map-legend span {
@@ -395,24 +679,24 @@
 .legend-publix { background: #4c8c4a; box-shadow: 0 0 0 2px #fff, 0 0 0 3px #4c8c4a; }
 
 .venue-marker {
-  width: 26px; height: 26px;
+  width: 9px; height: 9px;
   border-radius: 50%;
   background: #af8e6e;
-  border: 3px solid #fff;
+  border: 1.5px solid #fff;
   box-shadow: 0 0 0 2px #af8e6e, 0 3px 10px rgba(0,0,0,0.3);
 }
 .hotel-marker {
-  width: 16px; height: 16px;
+  width: 9px; height: 9px;
   border-radius: 50%;
   background: #fff;
   border: 2.5px solid #2d2f3f;
   box-shadow: 0 2px 6px rgba(0,0,0,0.25);
 }
 .publix-marker {
-  width: 14px; height: 14px;
+  width: 9px; height: 9px;
   border-radius: 50%;
   background: #4c8c4a;
-  border: 2.5px solid #fff;
+  border: 1.5px solid #fff;
   box-shadow: 0 0 0 1.5px #4c8c4a, 0 2px 6px rgba(0,0,0,0.25);
 }
 
@@ -420,9 +704,9 @@
   background: rgba(255,255,255,0.94);
   border: 1px solid #e6ddd1;
   border-radius: 6px;
-  padding: 3px 8px;
+  padding: 1px 2px;
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.7rem;
+  font-size: 0.4rem;
   font-weight: 600;
   color: #2d2f3f;
   box-shadow: 0 2px 6px rgba(0,0,0,0.12);
@@ -491,144 +775,14 @@
   background: rgba(255,255,255,0.7) !important;
 }
 
-/* ================= QUICK-JUMP TAB NAV ================= */
-/* Full-bleed bar (edge to edge, breaks out of the .container-fluid px-2
-   gutter from layout.html) with a subtle underline on the active tab —
-   the same understated pattern as Amazon's Details/Reviews tabs, not a
-   filled pill/chip. */
-
-.pills-nav {
-  position: sticky;
-  top: 76px;
-  z-index: 80;
-  width: auto;
-  margin-left: -0.5rem;
-  margin-right: -0.5rem;
-  background: #fdfcfa;
-  border-bottom: 1px solid #ece4d8;
-  overflow-x: auto;
-  -ms-overflow-style: none;   /* hide scrollbar: Edge/IE */
-  scrollbar-width: none;      /* hide scrollbar: Firefox */
-}
-
-.pills-nav::-webkit-scrollbar {
-  display: none;              /* hide scrollbar: Chrome/Safari */
-}
-
-.pills-nav-inner {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  gap: 28px;
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-.pill-link {
-  flex-shrink: 0;
-  position: relative;
-  padding: 14px 1px;
-  background: transparent;
-  border: none;
-  color: #83786a;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.82rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  text-decoration: none;
-  white-space: nowrap;
-  cursor: pointer;
-  transition: color 0.2s ease;
-}
-
-.pill-link::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: 2px;
-  background: transparent;
-  transition: background-color 0.2s ease;
-}
-
-.pill-link:hover {
-  color: #2d2f3f;
-}
-
-.pill-link.is-active {
-  color: #2d2f3f;
-}
-
-.pill-link.is-active::after {
-  background-color: #af8e6e;
-}
-
-#s-flights, #s-hotels, #s-map, #s-transit, #s-parking {
-  scroll-margin-top: 130px;
-}
-
-@media (max-width: 600px) {
-  .pills-nav {
-    top: 68px;
-  }
-
-  .pills-nav-inner {
-    gap: 16px;
-    padding: 0 16px;
-  }
-
-  .pill-link {
-    font-size: 0.72rem;
-    padding: 12px 1px;
-  }
-}
-
-/* ================= SECTION TITLE ================= */
-
-.section-title {
-
-
-
-  margin-bottom: 20px;
-  border-bottom: 1px solid #af8e6e;
-  display: inline-block;
-  padding-bottom: 6px;
-  font-family: 'Instrument Serif', serif;   /* switched from Montserrat */
-  font-style: italic;
-  font-weight: 400;
-  color: #8a685d;
-  font-size: 1.9rem;
-  letter-spacing: 0.01em;
-}
-
-
-/* ================= EVENT BLOCK ================= */
-
-.event-block {
-  background: #faf9f7;
-  padding: 20px 24px;
-  border-radius: 14px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-  margin-bottom: 20px;
-}
-
-/* Shared body-copy size for the plain info paragraphs (Flights, Hotels
-   intro, Public Transit) — kept in one class so it scales down in step
-   with the rest of the cards on mobile instead of staying pinned at 1rem. */
-.travel-body-text {
-  font-size: 1rem;
-}
-
 /* ================= VENUE + PARKING ================= */
 
 .venue-parking-card {
   display: grid;
   grid-template-columns: 1fr 1px 1fr;
-  gap: 32px;
-  padding: 28px 32px;
-  background: #faf9f7;
+  gap: 26px;
+  padding: 22px 0 4px;
+  background: transparent;
 }
 
 .venue-parking-section {
@@ -637,363 +791,74 @@
 }
 
 .venue-parking-label {
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 1.4px;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
   text-transform: uppercase;
-  color: #af8e6e;
-  margin-bottom: 8px;
+  color: #2d2f3f;
+  margin-bottom: 7px;
 }
 
 .venue-parking-title {
   font-family: 'Montserrat', sans-serif;
-  font-size: 1.15rem;
+  font-size: 0.95rem;
   font-weight: 600;
   color: #2d2f3f;
   margin: 0 0 3px;
 }
 
 .venue-parking-subtitle {
-  margin: 0 0 16px;
+  margin: 0 0 12px;
   font-family: Georgia, serif;
-  font-size: 0.95rem;
+  font-size: 0.82rem;
   font-style: italic;
   color: #8a685d;
 }
 
 .venue-parking-address {
   margin: 0;
-  font-size: 0.95rem;
-  line-height: 1.65;
+  font-size: 0.88rem;
+  line-height: 1.6;
   color: #514131;
-}
-
-.venue-parking-note {
-  margin: 12px 0 0;
-  padding-top: 12px;
-  border-top: 1px solid rgba(175, 142, 110, 0.3);
-  font-size: 0.82rem;
-  color: #8a817b;
 }
 
 .venue-parking-divider {
   width: 1px;
-  height: 100%;
   background: rgba(175, 142, 110, 0.3);
 }
 
-/* Venue & Parking stays side-by-side all the way down to real phone widths
-   (iPhone SE at 375px and up) — the columns just get tighter and the type
-   scales down, instead of stacking into a single column. Sizes here match
-   the same mobile scale used by the other cards below (.travel-body-text,
-   .featured-hotel-content, .hotel-card) so nothing on this page reads
-   smaller than the rest once you're on a phone. */
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px) {
+
+  .hotel-card { flex: 0 0 150px; }
+  .hotel-card .carousel-images img { height: 96px; }
+  .hotel-card h5 { font-size: 0.8rem; }
+
+  .carousel-btn { font-size: 15px; padding: 4px 8px; }
+
+  #map { height: 220px; }
+}
+
 @media (max-width: 600px) {
+
+  .trav-title { font-size: 2.5rem; }
+  .trav-logo-img { height: 46px; }
+
+  .travel-header-wrap { padding-top: 20px; }
+  .travel-body-wrap { padding-top: 20px; }
+
+  .trav-divider { margin: 26px 0; }
 
   .venue-parking-card {
     grid-template-columns: 1fr 1px 1fr;
     gap: 14px;
-    padding: 18px 14px;
   }
 
-  .venue-parking-divider {
-    width: 1px;
-    height: 100%;
-  }
-
-  .venue-parking-label {
-    font-size: 0.68rem;
-    letter-spacing: 1px;
-    margin-bottom: 5px;
-  }
-
-  .venue-parking-title {
-    font-size: 1rem;
-    line-height: 1.25;
-  }
-
-  .venue-parking-subtitle {
-    font-size: 0.88rem;
-    margin-bottom: 10px;
-  }
-
-  .venue-parking-address {
-    font-size: 0.88rem;
-    line-height: 1.45;
-  }
-
-  .venue-parking-note {
-    font-size: 0.75rem;
-    line-height: 1.4;
-    margin-top: 8px;
-    padding-top: 8px;
-  }
-
-}
-
-/* ================= FEATURED / OFFICIAL HOTEL BLOCK (image left, text right) ================= */
-
-.featured-hotel-section {
-  margin-bottom: 40px;
-}
-
-.featured-hotel-card {
-  display: flex;
-  align-items: stretch;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.12);
-  overflow: hidden;
-}
-
-.featured-carousel {
-  flex: 0 0 45%;
-  border-radius: 0;
-}
-
-.featured-carousel .carousel-images img {
-  height: 100%;
-  min-height: 320px;
-  border-radius: 0;
-}
-
-.featured-hotel-content {
-  flex: 1;
-  padding: 32px 40px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.official-badge {
-  display: inline-block;
-  align-self: flex-start;
-  background: #af8e6e;
-  color: #fff;
-  padding: 6px 16px;
-  border-radius: 20px;
-  font-size: 0.72rem;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  font-weight: 700;
-  margin-bottom: 14px;
-}
-
-.featured-hotel-content h3 {
-  color: #2d2f3f;
-  margin-bottom: 14px;
-  font-size: 1.5rem;
-}
-
-.featured-hotel-content p {
-  font-size: 1rem;
-  color: #514131;
-  margin-bottom: 18px;
-  line-height: 1.6;
-}
-
-.featured-hotel-content .hotel-block-btn {
-  align-self: flex-start;
-}
-
-.featured-hotel-content .fine-print {
-  margin-top: 16px;
-  margin-bottom: 0;
-  font-size: 0.85rem;
-  color: #999;
-}
-
-/* Unified mobile type scale — brings the featured hotel card, the plain
-   info paragraphs (.travel-body-text) and the venue/parking card in line
-   with each other so nothing on this page reads smaller or bigger than
-   its neighbors once you're on a phone. */
-@media (max-width: 600px) {
-  .travel-body-text {
-    font-size: 0.88rem;
-  }
-
-  .featured-hotel-content h3 {
-    font-size: 1.15rem;
-  }
-
-  .featured-hotel-content p {
-    font-size: 0.88rem;
-  }
-
-  .featured-hotel-content .fine-print {
-    font-size: 0.75rem;
-  }
-
-  .hotel-card h5,
-  .hotel-card h6 {
-    font-size: 0.88rem;
-  }
-}
-
-
-/* ================= HOTEL GRID ================= */
-
-.hotel-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 18px;
-}
-
-.hotel-block-btn {
-  display: inline-block;
-  background: #af8e6e;
-  color: #fff;
-  padding: 12px 26px;
-  border-radius: 30px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: all 0.25s ease;
-}
-
-.hotel-block-btn:hover {
-  background: #8a685d;
-  color: #fff;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
-}
-
-
-/* ================= HOTEL CARD ================= */
-
-.hotel-card {
-  background: #fffaf7;
-  border-radius: 14px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.hotel-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
-}
-
-.hotel-card h5,
-.hotel-card h6 {
-  margin: 12px 16px 14px;
-  font-size: 0.95rem;
-}
-
-
-/* ================= HOTEL LINK ================= */
-
-.hotel-link {
-  display: inline-block;
-  color: #af8e6e;
-  text-decoration: none;
-  font-weight: 600;
-  transition: color 0.2s ease;
-}
-
-.hotel-link:hover {
-  color: #8a685d;
-  text-decoration: underline;
-}
-
-
-/* ================= CAROUSEL (shared: grid cards + featured) ================= */
-
-.hotel-carousel {
-  position: relative;
-  overflow: hidden;
-}
-
-.hotel-card .hotel-carousel {
-  border-radius: 14px 14px 0 0;
-}
-
-.carousel-images {
-  display: flex;
-  transition: transform 0.4s ease;
-}
-
-.carousel-images img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  flex-shrink: 0;
-}
-
-
-/* ================= CAROUSEL BUTTONS ================= */
-
-.carousel-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(0, 0, 0, 0.45);
-  border: none;
-  color: #fff;
-  font-size: 20px;
-  padding: 6px 10px;
-  cursor: pointer;
-  border-radius: 50%;
-  z-index: 10;
-  transition: background 0.2s ease;
-}
-
-.carousel-btn.left { left: 14px; }
-.carousel-btn.right { right: 14px; }
-
-.carousel-btn:hover {
-  background: rgba(0, 0, 0, 0.75);
-}
-
-
-/* ================= LINKS ================= */
-
-.travel-section a.highlight-link {
-  color: #af8e6e;
-  text-decoration: underline;
-}
-
-
-/* ================= MOBILE (ALWAYS 2 COLUMNS) ================= */
-
-@media (max-width: 768px) {
-
-  .hotel-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
-  }
-
-  .carousel-images img {
-    height: 150px;
-  }
-
-  .featured-hotel-card {
-    flex-direction: column;
-  }
-
-  .featured-carousel {
-    flex: none;
-  }
-
-  .featured-carousel .carousel-images img {
-    height: 220px;
-    min-height: 0;
-  }
-
-  .featured-hotel-content {
-    padding: 22px 20px;
-  }
-
-  .featured-hotel-content h3 {
-    font-size: 1.25rem;
-  }
-
-  .carousel-btn {
-    font-size: 16px;
-    padding: 4px 8px;
-  }
+  .venue-parking-label { font-size: 0.6rem; }
+  .venue-parking-title { font-size: 0.88rem; }
+  .venue-parking-subtitle { font-size: 0.78rem; }
+  .venue-parking-address { font-size: 0.82rem; line-height: 1.45; }
 }
 
 </style>
