@@ -83,7 +83,10 @@ def registry():
 @app.route("/rsvp")
 def rsvp():
     return render_template("rsvp.html", app_data=app_data)
-
+@app.route('/things-to-do')
+def things_to_do():
+    return render_template('things_to_do.html')
+    
 @app.route("/pi_mile")
 def pi_mile():
     return render_template("pi_mile.html", app_data=app_data)
