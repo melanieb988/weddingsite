@@ -536,7 +536,7 @@
 
 .hotel-row {
   display: flex;
-  gap: 14px;
+  gap: 11px;
   overflow-x: auto;
   padding: 2px 2px 8px;
   -ms-overflow-style: none;
@@ -544,11 +544,11 @@
 }
 
 .hotel-row::-webkit-scrollbar {
-  display: none;
+  /* display: none; */
 }
 
 .hotel-card {
-  flex: 0 0 195px;
+  flex: 0 0 150px;
   background: #fffaf7;
   border: 1px solid #e6ddd1;
   border-radius: 12px;
@@ -831,7 +831,7 @@
 
 @media (max-width: 768px) {
 
-  .hotel-card { flex: 0 0 150px; }
+  .hotel-card { flex: 0 0 120px; }
   .hotel-card .carousel-images img { height: 96px; }
   .hotel-card h5 { font-size: 0.8rem; }
 
@@ -864,4 +864,3 @@
 </style>
 
 {% endblock %}
-
