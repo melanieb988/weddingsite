@@ -21,6 +21,8 @@
     <!-- RIGHT: INVITATION CONTENT -->
     <div class="invitation-content">
 
+      <p class="getting-married-kicker">We're Getting Married</p>
+
       <h1 class="names">
         <!-- Full names stay in the markup (indexable by search engines,
              readable by screen readers) even though only first names are
@@ -46,10 +48,10 @@
   <div id="schedule" class="schedule-section">
     <div class="text-center mb-3">
       <h2 class="schedule-heading">Weekend Schedule</h2>
-      <!-- <p class="schedule-subtext">October 23–25, 2026</p> -->
+      <p class="schedule-subtext">October 23&ndash;25, 2026</p>
     </div>
 
-    <!-- WEEKEND SCHEDULE CARD -->
+    <!-- WEEKEND SCHEDULE — flat, line-divided, no card -->
     <div class="sched-card">
 
       <div class="day-group">
@@ -90,7 +92,7 @@
           <div>
             <p class="ev-title">Wedding Ceremony<a class="ev-link" href="{{ url_for('travel') }}#s-parking" aria-label="Venue and parking">→</a></p>
             <p class="ev-detail ev-venue-line-bilt"><b>The Biltmore</b>, 817 W Peachtree St NW</p>
-            <!-- <p class="ev-detail ev-venue-line-bilt">Doors <b>4:30</b> &middot; Seated <b>4:45</b></p> -->
+            <p class="ev-detail ev-venue-line-bilt ev-doors-seated"><span class="ev-ds-label">Doors</span> 4:30<span class="ev-ds-sep">&middot;</span><span class="ev-ds-label">Seated</span> 4:45</p>
           </div>
         </div>
 
@@ -116,34 +118,47 @@
     </div>
   </div>
 
+  <div class="section-divider"><span class="section-divider-mark">◆</span></div>
+
   <!-- EXPLORE MORE -->
   <div class="explore-section">
-    <h2 class="schedule-heading text-center mb-4">Explore More</h2>
+    <div class="text-center explore-heading">
+      <h2 class="schedule-heading">Explore More</h2>
+      <p class="schedule-subtext">Travel, things to do, and more</p>
+    </div>
     <div class="explore-grid">
       <a href="{{ url_for('travel') }}" class="explore-card">
-        <span class="explore-card-title">Travel</span>
-        <span class="explore-card-detail">United flights, hotels &amp; getting around</span>
+        <img src="{{ url_for('static', filename='images/travel.png') }}" alt="" class="explore-card-img">
+        <span class="explore-card-scrim"></span>
+        <span class="explore-card-title">Travel<span class="explore-card-arrow">&rarr;</span></span>
       </a>
       <a href="{{ url_for('gallery') }}" class="explore-card">
-        <span class="explore-card-title">Gallery</span>
-        <span class="explore-card-detail">Our favorite adventures traveling, running, skiing and biking</span>
+        <img src="{{ url_for('static', filename='images/gallery.png') }}" alt="" class="explore-card-img">
+        <span class="explore-card-scrim"></span>
+        <span class="explore-card-title">Gallery<span class="explore-card-arrow">&rarr;</span></span>
       </a>
       <a href="{{ url_for('registry') }}" class="explore-card">
-        <span class="explore-card-title">Registry</span>
-        <span class="explore-card-detail">Our Zola registry, for the adventures ahead</span>
+        <img src="{{ url_for('static', filename='images/registry.png') }}" alt="" class="explore-card-img">
+        <span class="explore-card-scrim"></span>
+        <span class="explore-card-title">Registry<span class="explore-card-arrow">&rarr;</span></span>
       </a>
       <a href="{{ url_for('faq') }}" class="explore-card">
-        <span class="explore-card-title">FAQ</span>
-        <span class="explore-card-detail">Answers to common questions</span>
+        <img src="{{ url_for('static', filename='images/faq.png') }}" alt="" class="explore-card-img">
+        <span class="explore-card-scrim"></span>
+        <span class="explore-card-title">FAQ<span class="explore-card-arrow">&rarr;</span></span>
       </a>
     </div>
 
-    <!-- FEATURED: THINGS TO DO — full-width, own horizontal photo scroll.
-         Swap href="#" for {{ url_for('things_to_do') }} once that route/page exists.
-         Needs these 6 files in static/images/: world-of-coke.jpg, falcons-mbs-stadium.jpg,
-         georgia-aquarium.jpg, piedmont-park.jpg, atlanta-beltline.jpg, georgia-tech.jpg -->
-    <a href="#" class="featured-card">
-      <span class="featured-title">Things To Do</span>
+    <!-- LOCAL FAVORITES — full-width photo scroll of individual spots.
+         Swap href="#" on the "See All" link for {{ url_for('things_to_do') }}
+         once that route/page exists. Needs these 6 files in static/images/:
+         world-of-coke.jpg, falcons-mbs-stadium.jpg, georgia-aquarium.jpg,
+         piedmont-park.jpg, atlanta-beltline.jpg, georgia-tech.jpg -->
+    <div class="featured-card">
+      <div class="text-center mb-3">
+        <h2 class="schedule-heading local-fav-heading">Local Favorites</h2>
+        <p class="schedule-subtext">A few of our favorite spots in Atlanta</p>
+      </div>
       <div class="teaser-row">
         <div class="teaser-thumb">
           <div class="img"><img src="{{ url_for('static', filename='images/world-of-coke.png') }}" alt="World of Coca-Cola"></div>
@@ -161,7 +176,7 @@
           <div class="img"><img src="{{ url_for('static', filename='images/georgia-aquarium.png' )}}" alt="Georgia Aquarium"></div>
           <span class="teaser-name">Georgia Aquarium</span>
         </div>
-       
+
         <div class="teaser-thumb">
           <div class="img"><img src="{{ url_for('static', filename='images/piedmont-park.jpg') }}" alt="Piedmont Park"></div>
           <span class="teaser-name">Piedmont Park</span>
@@ -175,7 +190,8 @@
           <span class="teaser-name">Georgia Tech</span>
         </div>
       </div>
-    </a>
+      <a href="#" class="local-fav-see-all">See All Things To Do <span>&rarr;</span></a>
+    </div>
   </div>
 
 </div>
@@ -185,13 +201,28 @@
 
 <style>
     /* ========================= */
+    /* COLOR SYSTEM */
+    /* ========================= */
+    :root {
+      --c-heading: #284B43;   /* Dark invitation green — main headings, names, event names, Explore labels */
+      --c-ink: #263C37;       /* Deep green ink — darker body text / high-contrast text */
+      --c-secondary: #5E7169; /* Muted sage — secondary headings, small uppercase labels */
+      --c-taupe: #74685E;     /* Warm taupe — times, secondary elegant text */
+      --c-gold: #A58958;      /* Antique gold — tiny accents, ampersand, ornaments, subtle emphasis */
+      --c-divider: #D8D0C4;   /* Soft beige — hairline dividers and schedule borders */
+      --c-bg: #FAF8F3;        /* Main cream — overall website background */
+      --c-bg-panel: #F7F4EE;  /* Panel cream — very subtle section/background variation */
+      --c-muted: #7A807B;     /* Muted gray-green — descriptions, venue details, tertiary text */
+    }
+
+    /* ========================= */
     /* BASE RESET */
     /* ========================= */
     html, body {
       margin: 0;
       padding: 0;
       width: 100%;
-      background: #faf9f7;
+      background: var(--c-bg);
       font-family: 'Montserrat', sans-serif;
     }
 
@@ -216,7 +247,7 @@
       width: 100%;
       aspect-ratio: 4 / 3;
       overflow: hidden;
-      background: #faf9f7;
+      background: var(--c-bg);
       max-height:90vh;
       border-radius: 26px;
     }
@@ -304,7 +335,7 @@
       content: '';
       flex: 1;
       width: 1px;
-      background: #e6ddd1;
+      background: var(--c-divider);
     }
 
     /* .collage-divider-mark {
@@ -314,30 +345,45 @@
   opacity: 0.9;
 } */
 .collage-divider-mark {
-  color: #af8e6e;
+  color: var(--c-gold);
   font-size: 1rem;
   transform: rotate(45deg);
   flex-shrink: 0;
 }
+    .getting-married-kicker {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--c-secondary);
+      margin: 0 0 10px;
+    }
+
     .names {
       font-family: 'Instrument Serif', serif;
       font-weight: 400;
       font-size: 2.6rem;
-      color: #2d2f3f;
+      color: var(--c-heading);
       line-height: 1.15;
       margin-bottom: 16px;
+    }
+
+    .amp {
+      color: inherit;
+      font-style: normal;
     }
 
     .date {
       font-family: 'Montserrat', sans-serif;
       letter-spacing: 0.18em;
-      color: #514131;
+      color: var(--c-taupe);
       margin-bottom: 4px;
     }
 
     .location {
       font-family: 'Montserrat', sans-serif;
-      color: #83786a;
+      color: var(--c-muted);
       margin-bottom: 18px;
     }
 
@@ -348,8 +394,8 @@
       align-items: center;
       gap: 9px;
       background: transparent;
-      color: #af8e6e;
-      border: 1.5px solid #af8e6e;
+      color: var(--c-gold);
+      border: 1.5px solid var(--c-gold);
       padding: 14px 36px;
       border-radius: 30px;
       letter-spacing: 0.14em;
@@ -362,7 +408,7 @@
     }
 
     .rsvp-btn:hover {
-      background: #af8e6e;
+      background: var(--c-gold);
       color: #fff;
       transform: translateY(-2px);
     }
@@ -381,7 +427,7 @@
       font-family: 'Montserrat', sans-serif;
       font-size: 0.68rem;
       letter-spacing: 0.04em;
-      color: #a39a8c;
+      color: var(--c-muted);
     }
 
     /* ========================= */
@@ -390,40 +436,54 @@
     .schedule-section {
       max-width: 800px;
       margin: 0 auto;
-      padding: 36px 30px 0;
+      padding: 22px 20px 28px;
       scroll-margin-top: 90px;
     }
 
+    /* Centered explicitly here (not left to a page-wide ".text-center"
+       utility) so Weekend Schedule, Explore More, and Local Favorites —
+       everything using this class — center reliably on their own. */
     .schedule-heading {
   font-family: 'Great Vibes', cursive;
-  font-size: 3.4rem;       /* biggest script moment on the page */
+  font-size: 3.4rem;       /* biggest script moment on the page — the one
+                              header style, reused identically everywhere
+                              a major section starts (Weekend Schedule,
+                              Explore More). */
   font-weight: 400;
-  color: #2d2f3f;
+  color: var(--c-heading);
+  text-align: center;
   margin-bottom: 0;
 }
 
     .schedule-subtext {
-      font-size: 1.05rem;
-      color: #514131;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--c-secondary);
+      text-align: center;
       margin-top: 4px;
     }
 
-    /* ---- schedule card ---- */
+    /* ---- schedule content ---- */
+    /* Flat, same background as the rest of the page — no panel, no box. */
     .sched-card {
-      max-width: 620px;
-      margin: 0 auto;
-      background: linear-gradient(180deg, #fffdfb, #fffaf7);
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(45, 47, 63, 0.09);
-      padding: 36px 38px;
+      margin: 0;
+      padding: 0;
     }
 
-    /* day label — anchored left, trailing hairline, no separate box */
+    .day-group {
+      margin-bottom: 0;
+    }
+
+    /* day label — trailing hairline picks up where the box used to
+       end, so each day still reads as its own group */
     .bd-plain {
       display: flex;
       align-items: center;
       gap: 9px;
-      margin: 16px 0 8px;
+      margin: 14px 0 4px;
     }
 
     .day-group:first-child .bd-plain {
@@ -433,33 +493,29 @@
     .bd-label {
       font-family: 'Instrument Serif', serif;
       font-style: italic;
-      font-size: 1rem;
-      color: #2d2f3f;
+      font-size: 1.15rem;
+      color: var(--c-secondary);
       white-space: nowrap;
     }
 
     .bd-trail {
       flex: 1;
       height: 1px;
-      background: #e6ddd1;
+      background: var(--c-divider);
     }
 
-    /* event rows */
+    /* event rows — a hairline under each one, edge to edge */
     .ev-row {
       display: grid;
-      grid-template-columns: 70px 1fr;
+      grid-template-columns: 78px 1fr;
       column-gap: 14px;
-      padding: 9px 0;
-      border-bottom: 1px solid #e6ddd1;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--c-divider);
     }
 
     .day-group .ev-row:last-child {
       border-bottom: none;
       padding-bottom: 0;
-    }
-
-    .day-group:first-child .ev-row:first-child {
-      padding-top: 0;
     }
 
     .ev-row.no-line {
@@ -469,11 +525,11 @@
 
     .ev-time {
       font-family: 'Montserrat', sans-serif;
-      font-size: 0.64rem;
+      font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.03em;
       text-transform: uppercase;
-      color: #8a685d;
+      color: var(--c-taupe);
       font-variant-numeric: tabular-nums;
       line-height: 1.35;
       padding-top: 1px;
@@ -482,18 +538,18 @@
     .ev-title {
       font-family: 'Montserrat', sans-serif;
       font-weight: 600;
-      font-size: 0.92rem;
-      color: #2d2f3f;
+      font-size: 1rem;
+      color: var(--c-heading);
       line-height: 1.3;
       margin: 0 0 1px;
     }
 
     .ev-detail {
       font-family: 'Montserrat', sans-serif;
-      font-size: 0.76rem;
+      font-size: 0.85rem;
       font-weight: 400;
-      color: #83786a;
-      line-height: 1.4;
+      color: var(--c-muted);
+      line-height: 1.45;
       margin: 0;
     }
 
@@ -506,9 +562,33 @@
        "important word inside a detail line" is one convention,
        not a different style per kind of fact */
     .ev-detail b {
-      color: #2d2f3f;
+      color: var(--c-ink);
       font-weight: 600;
       font-variant-numeric: tabular-nums;
+    }
+
+    /* Doors / Seated — same detail line, but the two facts get their
+       own tiny uppercase labels so they read as a quick-glance pair
+       of stats instead of a plain sentence. */
+    .ev-doors-seated {
+      margin-top: 4px;
+      font-variant-numeric: tabular-nums;
+      color: var(--c-ink);
+    }
+
+    .ev-ds-label {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--c-gold);
+      margin-right: 4px;
+    }
+
+    .ev-ds-sep {
+      display: inline-block;
+      margin: 0 9px;
+      color: var(--c-divider);
     }
 
     /* small circular icon button — sits next to the title,
@@ -522,8 +602,8 @@
       height: 18px;
       margin-left: 8px;
       border-radius: 50%;
-      background: rgba(175, 142, 110, 0.12);
-      color: #8a685d;
+      background: rgba(165, 137, 88, 0.14);
+      color: var(--c-taupe);
       font-size: 0.65rem;
       line-height: 1;
       text-decoration: none;
@@ -532,129 +612,148 @@
     }
 
     .ev-link:hover {
-      background: #af8e6e;
+      background: var(--c-gold);
       color: #fff;
       transform: translateX(1px);
     }
 
     /* gameday aside — the exact same row template as every real
-       event, just recolored quieter. No separate grid, no italic,
-       no bespoke component: one fewer "voice" on the card. */
+       event, just recolored quieter — same type scale as its
+       neighbors, only the color signals "secondary." */
     .ev-row.is-aside .ev-time,
     .ev-row.is-aside .ev-detail {
-      color: #a39a8c;
-      font-size: 0.54rem;
+      color: var(--c-muted);
     }
 
     /* ========================= */
     /* EXPLORE MORE SECTION */
     /* ========================= */
     .explore-section {
-      max-width: 1000px;
+      max-width: 1100px;
       margin: 0 auto;
-      padding: 22px 20px 26px;
+      padding: 6px 10px 60px;
     }
 
-    .explore-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
+    /* one line — the script heading alone, straight into the grid */
+    .explore-heading {
       margin-bottom: 18px;
     }
 
-    .explore-card {
-      display: flex;
-      flex-direction: column;
+    /* photo tiles — tight gutter, square corners: the photos themselves
+       are the only thing separating each tile, no rounding softening them */
+    .explore-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
       gap: 6px;
-      background: linear-gradient(180deg, #fffdfb, #fffaf7);
-      border-radius: 20px;
-      box-shadow: 0 6px 20px rgba(45, 47, 63, 0.07);
-      padding: 22px 20px;
-      text-decoration: none;
-      border: 1px solid transparent;
-      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      margin-bottom: 30px;
     }
 
-    .explore-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 28px rgba(45, 47, 63, 0.12);
-      border-color: rgba(175, 142, 110, 0.35);
+    /* full-bleed photo card — label sits on top of the image itself,
+       not below it, so the photo is the whole card */
+    .explore-card {
+      position: relative;
+      display: block;
+      aspect-ratio: 2 / 3.4;
+      overflow: hidden;
+      background: var(--c-bg-panel);
+      text-decoration: none;
+    }
+
+    .explore-card-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    /* dark gradient at the bottom so white text stays legible over
+       any photo, without dimming the image itself */
+    .explore-card-scrim {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(20, 24, 22, 0.72) 0%, rgba(20, 24, 22, 0) 45%);
+      pointer-events: none;
+    }
+
+    .explore-card:hover .explore-card-img {
+      transform: scale(1.05);
+    }
+
+    /* touch devices have no hover — a quick press-down on the photo
+       is the tap equivalent */
+    .explore-card:active .explore-card-img {
+      transform: scale(0.97);
     }
 
     .explore-card-title {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 14px;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: space-between;
+      gap: 2px;
       font-family: 'Montserrat', sans-serif;
       font-weight: 700;
-      font-size: 0.85rem;
+      font-size: 0.78rem;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: #2d2f3f;
+      color: #fff;
+      text-align: center;
     }
 
-    .explore-card-title::after {
-      content: '→';
-      color: #af8e6e;
+    .explore-card-arrow {
       font-weight: 400;
       transition: transform 0.25s ease;
     }
 
-    .explore-card:hover .explore-card-title::after {
-      transform: translateX(4px);
-    }
-
-    .explore-card-detail {
-      font-size: 0.82rem;
-      color: #83786a;
-      line-height: 1.4;
+    .explore-card:hover .explore-card-arrow {
+      transform: translateY(3px);
     }
 
     /* ========================= */
-    /* FEATURED: THINGS TO DO */
-    /* Full-width card below the Explore grid, with its own horizontal
-       photo scroll built in — the whole card links out to the full
-       Things To Do page; the row is just a peek. */
+    /* LOCAL FAVORITES */
+    /* A quiet sub-section within Explore More — its own script
+       heading + subtitle, same pattern as the section header above,
+       just one size down since it isn't the section's main headline. */
     /* ========================= */
     .featured-card {
       display: block;
-      background: linear-gradient(180deg, #fffdfb, #fffaf7);
-      border-radius: 18px;
-      box-shadow: 0 6px 20px rgba(45, 47, 63, 0.07);
-      border: 1px solid transparent;
-      padding: 16px 16px 14px;
-      text-decoration: none;
-      color: inherit;
-      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      border-top: 1px solid var(--c-divider);
+      padding-top: 28px;
+      margin-top: 6px;
     }
 
-    .featured-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 28px rgba(45, 47, 63, 0.12);
-      border-color: rgba(175, 142, 110, 0.35);
+    .local-fav-heading {
+      font-size: 2.5rem;
     }
 
-    .featured-title {
+    .local-fav-see-all {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 20px;
       font-family: 'Montserrat', sans-serif;
       font-weight: 700;
-      font-size: 0.85rem;
-      letter-spacing: 0.08em;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: #2d2f3f;
-      margin-bottom: 10px;
+      color: var(--c-heading);
+      text-decoration: none;
     }
 
-    .featured-title::after {
-      content: '→';
-      color: #af8e6e;
+    .local-fav-see-all span {
+      color: var(--c-gold);
       font-weight: 400;
       transition: transform 0.25s ease;
     }
 
-    .featured-card:hover .featured-title::after {
+    .local-fav-see-all:hover span {
       transform: translateX(4px);
     }
 
@@ -671,11 +770,11 @@
     }
 
     /* thin vertical divider between items instead of a gap —
-       matches the reference: minimal rule, not a gutter */
+       minimal rule, not a gutter */
     .teaser-thumb {
       flex: 0 0 85px;
       padding: 0 8px;
-      border-right: 1px solid #e6ddd1;
+      border-right: 1px solid var(--c-divider);
     }
 
     .teaser-thumb:last-child {
@@ -686,7 +785,7 @@
       width: 100%;
       height: 82px;
       border-radius: 8px;
-      background: #e9dfd2;
+      background: var(--c-bg-panel);
       overflow: hidden;
       /* no shadow — flat, clean photo */
     }
@@ -706,7 +805,7 @@
       font-size: 0.68rem;
       font-weight: 600;
       letter-spacing: 0.01em;
-      color: #2d2f3f;
+      color: var(--c-heading);
       text-align: center;
       line-height: 1.3;
     }
@@ -726,11 +825,11 @@
   content: '';
   flex: 1;
   height: 1px;
-  background: #e6ddd1;
+  background: var(--c-divider);
 }
 
 .section-divider-mark {
-  color: #af8e6e;
+  color: var(--c-gold);
   font-size: 1rem;
   transform: rotate(45deg);
 }
@@ -796,42 +895,54 @@
       }
 
       .schedule-section {
-        padding: 44px 16px 8px;
+        padding: 26px 14px 24px;
       }
 
       .schedule-heading {
         font-size: 2.4rem;
       }
 
-      .sched-card {
-        padding: 18px 18px;
-        border-radius: 18px;
-      }
-
       .ev-row {
-        grid-template-columns: 56px 1fr;
+        grid-template-columns: 60px 1fr;
         column-gap: 10px;
       }
 
       .ev-time {
-        font-size: 0.58rem;
+        font-size: 0.66rem;
       }
 
       .ev-title {
-        font-size: 0.87rem;
+        font-size: 0.95rem;
       }
 
       .ev-venue-line-bilt {
         white-space: nowrap;
-        font-size: 0.7rem;
+        font-size: 0.78rem;
       }
       .ev-venue-line-bob {
         white-space: nowrap;
-        font-size: 0.6rem;
+        font-size: 0.7rem;
+      }
+
+      .explore-section {
+        padding: 4px 6px 44px;
+      }
+
+      .explore-heading {
+        margin-bottom: 14px;
       }
 
       .explore-grid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 4px;
+        margin-bottom: 20px;
+      }
+
+      .explore-card-title {
+        bottom: 8px;
+        font-size: 0.56rem;
+        letter-spacing: 0.03em;
+        gap: 1px;
       }
 
       .teaser-thumb {
