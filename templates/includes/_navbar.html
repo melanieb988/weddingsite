@@ -22,7 +22,7 @@
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/">Home</a>
+          <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/#schedule" id="navScheduleLink">Schedule</a>
         </li>
         <li class="nav-item">
           <a class="nav-link {% if request.path == '/travel' %}active{% endif %}" href="/travel">Travel</a>
@@ -40,7 +40,7 @@
           <a class="nav-link {% if request.path == '/faq' %}active{% endif %}" href="/faq">FAQ</a>
         </li>
         <li class="nav-item nav-item-cta">
-          <a class="nav-link nav-link-cta {% if request.path == '/rsvp' %}active{% endif %}" href="/rsvp">RSVP</a>
+          <a class="nav-link nav-link-cta" href="#" id="navRsvpLink" data-bs-toggle="modal" data-bs-target="#quickRsvpModal">RSVP</a>
         </li>
       </ul>
     </div>
@@ -173,3 +173,51 @@
     }
   }
 </style>
+
+<script>
+  // "Schedule" nav link: if we're already on the homepage, smooth-scroll
+  // to the #schedule section instead of doing a full page reload. If
+  // we're on any other page, the href itself (homepage + #schedule)
+  // handles getting there — the browser just won't animate the jump.
+  (function () {
+    var scheduleLink = document.getElementById('navScheduleLink');
+    if (!scheduleLink) return;
+
+    scheduleLink.addEventListener('click', function (e) {
+      var scheduleEl = document.getElementById('schedule');
+      if (scheduleEl && (window.location.pathname === '/' || window.location.pathname === '')) {
+        e.preventDefault();
+        scheduleEl.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+
+    // Landing on the homepage with #schedule already in the URL
+    // (e.g. from another page) — scroll to it smoothly rather than
+    // relying on the browser's instant jump.
+    if (window.location.hash === '#schedule') {
+      var target = document.getElementById('schedule');
+      if (target) {
+        window.requestAnimationFrame(function () {
+          target.scrollIntoView({ behavior: 'smooth' });
+        });
+      }
+    }
+  })();
+
+  // "RSVP" nav link opens the modal in place instead of navigating to
+  // a separate page. On mobile the nav menu is still expanded at that
+  // point, so collapse it first — otherwise it's left open underneath
+  // the modal once the guest finishes and it closes.
+  (function () {
+    var rsvpLink = document.getElementById('navRsvpLink');
+    var collapseEl = document.getElementById('navbarResponsive');
+    if (!rsvpLink || !collapseEl) return;
+
+    rsvpLink.addEventListener('click', function () {
+      if (collapseEl.classList.contains('show')) {
+        var collapseInstance = bootstrap.Collapse.getInstance(collapseEl) || new bootstrap.Collapse(collapseEl);
+        collapseInstance.hide();
+      }
+    });
+  })();
+</script>
