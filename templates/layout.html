@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, shrink-to-fit=no">
   <meta name="description" content="{{ app_data['description'] }}">
   <meta name="keywords" content="{{ app_data['keywords'] }}">
   <meta name="author" content="{{ app_data['author'] }}">
@@ -1048,8 +1048,15 @@
 
       .rsvp-input,
       .rsvp-select {
-        font-size: 0.86rem;
+        /* 16px is the iOS Safari threshold — anything smaller and it
+           auto-zooms the whole page in when the field is focused, and
+           that zoom doesn't reset itself once the modal closes. */
+        font-size: 16px;
         padding: 11px 13px;
+      }
+
+      .rsvp-email-input {
+        font-size: 16px;
       }
 
       .rsvp-status-text {
