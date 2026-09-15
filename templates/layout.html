@@ -34,9 +34,28 @@
         crossorigin="anonymous">
 
   <style>
+    /* ========================= */
+    /* GLOBAL COLOR SYSTEM
+       Defined once here in layout.html (rather than per-page) so every
+       template — and the RSVP modal below, which lives in this file —
+       shares the exact same palette. */
+    /* ========================= */
+    :root {
+      --c-heading: #284B43;   /* Dark invitation green — headings, names */
+      --c-ink: #263C37;       /* Deep green ink — high-contrast text */
+      --c-secondary: #5E7169; /* Muted sage — secondary headings, labels */
+      --c-taupe: #74685E;     /* Warm taupe — times, secondary text */
+      --c-gold: #A58958;      /* Antique gold — accents, ornaments */
+      --c-divider: #D8D0C4;   /* Soft beige — hairlines, borders */
+      --c-bg: #FAF8F3;        /* Main cream — page background */
+      --c-bg-panel: #F7F4EE;  /* Panel cream — subtle background variation */
+      --c-muted: #7A807B;     /* Muted gray-green — descriptions, tertiary text */
+    }
+
     body {
       font-family: 'Montserrat', sans-serif;
-      color: #2d2f3f;
+      color: var(--c-ink);
+      background: var(--c-bg);
     }
   </style>
 
@@ -66,20 +85,49 @@
   {% endif %}
 
   <div class="modal fade" id="quickRsvpModal" tabindex="-1">
-    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-dialog modal-dialog-scrollable">
       <div class="modal-content rsvp-modal-content">
         <div class="modal-header rsvp-modal-header">
+          <div class="rsvp-modal-wordmark">
+            <img src="{{ url_for('static', filename='images/navbar_flower.png') }}" alt="" class="rsvp-modal-flower">
+            <span class="rsvp-modal-im">I &amp; M</span>
+          </div>
           <h5 class="modal-title rsvp-modal-title">Rsvp</h5>
+          <div class="rsvp-modal-divider"></div>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
 
+
         <div class="modal-body">
-          <input type="text" id="quickGuestName" class="rsvp-input mb-3" placeholder="Enter your first name">
-          <button id="quickSearchBtn" class="rsvp-btn-outline w-100 mb-3">Find My Invitation</button>
-          <div id="quickHouseholdContainer"></div>
+          <div id="quickRsvpFormView">
+            <div class="rsvp-find-intro">
+              <p class="rsvp-find-label">Find Your Invitation</p>
+              <p class="rsvp-find-sub">Please enter the name on your invitation to continue.</p>
+            </div>
+            <div class="rsvp-search-field">
+              <input type="text" id="quickGuestName" class="rsvp-input" placeholder="Enter your first name" autocomplete="off" autocapitalize="words" spellcheck="false">
+              <button type="button" id="quickSearchBtn" class="rsvp-search-btn" aria-label="Find my invitation">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+                  <circle cx="10.5" cy="10.5" r="6.5"></circle>
+                  <line x1="20" y1="20" x2="15.4" y2="15.4"></line>
+                </svg>
+              </button>
+            </div>
+            <div id="quickHouseholdContainer"></div>
+          </div>
+
+          <!-- Shown after a successful submit; auto-redirects to the
+               Explore More section of the homepage after a couple seconds. -->
+          <div id="quickRsvpThankYou" class="rsvp-thankyou" style="display: none;">
+            <img src="{{ url_for('static', filename='images/biltmore1.png') }}" alt="" class="rsvp-thankyou-logo">
+            <h3 class="rsvp-thankyou-title">Thank you!</h3>
+            <p class="rsvp-thankyou-sub">Your RSVP has been submitted.</p>
+            <div class="rsvp-thankyou-divider"><span class="rsvp-thankyou-dot"></span></div>
+            <p class="rsvp-thankyou-note">We can&rsquo;t wait to celebrate with you in Atlanta!</p>
+          </div>
         </div>
 
-        <div class="modal-footer">
+        <div class="modal-footer" id="quickRsvpFooter" style="display: none;">
           <button id="quickSubmitRsvpBtn" class="rsvp-btn-solid">Submit RSVP</button>
         </div>
       </div>
@@ -97,7 +145,7 @@
       z-index: 1030;
       display: inline-flex;
       align-items: center;
-      background: #af8e6e;
+      background: var(--c-heading);
       color: #fff;
       border: none;
       padding: 13px 22px 13px 24px;
@@ -108,7 +156,7 @@
       letter-spacing: 0.1em;
       text-transform: uppercase;
       cursor: pointer;
-      box-shadow: 0 6px 18px rgba(45, 47, 63, 0.18);
+      box-shadow: 0 6px 18px rgba(40, 75, 67, 0.22);
       opacity: 0;
       transform: translateY(10px);
       pointer-events: none;
@@ -122,8 +170,8 @@
     }
 
     .float-rsvp:hover {
-      background: #8a685d;
-      box-shadow: 0 8px 22px rgba(45, 47, 63, 0.24);
+      background: #1c332c;
+      box-shadow: 0 8px 22px rgba(40, 75, 67, 0.3);
     }
 
     .float-rsvp-arrow {
@@ -149,123 +197,524 @@
     /* ========================= */
     /* GLOBAL RSVP MODAL */
     /* ========================= */
-    .rsvp-modal-content {
-      border-radius: 16px;
-      border: none;
-      font-family: 'Montserrat', sans-serif;
-      color: #2d2f3f;
+    /* =========================================================
+       GLOBAL RSVP MODAL — 2026 WEDDING SITE DESIGN
+       ========================================================= */
+
+    :root {
+      --rsvp-ivory: #fbf9f5;
+      --rsvp-white: #fffefa;
+      --rsvp-green: #294f46;
+      --rsvp-green-soft: #61766f;
+      --rsvp-gold: #ad8b55;
+      --rsvp-taupe: #b89676;
+      --rsvp-line: #ddd3c5;
+      --rsvp-text: #394943;
+      --rsvp-muted: #7b817d;
     }
+
+
+    /* =========================================================
+       MODAL SHELL
+       ========================================================= */
+
+    #quickRsvpModal .modal-dialog {
+      max-width: 600px;
+    }
+
+    .rsvp-modal-content {
+      background: var(--rsvp-ivory);
+      border: 0;
+      border-radius: 0;
+      box-shadow: 0 18px 60px rgba(34, 53, 48, 0.14);
+      overflow: hidden;
+
+      font-family: 'Montserrat', sans-serif;
+      color: var(--rsvp-text);
+    }
+
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
 
     .rsvp-modal-header {
-      border-bottom: 1px solid #e6ddd1;
       position: relative;
-      justify-content: center;
+      display: block;
+      text-align: center;
+
+      padding: 30px 60px 24px;
+      background: var(--rsvp-ivory);
     }
 
-    .rsvp-modal-title {
-      font-family: 'BickhamScriptPro', cursive;
-      font-size: 2.2rem;
-      color: #2d2f3f;
-      text-align: center;
-      width: 100%;
+    /* Inset hairline under the title — stops well short of the modal
+       edges (70% wide, centered) instead of running the full width,
+       which read as a heavy, dated rule. */
+    .rsvp-modal-divider {
+      width: 70%;
+      height: 1px;
+      margin: 18px auto 0;
+      background: var(--rsvp-line);
     }
+
+
+    /* Flower stacked above the "I & M" wordmark, above the RSVP title —
+       kept small and low-opacity so it reads as a quiet mark, not a
+       second illustration competing with the type below it. */
+    .rsvp-modal-wordmark {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+
+      margin: 0 0 14px;
+    }
+
+    .rsvp-modal-flower {
+      height: 18px;
+      width: auto;
+      display: block;
+
+      opacity: 0.5;
+    }
+
+    .rsvp-modal-im {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      font-weight: 400;
+
+      letter-spacing: 0.1em;
+
+      color: var(--rsvp-green);
+    }
+
+
+    .rsvp-modal-title {
+      margin: 0;
+
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 2.1rem;
+      font-weight: 400;
+
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+
+      color: var(--rsvp-green);
+    }
+
+
+    /* close button */
 
     .rsvp-modal-header .btn-close {
       position: absolute;
-      right: 1rem;
-      top: 50%;
-      transform: translateY(-50%);
+
+      right: 22px;
+      top: 22px;
+
+      width: 15px;
+      height: 15px;
+
+      padding: 4px;
+
+      opacity: 0.55;
+      box-shadow: none;
     }
 
-    .rsvp-status-text {
-      text-align: center;
-      color: #514131;
-      font-size: 1rem;
+    .rsvp-modal-header .btn-close:hover {
+      opacity: 0.9;
     }
+
+
+    /* =========================================================
+       BODY
+       ========================================================= */
+
+    #quickRsvpModal .modal-body {
+      padding: 26px 38px 22px;
+      background: var(--rsvp-ivory);
+    }
+
+
+    /* "Find Your Invitation" intro — small editorial label plus a
+       plain sentence, sitting right above the search field. */
+    .rsvp-find-intro {
+      text-align: center;
+      margin: 0 0 22px;
+    }
+
+    .rsvp-find-label {
+      margin: 0 0 8px;
+
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+
+      letter-spacing: 0.17em;
+      text-transform: uppercase;
+
+      color: var(--rsvp-green);
+    }
+
+    .rsvp-find-sub {
+      margin: 0;
+
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.88rem;
+      line-height: 1.55;
+
+      color: var(--rsvp-muted);
+    }
+
+
+    /* Search input */
 
     .rsvp-input,
     .rsvp-select {
       width: 100%;
-      background: #fff;
-      border: 1px solid #e6ddd1;
-      border-radius: 10px;
-      padding: 10px 14px;
+
+      background: rgba(255, 255, 255, 0.48);
+
+      border: 1px solid var(--rsvp-line);
+      border-radius: 5px;
+
+      padding: 13px 15px;
+
       font-family: 'Montserrat', sans-serif;
-      font-size: 0.95rem;
-      color: #2d2f3f;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      font-size: 0.9rem;
+      font-weight: 400;
+
+      color: var(--rsvp-text);
+
+      transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .rsvp-input::placeholder {
+      color: #999b96;
     }
 
     .rsvp-input:focus,
     .rsvp-select:focus {
       outline: none;
-      border-color: #af8e6e;
-      box-shadow: 0 0 0 3px rgba(175, 142, 110, 0.15);
+
+      border-color: var(--rsvp-gold);
+      background: #fff;
+
+      box-shadow: 0 0 0 2px rgba(173, 139, 85, 0.08);
     }
 
-    .rsvp-input.mt-2 {
-      margin-top: 8px;
+    /* Browsers (Chrome/Safari) tint autofilled fields blue/yellow by
+       default and there's no standard way to turn that off — this is
+       the accepted workaround: paint the field's own background back
+       in via an absurdly long transition delay, and force the text
+       color to match the design instead of the browser's blue. */
+    .rsvp-input:-webkit-autofill,
+    .rsvp-input:-webkit-autofill:hover,
+    .rsvp-input:-webkit-autofill:focus {
+      -webkit-text-fill-color: var(--rsvp-text);
+      -webkit-box-shadow: 0 0 0 1000px rgba(255, 255, 255, 0.48) inset;
+      box-shadow: 0 0 0 1000px rgba(255, 255, 255, 0.48) inset;
+      transition: background-color 5000s ease-in-out 0s;
     }
 
-    .rsvp-btn-outline,
-    .rsvp-btn-solid {
-      display: inline-block;
-      border-radius: 30px;
-      padding: 12px 26px;
-      font-weight: 600;
-      font-family: 'Montserrat', sans-serif;
+
+    /* =========================================================
+       SEARCH FIELD — single input with an icon button built in,
+       rather than a separate full-width button underneath it.
+       ========================================================= */
+
+    .rsvp-search-field {
+      position: relative;
+      margin-bottom: 22px;
+    }
+
+    .rsvp-search-field .rsvp-input {
+      padding-right: 48px;
+      margin-bottom: 0;
+    }
+
+    .rsvp-search-btn {
+      position: absolute;
+      top: 50%;
+      right: 6px;
+      transform: translateY(-50%);
+
+      width: 32px;
+      height: 32px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: transparent;
+      border: none;
+      border-radius: 50%;
+
+      color: var(--rsvp-green-soft);
       cursor: pointer;
-      transition: all 0.25s ease;
-      text-align: center;
-      border: 1.5px solid #af8e6e;
+
+      transition: background 0.2s ease, color 0.2s ease;
     }
+
+    .rsvp-search-btn svg {
+      display: block;
+    }
+
+    .rsvp-search-btn:hover {
+      background: rgba(173, 139, 85, 0.10);
+      color: var(--rsvp-gold);
+    }
+
+    .rsvp-search-btn:focus-visible {
+      outline: 2px solid var(--rsvp-gold);
+      outline-offset: 2px;
+    }
+
+
+    /* =========================================================
+       THANK YOU — shown after a successful submit, then the page
+       auto-redirects to the homepage's Explore More section.
+       ========================================================= */
+
+    .rsvp-thankyou {
+      text-align: center;
+      padding: 8px 6px 4px;
+    }
+
+    .rsvp-thankyou-logo {
+      height: 64px;
+      width: auto;
+      display: block;
+      margin: 4px auto 24px;
+
+      opacity: 0.9;
+    }
+
+    .rsvp-thankyou-title {
+      margin: 0 0 10px;
+
+      font-family: Georgia, 'Times New Roman', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 2.2rem;
+
+      color: var(--rsvp-green);
+    }
+
+    .rsvp-thankyou-sub {
+      margin: 0 0 28px;
+
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.95rem;
+
+      color: var(--rsvp-text);
+    }
+
+    .rsvp-thankyou-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+
+      margin: 0 0 28px;
+    }
+
+    .rsvp-thankyou-divider::before,
+    .rsvp-thankyou-divider::after {
+      content: '';
+      flex: 1;
+      max-width: 120px;
+      height: 1px;
+      background: var(--rsvp-line);
+    }
+
+    .rsvp-thankyou-dot {
+      width: 6px;
+      height: 6px;
+      flex-shrink: 0;
+      background: var(--rsvp-gold);
+    }
+
+    .rsvp-thankyou-note {
+      margin: 0;
+      padding: 0 12px;
+
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.88rem;
+      line-height: 1.6;
+
+      color: var(--rsvp-muted);
+    }
+
+
+    /* =========================================================
+       SEARCH BUTTON
+       ========================================================= */
 
     .rsvp-btn-outline {
+      display: block;
+
+      width: 100%;
+
       background: transparent;
-      color: #af8e6e;
+      color: var(--rsvp-green);
+
+      border: 1px solid var(--rsvp-taupe);
+      border-radius: 5px;
+
+      padding: 13px 18px;
+
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+
+      cursor: pointer;
+
+      transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
     }
 
     .rsvp-btn-outline:hover {
-      background: #af8e6e;
-      color: #fff;
+      background: rgba(173, 139, 85, 0.06);
+      color: var(--rsvp-green);
+      border-color: var(--rsvp-gold);
     }
 
-    .rsvp-btn-solid {
-      background: #af8e6e;
-      color: #fff;
-      border: none;
-      padding: 12px 40px;
+
+    /* =========================================================
+       SEARCH STATUS / MULTIPLE MATCHES
+       ========================================================= */
+
+    .rsvp-status-text {
+      text-align: center;
+
+      color: var(--rsvp-green);
+
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 1rem;
+      font-weight: 400 !important;
+      font-style: italic;
+
+      line-height: 1.5;
+
+      margin: 22px 0 16px;
     }
 
-    .rsvp-btn-solid:hover {
-      background: #8a685d;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+
+    /* Multiple-match buttons should feel like rows, NOT pills */
+
+    #quickHouseholdContainer > .rsvp-btn-outline {
+      position: relative;
+
+      text-align: left;
+
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 0.92rem;
+      font-weight: 400;
+
+      letter-spacing: 0;
+      text-transform: none;
+
+      color: var(--rsvp-text);
+
+      padding: 14px 42px 14px 16px;
+
+      border-color: var(--rsvp-line);
+      background: rgba(255, 255, 255, 0.35);
     }
+
+    #quickHouseholdContainer > .rsvp-btn-outline::after {
+      content: "›";
+
+      position: absolute;
+      right: 17px;
+      top: 50%;
+
+      transform: translateY(-52%);
+
+      color: var(--rsvp-gold);
+
+      font-family: Georgia, serif;
+      font-size: 1.45rem;
+      font-weight: 400;
+    }
+
+    #quickHouseholdContainer > .rsvp-btn-outline:hover {
+      background: rgba(173, 139, 85, 0.05);
+      border-color: var(--rsvp-taupe);
+    }
+
+
+    /* =========================================================
+       GUEST SECTION
+       ========================================================= */
+
+    /*
+       This is intentionally NOT a card anymore.
+       No pink box. No bubble. No shadow.
+    */
 
     .guest-card {
-      background: #fffaf7;
-      border-radius: 14px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-      padding: 24px 28px;
-      margin-bottom: 20px;
+      background: transparent;
+
+      border: 0;
+      border-radius: 0;
+
+      box-shadow: none;
+
+      padding: 28px 0 30px;
+      margin: 0;
+
+      border-top: 1px solid var(--rsvp-line);
     }
+
+
+    /* first guest doesn't need a top divider */
+
+    .guest-card:first-child {
+      border-top: 0;
+      padding-top: 12px;
+    }
+
+
+    /* Guest name */
 
     .guest-name {
-      border-bottom: 1px solid #af8e6e;
-      display: inline-block;
-      padding-bottom: 6px;
-      font-family: 'Instrument Serif', serif;
+      display: block;
+
+      border: 0;
+
+      padding: 0;
+      margin: 0 0 26px;
+
+      font-family: Georgia, 'Times New Roman', serif;
       font-style: italic;
       font-weight: 400;
-      color: #8a685d;
-      font-size: 1.9rem;
-      letter-spacing: 0.01em;
-      margin-bottom: 14px;
+
+      font-size: 1.35rem;
+      line-height: 1.1;
+
+      color: var(--rsvp-green);
+
+      letter-spacing: 0;
     }
 
+
+    /* =========================================================
+       FIELD GROUPS
+       ========================================================= */
+
     .field-group {
-      margin-top: 18px;
+      margin-top: 24px;
     }
 
     .field-group:first-of-type {
@@ -276,81 +725,340 @@
       display: none;
     }
 
+
+    /* Small editorial labels */
+
     .field-label {
       display: block;
+
+      margin-bottom: 10px;
+
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.72rem;
       font-weight: 600;
-      font-size: 0.9rem;
-      color: #514131;
-      margin-bottom: 8px;
+
+      letter-spacing: 0.17em;
+      text-transform: uppercase;
+
+      color: var(--rsvp-green);
     }
+
+
+    /* =========================================================
+       RADIO BUTTONS
+       ========================================================= */
 
     .radio-row {
       display: flex;
-      gap: 20px;
+
+      align-items: center;
+      gap: 28px;
+
       flex-wrap: wrap;
     }
 
     .radio-pill {
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 8px;
-      font-size: 0.95rem;
-      color: #2d2f3f;
+
+      gap: 9px;
+
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 0.98rem;
+      font-weight: 400;
+
+      color: var(--rsvp-text);
+
       cursor: pointer;
     }
+
+
+    /* cleaner custom radio */
 
     .radio-pill input[type="radio"] {
-      accent-color: #af8e6e;
-      width: 16px;
-      height: 16px;
+      appearance: none;
+      -webkit-appearance: none;
+
+      width: 18px;
+      height: 18px;
+
+      margin: 0;
+
+      border: 1px solid var(--rsvp-taupe);
+      border-radius: 50%;
+
+      background: transparent;
+
+      display: grid;
+      place-content: center;
+
       cursor: pointer;
     }
 
+    .radio-pill input[type="radio"]::before {
+      content: "";
+
+      width: 10px;
+      height: 10px;
+
+      border-radius: 50%;
+
+      background: var(--rsvp-gold);
+
+      transform: scale(0);
+
+      transition: transform 0.12s ease;
+    }
+
+    .radio-pill input[type="radio"]:checked::before {
+      transform: scale(1);
+    }
+
+
+    /* =========================================================
+       SELECTS + TEXT INPUTS
+       ========================================================= */
+
+    .rsvp-select {
+      appearance: auto;
+      min-height: 48px;
+    }
+
+    .rsvp-input.mt-2 {
+      margin-top: 10px !important;
+    }
+
+
+    /* =========================================================
+       EMAIL SECTION
+       ========================================================= */
+
     .household-email-block {
-      background: #faf9f7;
-      border: 1px solid #e6ddd1;
-      border-radius: 14px;
-      padding: 24px 28px;
-      margin-top: 28px;
+      background: transparent;
+
+      border: 0;
+      border-top: 1px solid var(--rsvp-line);
+
+      border-radius: 0;
+
+      padding: 28px 0 4px;
+      margin: 0;
     }
 
     .rsvp-email-label {
       display: block;
+
+      margin: 0 0 5px;
+
       font-family: Georgia, 'Times New Roman', serif;
+      font-size: 1.05rem;
       font-style: italic;
-      font-size: 1.1rem;
-      color: #2d2f3f;
-      margin-bottom: 2px;
+      font-weight: 400;
+
+      color: var(--rsvp-green);
     }
 
     .rsvp-email-sublabel {
-      font-size: 0.85rem;
-      color: #83786a;
-      margin-bottom: 12px;
+      margin-bottom: 13px;
+
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.72rem;
+      line-height: 1.5;
+
+      color: var(--rsvp-muted);
     }
 
     .rsvp-email-input {
       width: 100%;
-      border: none;
-      border-bottom: 1px solid #af8e6e;
-      border-radius: 0;
+
       background: transparent;
-      padding: 8px 4px;
-      font-size: 1rem;
+
+      border: 0;
+      border-bottom: 1px solid var(--rsvp-taupe);
+      border-radius: 0;
+
+      padding: 9px 2px;
+
       font-family: 'Montserrat', sans-serif;
-      color: #2d2f3f;
+      font-size: 0.88rem;
+
+      color: var(--rsvp-text);
     }
 
     .rsvp-email-input:focus {
       outline: none;
       box-shadow: none;
-      border-bottom: 2px solid #8a685d;
+
+      border-bottom-color: var(--rsvp-green);
     }
 
+
+    /* =========================================================
+       FOOTER / SUBMIT
+       ========================================================= */
+
+    #quickRsvpModal .modal-footer {
+      display: block;
+
+      background: var(--rsvp-ivory);
+
+      border-top: 0;
+
+      padding: 12px 38px 34px;
+    }
+
+
+    .rsvp-btn-solid {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+
+      width: 100%;
+
+      background: var(--rsvp-green);
+      color: #fff;
+
+      border: 0;
+      border-radius: 8px;
+
+      padding: 14px 24px;
+
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.74rem;
+      font-weight: 600;
+
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+
+      cursor: pointer;
+
+      transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .rsvp-btn-solid::after {
+      content: "→";
+      transition: transform 0.2s ease;
+    }
+
+    .rsvp-btn-solid:hover {
+      background: #1c332c;
+
+      transform: translateY(-1px);
+      box-shadow: none;
+    }
+
+    .rsvp-btn-solid:hover::after {
+      transform: translateX(3px);
+    }
+
+
+    /* =========================================================
+       MOBILE
+       ========================================================= */
+
     @media (max-width: 600px) {
-      .guest-card,
+
+      #quickRsvpModal .modal-dialog {
+        margin: 0;
+        min-height: 100%;
+      }
+
+      #quickRsvpModal .modal-content {
+        min-height: 100vh;
+      }
+
+      .rsvp-modal-header {
+        padding: 22px 48px 18px;
+      }
+
+      .rsvp-modal-wordmark {
+        margin-bottom: 10px;
+      }
+
+      .rsvp-modal-flower {
+        height: 15px;
+      }
+
+      .rsvp-modal-im {
+        font-size: 0.92rem;
+      }
+
+      .rsvp-find-intro {
+        margin-bottom: 18px;
+      }
+
+      .rsvp-find-sub {
+        font-size: 0.84rem;
+      }
+
+      .rsvp-modal-title {
+        font-size: 1.7rem;
+        letter-spacing: 0.16em;
+      }
+
+      .rsvp-modal-header .btn-close {
+        right: 18px;
+        top: 20px;
+      }
+
+      #quickRsvpModal .modal-body {
+        padding: 26px 24px 18px;
+      }
+
+      #quickRsvpModal .modal-footer {
+        padding: 8px 24px 28px;
+      }
+
+      .guest-card {
+        padding: 26px 0;
+      }
+
+      .guest-card:first-child {
+        padding-top: 8px;
+      }
+
+      .guest-name {
+        font-size: 1.2rem;
+        margin-bottom: 22px;
+      }
+
+      .field-group {
+        margin-top: 22px;
+      }
+
+      .field-label {
+        font-size: 0.68rem;
+        letter-spacing: 0.15em;
+      }
+
+      .radio-row {
+        gap: 24px;
+      }
+
+      .radio-pill {
+        font-size: 0.94rem;
+      }
+
+      .rsvp-input,
+      .rsvp-select {
+        font-size: 0.86rem;
+        padding: 12px 13px;
+      }
+
+      .rsvp-status-text {
+        font-size: 0.94rem;
+      }
+
+      #quickHouseholdContainer > .rsvp-btn-outline {
+        font-size: 0.88rem;
+        padding: 13px 40px 13px 14px;
+      }
+
       .household-email-block {
-        padding: 20px 18px;
+        padding-top: 24px;
       }
     }
   </style>
@@ -365,30 +1073,47 @@
     const searchBtn = document.getElementById("quickSearchBtn");
     const container = document.getElementById("quickHouseholdContainer");
     const submitBtn = document.getElementById("quickSubmitRsvpBtn");
+    const footer = document.getElementById("quickRsvpFooter");
+    const rsvpModalEl = document.getElementById("quickRsvpModal");
+    const formView = document.getElementById("quickRsvpFormView");
+    const thankYouView = document.getElementById("quickRsvpThankYou");
+
+    let rsvpRedirectTimeout = null;
 
     if (!guestNameInput || !searchBtn || !container || !submitBtn) return;
 
-    guestNameInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        searchBtn.click();
+    if (rsvpModalEl) {
+      rsvpModalEl.addEventListener("hidden.bs.modal", () => {
+        // If the thank-you redirect is already pending, let it be —
+        // we're heading to the same place either way.
+        if (rsvpRedirectTimeout) {
+          clearTimeout(rsvpRedirectTimeout);
+          rsvpRedirectTimeout = null;
+        }
+
+        // Reset so the modal is fresh next time it's opened — this
+        // matters when the redirect below is just a hash change on
+        // the same page, which won't reload anything on its own.
+        container.innerHTML = "";
+        guestNameInput.value = "";
+        if (footer) footer.style.display = "none";
+        if (formView) formView.style.display = "block";
+        if (thankYouView) thankYouView.style.display = "none";
+
+        window.location.href = "/#explore-more";
+      });
+    }
+
+    let searchDebounceTimer = null;
+
+    async function performSearch(name) {
+      if (!name) {
+        container.innerHTML = "";
+        if (footer) footer.style.display = "none";
+        return;
       }
-    });
 
-    const FIELD_CONFIG = {
-      attending: true,
-      meal_choice: true,
-      dietary_restriction: true,
-      plus_one_name: true,
-      join_pi_mile: true
-    };
-
-    const MEAL_OPTIONS = ["Beef", "Chicken", "Vegetarian"];
-
-    searchBtn.addEventListener("click", async () => {
-      const name = guestNameInput.value.trim();
-      if (!name) return alert("Please enter your first name.");
-
+      if (footer) footer.style.display = "none";
       container.innerHTML = "<p class='rsvp-status-text'>Searching...</p>";
 
       const res = await fetch("/api/lookup", {
@@ -418,6 +1143,51 @@
         btn.onclick = () => loadHousehold(m);
         container.appendChild(btn);
       });
+    }
+
+    // Search happens automatically as the guest types — a pause of
+    // ~450ms after their last keystroke triggers it, so no one needs
+    // to know to press the icon or hit Enter. The icon and Enter both
+    // still work too, for anyone who prefers to trigger it themselves.
+    guestNameInput.addEventListener("input", () => {
+      clearTimeout(searchDebounceTimer);
+
+      const name = guestNameInput.value.trim();
+
+      if (!name) {
+        container.innerHTML = "";
+        if (footer) footer.style.display = "none";
+        return;
+      }
+
+      if (name.length < 2) return;
+
+      searchDebounceTimer = setTimeout(() => performSearch(name), 450);
+    });
+
+    guestNameInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        clearTimeout(searchDebounceTimer);
+        performSearch(guestNameInput.value.trim());
+      }
+    });
+
+    const FIELD_CONFIG = {
+      attending: true,
+      meal_choice: true,
+      dietary_restriction: true,
+      plus_one_name: true,
+      join_pi_mile: true
+    };
+
+    const MEAL_OPTIONS = ["Beef", "Chicken", "Vegetarian"];
+
+    searchBtn.addEventListener("click", () => {
+      clearTimeout(searchDebounceTimer);
+      const name = guestNameInput.value.trim();
+      if (!name) return alert("Please enter your first name.");
+      performSearch(name);
     });
 
     async function loadHousehold(selectedPerson) {
@@ -449,7 +1219,6 @@
         if (FIELD_CONFIG.attending) {
           html += `
           <div class="field-group">
-              <label class="field-label">Will you be attending?</label>
               <div class="radio-row">
                   <label class="radio-pill">
                       <input type="radio" class="attending" name="attending-${g.guest_id}" value="true" ${isAttendingYes ? "checked" : ""}>
@@ -550,6 +1319,11 @@
               placeholder="you@example.com" value="${existingEmail}">
       `;
       container.appendChild(emailBlock);
+
+      // The user now has an actual form in front of them, with real
+      // selections to make — this is the point the submit action
+      // becomes meaningful, so reveal it here rather than up front.
+      if (footer) footer.style.display = "block";
     }
 
     container.addEventListener("change", e => {
@@ -637,8 +1411,6 @@
         return;
       }
 
-      const anyoneAttending = guests.some(g => g.attending === true);
-
       try {
         const res = await fetch("/api/rsvp", {
           method: "POST",
@@ -649,14 +1421,14 @@
         const data = await res.json();
 
         if (data.status === "success") {
-          alert(anyoneAttending ? "See you there!" : "We will miss you!");
+          if (formView) formView.style.display = "none";
+          if (footer) footer.style.display = "none";
+          if (thankYouView) thankYouView.style.display = "block";
 
-          container.innerHTML = "";
-          guestNameInput.value = "";
-
-          const rsvpModalEl = document.getElementById("quickRsvpModal");
-          const modalInstance = bootstrap.Modal.getInstance(rsvpModalEl) || new bootstrap.Modal(rsvpModalEl);
-          modalInstance.hide();
+          rsvpRedirectTimeout = setTimeout(() => {
+            const modalInstance = bootstrap.Modal.getInstance(rsvpModalEl) || new bootstrap.Modal(rsvpModalEl);
+            modalInstance.hide();
+          }, 2000);
         } else if (data.error) {
           alert(`Error: ${data.error}`);
         } else {
@@ -699,6 +1471,17 @@
 
     window.addEventListener('scroll', toggleFloatRsvp, { passive: true });
     toggleFloatRsvp();
+
+    // The floating button shouldn't sit on top of the modal it opens —
+    // hide it for as long as the modal is up, then let the normal
+    // scroll check decide whether it should come back.
+    const rsvpModalEl = document.getElementById('quickRsvpModal');
+    if (rsvpModalEl) {
+      rsvpModalEl.addEventListener('shown.bs.modal', () => {
+        floatRsvpBtn.classList.remove('is-visible');
+      });
+      rsvpModalEl.addEventListener('hidden.bs.modal', toggleFloatRsvp);
+    }
   })();
   </script>
 
