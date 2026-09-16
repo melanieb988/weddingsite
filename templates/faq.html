@@ -1,21 +1,21 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<div class="faq-page-wrapper" style="padding: 40px 20px; max-width: 800px; margin: 0 auto; font-family:'Montserrat', sans-serif; color:#2d2f3f;">
+<div class="faq-page-wrapper">
 
   <!-- HEADER -->
-  <div class="text-center mb-5">
-    <img src="{{ url_for('static', filename='images/biltmore1.png') }}" alt="Biltmore Logo" style="height:60px; margin-bottom:16px; opacity:0.85;">
-    <h1 style="font-family:'Great Vibes', cursive; font-size:3.8rem; margin-bottom:0; color:#2d2f3f;">FAQ</h1>
-    <p style="font-size:1.1rem; color:#514131; margin-top:4px;">All the extra info</p>
+  <div class="text-center faq-header">
+    <img src="{{ url_for('static', filename='images/biltmore1.png') }}" alt="Biltmore Logo" class="faq-logo">
+    <h1 class="faq-heading">Faq</h1>
+    <p class="faq-subtext">All the extra info</p>
   </div>
 
-  <!-- FAQ ACCORDION -->
-  <div class="accordion faq-accordion" id="faqAccordion">
+  <!-- FAQ LIST -->
+  <div class="faq-list" id="faqAccordion">
 
     <div class="faq-item">
       <button class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq1">
-        What should I wear?
+        <span>What should I wear?</span>
         <span class="faq-chevron">⌄</span>
       </button>
       <div id="faq1" class="collapse" data-bs-parent="#faqAccordion">
@@ -25,39 +25,39 @@
 
     <div class="faq-item">
       <button class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq2">
-        Are kids welcome?
+        <span>Are kids welcome?</span>
         <span class="faq-chevron">⌄</span>
       </button>
       <div id="faq2" class="collapse" data-bs-parent="#faqAccordion">
-        <div class="faq-answer">Check your RSVP to see who’s included in your invitation!</div>
+        <div class="faq-answer">Check your RSVP to see who's included in your invitation!</div>
       </div>
     </div>
 
     <div class="faq-item">
-        <button class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq3">
-          Is there parking at the venue?
-          <span class="faq-chevron">⌄</span>
-        </button>
-      
-        <div id="faq3" class="collapse" data-bs-parent="#faqAccordion">
-          <div class="faq-answer">
-            Yes. Parking is available at The Biltmore Ballrooms for $15. If you're staying at our hotel
-            block at the Renaissance Atlanta Midtown, the venue is directly across the street and easily
-            walkable. Many other Midtown hotels are also within walking distance. See the
-            <a href="{{ url_for('travel') }}">Travel</a> page for more details.
-      
-            <div class="faq-note">
-              <span class="faq-note-label">Parking Address</span>
-              30 5th Street NE<br>
-              Atlanta, GA 30308
-            </div>
+      <button class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq3">
+        <span>Is there parking at the venue?</span>
+        <span class="faq-chevron">⌄</span>
+      </button>
+
+      <div id="faq3" class="collapse" data-bs-parent="#faqAccordion">
+        <div class="faq-answer">
+          Yes. Parking is available at The Biltmore Ballrooms for $15. If you're staying at our hotel
+          block at the Renaissance Atlanta Midtown, the venue is directly across the street and easily
+          walkable. Many other Midtown hotels are also within walking distance. See the
+          <a href="{{ url_for('travel') }}">Travel</a> page for more details.
+
+          <div class="faq-note">
+            <span class="faq-note-label">Parking Address</span>
+            30 5th Street NE<br>
+            Atlanta, GA 30308
           </div>
         </div>
       </div>
+    </div>
 
     <div class="faq-item">
       <button class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq4">
-        What time should I arrive?
+        <span>What time should I arrive?</span>
         <span class="faq-chevron">⌄</span>
       </button>
       <div id="faq4" class="collapse" data-bs-parent="#faqAccordion">
@@ -67,17 +67,17 @@
 
     <div class="faq-item">
       <button class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq5">
-        Can I bring a plus one?
+        <span>Can I bring a plus one?</span>
         <span class="faq-chevron">⌄</span>
       </button>
       <div id="faq5" class="collapse" data-bs-parent="#faqAccordion">
-        <div class="faq-answer">Check your RSVP! If a plus one is included with your invitation, you’ll see the option to add them when you RSVP.</div>
+        <div class="faq-answer">Check your RSVP! If a plus one is included with your invitation, you'll see the option to add them when you RSVP.</div>
       </div>
     </div>
 
     <div class="faq-item">
       <button class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq6">
-        Who do I contact with more questions?
+        <span>Who do I contact with more questions?</span>
         <span class="faq-chevron">⌄</span>
       </button>
       <div id="faq6" class="collapse" data-bs-parent="#faqAccordion">
@@ -90,92 +90,159 @@
 </div>
 
 <style>
+  /* ========================= */
+  /* FAQ PAGE — matches the color system, fonts, and flat line-divided
+     language used on the homepage (Weekend Schedule / Explore More).
+     Color variables (--c-heading, --c-gold, etc.) come from the
+     global :root defined in layout.html, so nothing is redefined here.
+     ========================= */
 
-.faq-accordion {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
+  .faq-page-wrapper {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 50px 20px 70px;
+    font-family: 'Montserrat', sans-serif;
+    color: var(--c-ink);
+  }
 
-.faq-item {
-  background: #fffaf7;
-  border-radius: 14px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-}
+  .faq-header {
+    margin-bottom: 0;
+  }
 
-.faq-question {
-  width: 100%;
-  background: none;
-  border: none;
-  text-align: left;
-  padding: 20px 24px;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
-  font-size: 1.05rem;
-  color: #2d2f3f;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-}
+  .faq-logo {
+    height: 56px;
+    margin-bottom: 14px;
+    opacity: 0.85;
+  }
 
-.faq-chevron {
-  color: #af8e6e;
-  font-size: 1.3rem;
-  transition: transform 0.25s ease;
-  flex-shrink: 0;
-  margin-left: 12px;
-}
+  /* Same script treatment as "Weekend Schedule" / "Explore More" —
+     one heading style reused everywhere a major section starts. */
+  .faq-heading {
+    font-family: 'Great Vibes', cursive;
+    font-size: 3.4rem;
+    font-weight: 400;
+    color: var(--c-heading);
+    text-align: center;
+    margin-bottom: 0;
+  }
 
-.faq-question[aria-expanded="true"] .faq-chevron,
-.faq-question:not(.collapsed) .faq-chevron {
-  transform: rotate(180deg);
-}
+  .faq-subtext {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c-secondary);
+    margin-top: 4px;
+  }
 
-.faq-answer {
-  padding: 0 24px 20px;
-  font-size: 0.98rem;
-  color: #514131;
-  line-height: 1.65;
-}
+  /* Flat, line-divided list — the same "no card, no shadow" language
+     as the Weekend Schedule rows, instead of the old boxed/shadowed
+     cards, so this page reads as part of the same site. */
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    margin-top: 36px;
+  }
 
-.faq-answer a {
-  color: #af8e6e;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
+  .faq-item {
+    border-bottom: 1px solid var(--c-divider);
+  }
 
-.faq-answer a:hover {
-  color: #8a685d;
-}
-
-@media (max-width: 600px) {
   .faq-question {
-    padding: 16px 18px;
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
+    padding: 20px 4px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
     font-size: 1rem;
+    color: var(--c-heading);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+
+  .faq-question:hover {
+    color: var(--c-gold);
+  }
+
+  .faq-chevron {
+    color: var(--c-gold);
+    font-size: 1.2rem;
+    line-height: 1;
+    transition: transform 0.25s ease;
+    flex-shrink: 0;
+  }
+
+  .faq-question[aria-expanded="true"] .faq-chevron,
+  .faq-question:not(.collapsed) .faq-chevron {
+    transform: rotate(180deg);
   }
 
   .faq-answer {
-    padding: 0 18px 16px;
+    padding: 0 4px 22px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--c-muted);
+    line-height: 1.45;
   }
-}
-.faq-note {
-  margin-top: 18px;
-  padding-top: 14px;
-  border-top: 1px solid #DED7C8;
-  font-size: 0.9rem;
-  line-height: 1.6;
-  color: #718078;
-}
 
-.faq-note-label {
-  display: block;
-  margin-bottom: 3px;
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #948045;
-}
+  .faq-answer b {
+    color: var(--c-ink);
+    font-weight: 600;
+  }
+
+  .faq-answer a {
+    color: var(--c-gold);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .faq-answer a:hover {
+    color: var(--c-heading);
+  }
+
+  .faq-note {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--c-divider);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--c-muted);
+  }
+
+  .faq-note-label {
+    display: block;
+    margin-bottom: 3px;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--c-gold);
+  }
+
+  @media (max-width: 600px) {
+    .faq-page-wrapper {
+      padding: 36px 16px 50px;
+    }
+
+    .faq-heading {
+      font-size: 2.4rem;
+    }
+
+    .faq-question {
+      padding: 16px 2px;
+    }
+
+    .faq-answer {
+      padding: 0 2px 18px;
+    }
+  }
 </style>
-{% endblock %}
+{% endblock %} 
