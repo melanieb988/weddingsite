@@ -1,35 +1,57 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<div class="gallery-page-wrapper" style="padding: 40px 20px; max-width: 1300px; margin: 0 auto;">
 
-  <!-- Page Header -->
-  <div class="text-center mb-5">
-    <h1 style="font-family:'Great Vibes', cursive; font-size:4rem; color:#2d2f3f; margin-bottom:0;">Gallery</h1>
-    <p style="font-family:'Montserrat', sans-serif;font-style: italic; color:#514131; font-size:1.2rem; margin-top:4px;">Some of our adventures</p>
-    <p style=" font-style: italic;
-    font-size: 0.9rem;
-    color: #83786a;
-    margin: 14px 0 0; margin-top:4px;">Friends, Family & Adventures</p>
-  </div>
-
-  <!-- Gallery Grid -->
-  <div class="gallery-grid">
-    {% for img in images %}
-    <div class="gallery-item">
-      <img
-        src="{{ url_for('static', filename='images/gallery/' ~ img) }}"
-        alt="{{ img }}"
-        class="gallery-photo"
-        loading="lazy"
-      >
-    </div>
-    {% endfor %}
-  </div>
-
-</div>
-
+<!-- Page CSS lives here, at the top of the block, on purpose — same fix as
+     travel.html: this template extends layout.html and has no access to
+     its <head>, so if this stylesheet loaded after the image grid (as it
+     originally did, down at the bottom), the browser paints the images in
+     plain single-column block flow for a frame before the column-count
+     masonry layout kicks in and reflows them — that's the glitch where a
+     different image briefly appears at the top before settling into place.
+     Putting the CSS first means the grid is already laid out before the
+     browser paints anything. -->
 <style>
+/* ================= HEADER — same three-tier type hierarchy as
+   registry.html / travel.html: Great Vibes title, Instrument Serif
+   italic accent line, Montserrat uppercase subtext ================= */
+
+.gallery-heading {
+  font-family: 'Great Vibes', cursive;
+  font-weight: 400;
+  font-size: 3.4rem;
+  color: var(--c-heading);
+  text-align: center;
+  margin: 0;
+}
+
+.gallery-tagline {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.3rem;
+  color: var(--c-heading);
+  text-align: center;
+  margin: 6px 0 0;
+}
+
+.gallery-subtext {
+  /* Same treatment as .registry-subtext / .trav-subtitle */
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-secondary);
+  text-align: center;
+  margin: 10px 0 0;
+}
+
+.gallery-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
 /* ================= MASONRY / COLLAGE GALLERY ================= */
 
 .gallery-grid {
@@ -83,4 +105,30 @@
   }
 }
 </style>
+
+<div class="gallery-page-wrapper" style="padding: 28px 20px 40px; max-width: 1300px; margin: 0 auto;">
+
+  <!-- Page Header -->
+  <div class="gallery-header">
+    <h1 class="gallery-heading">Gallery</h1>
+    <p class="gallery-tagline">Family, Friends &amp; Adventures</p>
+    <p class="gallery-subtext">Running, Skiing, Biking</p>
+  </div>
+
+  <!-- Gallery Grid -->
+  <div class="gallery-grid">
+    {% for img in images %}
+    <div class="gallery-item">
+      <img
+        src="{{ url_for('static', filename='images/gallery/' ~ img) }}"
+        alt="{{ img }}"
+        class="gallery-photo"
+        loading="lazy"
+      >
+    </div>
+    {% endfor %}
+  </div>
+
+</div>
+
 {% endblock %}
