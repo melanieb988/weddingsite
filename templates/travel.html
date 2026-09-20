@@ -2,6 +2,812 @@
 
 {% block body %}
 
+<!-- Page CSS lives here, at the very top of the block, on purpose: this
+     template extends layout.html and has no access to its <head>, so if
+     this stylesheet were placed after the markup (as it originally was,
+     down by the scripts) the browser paints the raw, unstyled <img> tags
+     at their full native pixel size for a frame before it reaches and
+     parses this block — that's the "flash of a full-page image" glitch.
+     Putting the CSS first means every element below is already styled
+     (sized, positioned, hidden, etc.) before the browser paints anything. -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<style>
+
+/* Faint, full-width hairline between sections — quieter than the
+   line-diamond-line ornament, which felt too heavy repeated five times
+   down one page. */
+.trav-divider {
+  height: 1px;
+  background: var(--c-divider);
+  opacity: 0.6;
+  margin: 18px 0;
+  border: none;
+}
+
+/* ========================= */
+/* BASE + PAGE WRAPPERS */
+/* ========================= */
+.travel-page-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px;
+  font-family: 'Montserrat', sans-serif;
+  color: var(--c-ink);
+}
+
+.travel-header-wrap {
+  padding-top: 28px;
+}
+
+.travel-body-wrap {
+  padding-top: 26px;
+  padding-bottom: 12px;
+}
+
+/* ================= HEADER ================= */
+
+.trav-header {
+  text-align: center;
+}
+
+.trav-logo-img {
+  height: 56px;
+  margin-bottom: 10px;
+  opacity: 0.85;
+}
+
+.trav-title {
+  font-family: 'Great Vibes', cursive;
+  font-weight: 400;
+  font-size: 3.4rem;
+  margin: 0;
+  color: var(--c-heading);
+  text-align: center;
+}
+
+.trav-subtitle {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-secondary);
+  text-align: center;
+  margin: 10px 0 0;
+}
+
+/* ================= QUICK-JUMP TAB NAV ================= */
+/* Full-bleed bar (edge to edge, breaks out of the .container-fluid px-2
+   gutter from layout.html) with a subtle gold underline on the active tab. */
+
+.pills-nav {
+  position: sticky;
+  top: 76px;
+  z-index: 80;
+  width: auto;
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
+  margin-top: 22px;
+  background: var(--c-bg);
+  border-bottom: 1px solid var(--c-divider);
+  overflow-x: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.pills-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.pills-nav-inner {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 28px;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.pill-link {
+  flex-shrink: 0;
+  position: relative;
+  padding: 14px 1px;
+  background: transparent;
+  border: none;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-taupe);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.pill-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: transparent;
+  transition: background-color 0.2s ease;
+}
+
+.pill-link:hover {
+  color: var(--c-heading);
+}
+
+.pill-link.is-active {
+  color: var(--c-heading);
+}
+
+.pill-link.is-active::after {
+  background-color: var(--c-gold);
+}
+
+#s-flights, #s-hotels, #s-map, #s-transit, #s-parking {
+  scroll-margin-top: 130px;
+}
+
+@media (max-width: 600px) {
+  .pills-nav {
+    top: 68px;
+  }
+
+  .pills-nav-inner {
+    gap: 16px;
+    padding: 0 16px;
+  }
+
+  .pill-link {
+    font-size: 0.66rem;
+    padding: 12px 1px;
+  }
+}
+
+/* ================= SECTION LABEL ================= */
+/* Instrument Serif italic — the same "elegant accent" treatment used for
+   day labels elsewhere on the site — standing in as a secondary heading
+   for each block, one tier below the page's single Great Vibes title. */
+
+.trav-group {
+  padding: 0 2px;
+}
+
+.trav-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0 0 14px;
+}
+
+.trav-head::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--c-divider);
+}
+
+.trav-head-text {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.3rem;
+  color: var(--c-heading);
+  flex-shrink: 0;
+}
+
+.travel-body-text {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: var(--c-muted);
+  line-height: 1.45;
+  margin: 0;
+}
+
+.highlight-link {
+  color: var(--c-gold);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.trav-subhead {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: var(--c-muted);
+  line-height: 1.45;
+  margin: 0 0 16px;
+}
+
+/* ================= FLIGHTS ================= */
+
+.flight-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.airline-logo {
+  height: 54px;
+  flex-shrink: 0;
+}
+
+.flight-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.flight-name {
+  margin: 0;
+  line-height: 1.3;
+}
+
+.flight-name a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--c-heading);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.flight-name a:hover {
+  color: var(--c-gold);
+}
+
+.flight-name-arrow {
+  display: inline-block;
+  color: var(--c-gold);
+  font-size: 0.78em;
+  transition: transform 0.2s ease;
+}
+
+.flight-name a:hover .flight-name-arrow {
+  transform: translateX(3px);
+}
+
+.flight-sub {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: var(--c-muted);
+  margin: 2px 0 0;
+}
+
+/* ================= FEATURED / OFFICIAL HOTEL ================= */
+/* The one hotel we want everyone to book, called out with a solid filled
+   button instead of the site's usual gold ghost-pill — a deliberate,
+   one-off "elevated" CTA to outrank the plain "View Hotel" links below,
+   still built entirely from the palette (fill is --c-heading, not a new
+   color). */
+
+.featured-hotel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--c-divider);
+  overflow: hidden;
+}
+
+.featured-hotel-media {
+  position: relative;
+  min-height: 170px;
+}
+
+.featured-hotel-media .hotel-carousel,
+.featured-hotel-media .carousel-images,
+.featured-hotel-media .carousel-images img {
+  height: 100%;
+}
+
+.featured-hotel-content {
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.featured-hotel-kicker {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-gold);
+  margin-bottom: 5px;
+}
+
+.featured-hotel-title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 1.15rem;
+  color: var(--c-heading);
+  line-height: 1.3;
+  margin: 0 0 6px;
+}
+
+.featured-hotel-sub {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 0.76rem;
+  color: var(--c-muted);
+  line-height: 1.4;
+  margin: 0 0 12px;
+}
+
+.featured-hotel-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background: var(--c-heading);
+  color: #fff;
+  padding: 11px 16px;
+  border-radius: 6px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 0.64rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  margin-bottom: 10px;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.featured-hotel-btn:hover {
+  opacity: 0.88;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.featured-hotel-btn-arrow {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.featured-hotel-btn:hover .featured-hotel-btn-arrow {
+  transform: translateX(3px);
+}
+
+.featured-hotel-footnote {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding-top: 2px;
+}
+
+.featured-hotel-footnote-line {
+  width: 20px;
+  height: 1px;
+  background: var(--c-divider);
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+.featured-hotel-footnote-text {
+  margin: 0;
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 0.68rem;
+  line-height: 1.5;
+  color: var(--c-muted);
+}
+
+.featured-hotel-footnote-text strong {
+  color: var(--c-ink);
+  font-weight: 600;
+}
+
+/* ================= OTHER NEARBY HOTELS ================= */
+
+.other-hotels-label {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 30px 0 18px;
+}
+
+.other-hotels-label::before,
+.other-hotels-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--c-divider);
+}
+
+.other-hotels-label span {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-secondary);
+  white-space: nowrap;
+}
+
+.hotel-grid {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  padding: 2px 2px 8px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hotel-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.hotel-card {
+  flex: 0 0 220px;
+  background: var(--c-bg);
+  border: 1px solid var(--c-divider);
+  overflow: hidden;
+}
+
+.hotel-card .carousel-images img {
+  height: 130px;
+}
+
+.hotel-card .carousel-btn {
+  opacity: 0;
+}
+
+.hotel-card:hover .carousel-btn,
+.hotel-card:focus-within .carousel-btn {
+  opacity: 1;
+}
+
+.hotel-card-body {
+  padding: 14px 16px 16px;
+}
+
+.hotel-card-name {
+  margin: 0 0 4px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  line-height: 1.3;
+}
+
+.hotel-card-name a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--c-heading);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.hotel-card-name a:hover {
+  color: var(--c-gold);
+}
+
+.hotel-card-name-arrow {
+  display: inline-block;
+  color: var(--c-gold);
+  font-size: 0.82em;
+  transition: transform 0.2s ease;
+}
+
+.hotel-card-name a:hover .hotel-card-name-arrow {
+  transform: translateX(3px);
+}
+
+.hotel-card-desc {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 0.8rem;
+  color: var(--c-muted);
+  line-height: 1.4;
+}
+
+/* ================= CAROUSEL (shared: official + row cards) ================= */
+
+.hotel-carousel {
+  position: relative;
+  overflow: hidden;
+}
+
+.carousel-images {
+  display: flex;
+  height: 100%;
+  transition: transform 0.4s ease;
+}
+
+.carousel-images img {
+  width: 100%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(38, 60, 55, 0.5);
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  padding: 5px 9px;
+  cursor: pointer;
+  border-radius: 50%;
+  z-index: 10;
+  transition: background 0.2s ease;
+}
+
+.carousel-btn.left { left: 10px; }
+.carousel-btn.right { right: 10px; }
+
+.carousel-btn:hover {
+  background: rgba(38, 60, 55, 0.8);
+}
+
+/* ================= MAP ================= */
+
+#map {
+  height: 260px;
+  border: 1px solid var(--c-divider);
+}
+
+.map-legend {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 22px;
+  margin-top: 14px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  color: var(--c-muted);
+}
+.map-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.legend-venue { background: var(--c-gold); box-shadow: 0 0 0 2px var(--c-bg), 0 0 0 3px var(--c-gold); }
+.legend-hotel { background: var(--c-bg); border: 2px solid var(--c-heading); }
+/* Publix (grocery) intentionally stays outside the core palette — a
+   functional map-category color, the same kind of deliberate exception
+   as the RSVP modal's own palette. */
+.legend-publix { background: #4c8c4a; box-shadow: 0 0 0 2px var(--c-bg), 0 0 0 3px #4c8c4a; }
+
+.venue-marker {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--c-gold);
+  border: 1.5px solid #fff;
+  box-shadow: 0 0 0 2px var(--c-gold), 0 3px 10px rgba(0,0,0,0.3);
+}
+.hotel-marker {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2.5px solid var(--c-heading);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+.publix-marker {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: #4c8c4a;
+  border: 1.5px solid #fff;
+  box-shadow: 0 0 0 1.5px #4c8c4a, 0 2px 6px rgba(0,0,0,0.25);
+}
+
+.leaflet-tooltip.map-label {
+  background: rgba(250, 248, 243, 0.94);
+  border: 1px solid var(--c-divider);
+  border-radius: 6px;
+  padding: 1px 2px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.4rem;
+  font-weight: 600;
+  color: var(--c-heading);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  white-space: nowrap;
+}
+.leaflet-tooltip.map-label-venue {
+  background: var(--c-gold);
+  border-color: var(--c-gold);
+  color: #fff;
+  font-weight: 700;
+}
+.leaflet-tooltip.map-label::before {
+  display: none;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  padding: 2px;
+}
+.leaflet-popup-content {
+  margin: 14px 16px;
+  font-family: 'Montserrat', sans-serif;
+}
+.popup-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--c-heading);
+  margin-bottom: 3px;
+}
+.popup-tag {
+  display: inline-block;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--c-gold);
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-bottom: 6px;
+}
+.popup-distance {
+  font-size: 0.8rem;
+  color: var(--c-muted);
+  margin-top: 4px;
+}
+.popup-link {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--c-gold);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.leaflet-popup-tip {
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.leaflet-control-zoom a {
+  border-radius: 8px !important;
+  color: var(--c-heading) !important;
+}
+.leaflet-control-attribution {
+  font-size: 0.65rem !important;
+  background: rgba(250, 248, 243, 0.7) !important;
+}
+
+/* ================= VENUE + PARKING ================= */
+
+.venue-parking-card {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  gap: 26px;
+  padding: 4px 0 4px;
+  background: transparent;
+}
+
+.venue-parking-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.venue-parking-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-gold);
+  margin-bottom: 7px;
+}
+
+.venue-parking-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--c-heading);
+  margin: 0 0 3px;
+  line-height: 1.3;
+}
+
+.venue-parking-subtitle {
+  margin: 0 0 12px;
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--c-secondary);
+}
+
+.venue-parking-address {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--c-muted);
+}
+
+.venue-parking-divider {
+  width: 1px;
+  background: var(--c-divider);
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px) {
+
+  .carousel-btn { font-size: 15px; padding: 4px 8px; }
+
+  #map { height: 220px; }
+}
+
+@media (max-width: 600px) {
+
+  .trav-title { font-size: 2.4rem; }
+  .trav-logo-img { height: 46px; }
+
+  .travel-header-wrap { padding-top: 20px; }
+  .travel-body-wrap { padding-top: 20px; }
+
+  .flight-row { gap: 14px; }
+
+  .featured-hotel {
+    grid-template-columns: 1fr;
+  }
+
+  .featured-hotel-media { min-height: 130px; }
+
+  .featured-hotel-content { padding: 14px; }
+
+  .featured-hotel-kicker { font-size: 0.56rem; margin-bottom: 4px; }
+
+  .featured-hotel-title { font-size: 1.05rem; margin-bottom: 4px; }
+
+  .featured-hotel-sub { font-size: 0.72rem; margin-bottom: 10px; }
+
+  .featured-hotel-btn { padding: 10px 14px; font-size: 0.6rem; margin-bottom: 8px; }
+
+  .featured-hotel-footnote { gap: 8px; }
+
+  .featured-hotel-footnote-line { width: 14px; }
+
+  .featured-hotel-footnote-text { font-size: 0.62rem; }
+
+  .hotel-grid { gap: 10px; }
+
+  .hotel-card { flex: 0 0 170px; }
+
+  .hotel-card .carousel-images img { height: 96px; }
+
+  .hotel-card-name { font-size: 0.82rem; }
+  .hotel-card-desc { font-size: 0.74rem; }
+
+  .venue-parking-card {
+    grid-template-columns: 1fr 1px 1fr;
+    gap: 14px;
+  }
+
+  .venue-parking-label { font-size: 0.6rem; }
+  .venue-parking-title { font-size: 0.9rem; }
+  .venue-parking-subtitle { font-size: 0.95rem; }
+  .venue-parking-address { font-size: 0.82rem; line-height: 1.45; }
+}
+
+</style>
+
 <div class="travel-page-wrapper travel-header-wrap">
   <div class="trav-header">
     <img src="{{ url_for('static', filename='images/biltmore1.png') }}" alt="Biltmore Logo" class="trav-logo-img">
@@ -29,26 +835,26 @@
     <div class="trav-head"><span class="trav-head-text">Flights</span></div>
     <div class="flight-row">
       <img src="{{ url_for('static', filename='images/united_logo1.png') }}" alt="United Airlines" class="airline-logo">
-      <p class="travel-body-text">Fly <a href="https://www.united.com" target="_blank" class="highlight-link">United Airlines</a></p>
+      <div class="flight-text">
+        <p class="flight-name"><a href="https://www.united.com" target="_blank">United Airlines <span class="flight-name-arrow">&rarr;</span></a></p>
+        <p class="flight-sub">Fly to Atlanta (ATL)</p>
+      </div>
     </div>
   </div>
 
-  <hr class="trav-divider">
+  <div class="trav-divider"></div>
 
   <!-- HOTELS -->
   <div class="trav-group" id="s-hotels">
     <div class="trav-head"><span class="trav-head-text">Hotels</span></div>
-    <p class="trav-subhead">Within walking distance of the venue. Our room block is at the Renaissance.</p>
 
-    <!-- All hotels — one horizontally-scrolling row of identically-sized
-         cards. The Renaissance (our reserved block) is simply first;
-         its card links straight to the reservation page instead of the
-         hotel's own site, but looks exactly like the others. -->
-    <div class="hotel-row">
-
-      <div class="hotel-card">
+    <!-- FEATURED / OFFICIAL HOTEL — the one hotel we want everyone to
+         actually book. Given its own full-width, two-column treatment
+         (photo + rate/CTA/note) so it reads as clearly distinct from the
+         "other nearby hotels" grid below. -->
+    <div class="featured-hotel">
+      <div class="featured-hotel-media">
         <div class="hotel-carousel" id="carousel-official">
-          <a class="hotel-badge" href="https://www.marriott.com/event-reservations/reservation-link.mi?id=1776089155214&key=GRP&app=resvlink&_branch_match_id=1603525811292214297&_branch_referrer=H4sIAAAAAAAAA8soKSkottLXTywo0MtNLCrKzC8p0UvOz9UvSi3OyczLtgdK2ALZZSCOWmaKraG5uZmBhaWhqamRoYladmqlrXtQgFpdUWpaKlB3Xnp8UlF%2BeXFqka1rSnoqALHYfCleAAAA&inventoryMissing=true" target="_blank">Wedding Block</a>
           <div class="carousel-images">
             <img src="{{ url_for('static', filename='images/travel/marriot_ren_hotel.jpg') }}" alt="Renaissance Hotel">
             <img src="{{ url_for('static', filename='images/travel/marriot_ren_din.jpg') }}" alt="Hotel Dining">
@@ -57,8 +863,31 @@
           <button class="carousel-btn left" onclick="prevSlide('carousel-official')">&#10094;</button>
           <button class="carousel-btn right" onclick="nextSlide('carousel-official')">&#10095;</button>
         </div>
-        <h5><a class="hotel-link" href="https://www.marriott.com/event-reservations/reservation-link.mi?id=1776089155214&key=GRP&app=resvlink&_branch_match_id=1603525811292214297&_branch_referrer=H4sIAAAAAAAAA8soKSkottLXTywo0MtNLCrKzC8p0UvOz9UvSi3OyczLtgdK2ALZZSCOWmaKraG5uZmBhaWhqamRoYladmqlrXtQgFpdUWpaKlB3Xnp8UlF%2BeXFqka1rSnoqALHYfCleAAAA&inventoryMissing=true" target="_blank">Renaissance Atlanta Midtown Marriott &rarr;</a></h5>
       </div>
+      <div class="featured-hotel-content">
+        <span class="featured-hotel-kicker">Official Wedding Hotel</span>
+        <h3 class="featured-hotel-title">Renaissance Atlanta Midtown</h3>
+        <p class="featured-hotel-sub">Discounted rate &middot; 1 block from The Biltmore</p>
+        <a class="featured-hotel-btn"
+           href="https://www.marriott.com/event-reservations/reservation-link.mi?id=1776089155214&key=GRP&app=resvlink&_branch_match_id=1603525811292214297&_branch_referrer=H4sIAAAAAAAAA8soKSkottLXTywo0MtNLCrKzC8p0UvOz9UvSi3OyczLtgdK2ALZZSCOWmaKraG5uZmBhaWhqamRoYladmqlrXtQgFpdUWpaKlB3Xnp8UlF%2BeXFqka1rSnoqALHYfCleAAAA&inventoryMissing=true"
+           target="_blank">
+          Book Our Rate <span class="featured-hotel-btn-arrow">&rarr;</span>
+        </a>
+        <div class="featured-hotel-footnote">
+          <span class="featured-hotel-footnote-line"></span>
+          <p class="featured-hotel-footnote-text">Please select only <strong>Friday &amp; Saturday nights</strong> to receive our discounted rate.</p>
+          <span class="featured-hotel-footnote-line"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="other-hotels-label"><span>Other Nearby Hotels</span></div>
+
+    <!-- Secondary hotels — a simple flat grid, one photo forward per card.
+         Each card still carries its full photo set via the existing
+         carousel, but the prev/next controls stay hidden until hover so
+         the resting state matches a plain single-photo card. -->
+    <div class="hotel-grid">
 
       <div class="hotel-card">
         <div class="hotel-carousel" id="carousel-gatech">
@@ -70,7 +899,10 @@
           <button class="carousel-btn left" onclick="prevSlide('carousel-gatech')">&#10094;</button>
           <button class="carousel-btn right" onclick="nextSlide('carousel-gatech')">&#10095;</button>
         </div>
-        <h5><a class="hotel-link" href="http://www.gatechhotel.com/" target="_blank">Georgia Tech Hotel &rarr;</a></h5>
+        <div class="hotel-card-body">
+          <h5 class="hotel-card-name"><a href="http://www.gatechhotel.com/" target="_blank">Georgia Tech Hotel <span class="hotel-card-name-arrow">&rarr;</span></a></h5>
+          <p class="hotel-card-desc">A great option near campus.</p>
+        </div>
       </div>
 
       <div class="hotel-card">
@@ -83,7 +915,10 @@
           <button class="carousel-btn left" onclick="prevSlide('carousel-hyatt')">&#10094;</button>
           <button class="carousel-btn right" onclick="nextSlide('carousel-hyatt')">&#10095;</button>
         </div>
-        <h5><a class="hotel-link" href="http://atlantamidtown.hyatt.com/" target="_blank">Hyatt Centric Midtown Atlanta &rarr;</a></h5>
+        <div class="hotel-card-body">
+          <h5 class="hotel-card-name"><a href="http://atlantamidtown.hyatt.com/" target="_blank">Hyatt Centric Midtown Atlanta <span class="hotel-card-name-arrow">&rarr;</span></a></h5>
+          <p class="hotel-card-desc">Centrally located in Midtown.</p>
+        </div>
       </div>
 
       <div class="hotel-card">
@@ -96,7 +931,10 @@
           <button class="carousel-btn left" onclick="prevSlide('carousel-georgian')">&#10094;</button>
           <button class="carousel-btn right" onclick="nextSlide('carousel-georgian')">&#10095;</button>
         </div>
-        <h5><a class="hotel-link" href="https://thegeorgianterrace.com/" target="_blank">The Georgian Terrace &rarr;</a></h5>
+        <div class="hotel-card-body">
+          <h5 class="hotel-card-name"><a href="https://thegeorgianterrace.com/" target="_blank">The Georgian Terrace <span class="hotel-card-name-arrow">&rarr;</span></a></h5>
+          <p class="hotel-card-desc">Historic charm on Peachtree St.</p>
+        </div>
       </div>
 
       <div class="hotel-card">
@@ -108,13 +946,16 @@
           <button class="carousel-btn left" onclick="prevSlide('carousel-hilton')">&#10094;</button>
           <button class="carousel-btn right" onclick="nextSlide('carousel-hilton')">&#10095;</button>
         </div>
-        <h5><a class="hotel-link" href="https://www.hilton.com/en/hotels/atlamgi-hilton-garden-inn-atlanta-midtown/" target="_blank">Hilton Garden Inn Atlanta Midtown &rarr;</a></h5>
+        <div class="hotel-card-body">
+          <h5 class="hotel-card-name"><a href="https://www.hilton.com/en/hotels/atlamgi-hilton-garden-inn-atlanta-midtown/" target="_blank">Hilton Garden Inn Atlanta Midtown <span class="hotel-card-name-arrow">&rarr;</span></a></h5>
+          <p class="hotel-card-desc">Comfortable and budget-friendly.</p>
+        </div>
       </div>
 
     </div>
   </div>
 
-  <hr class="trav-divider">
+  <div class="trav-divider"></div>
 
   <!-- MAP -->
   <div class="trav-group" id="s-map">
@@ -127,7 +968,7 @@
     </div>
   </div>
 
-  <hr class="trav-divider">
+  <div class="trav-divider"></div>
 
   <!-- PUBLIC TRANSIT -->
   <div class="trav-group" id="s-transit">
@@ -137,7 +978,7 @@
     </p>
   </div>
 
-  <hr class="trav-divider">
+  <div class="trav-divider"></div>
 
   <!-- VENUE & PARKING -->
   <div class="trav-group" id="s-parking">
@@ -173,8 +1014,7 @@
 
 </div>
 
-<!-- LEAFLET MAP SCRIPT -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<!-- LEAFLET MAP SCRIPT (stylesheet is loaded up top with the page CSS) -->
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
@@ -193,11 +1033,13 @@
   var venueLatLng = [33.776912, -84.386817];
 
   // Soft dashed ring communicating "everything is within walking distance"
+  // Color mirrors the site's --c-gold (#A58958) design-system variable —
+  // hardcoded here because this is drawn by Leaflet/JS, not CSS.
   L.circle(venueLatLng, {
     radius: 800,
-    color: '#af8e6e',
+    color: '#A58958',
     weight: 1,
-    fillColor: '#af8e6e',
+    fillColor: '#A58958',
     fillOpacity: 0.06,
     dashArray: '4 6'
   }).addTo(map);
@@ -245,7 +1087,12 @@
     var isVenue = loc[5] === "venue";
     var isPublix = loc[5] === "publix";
     var tagLabel = isVenue ? 'Venue' : (isPublix ? 'Grocery' : 'Hotel');
-    var tagStyle = isVenue ? '' : (isPublix ? ' style="background:#4c8c4a;"' : ' style="background:#2d2f3f;"');
+    // Venue tag falls back to the .popup-tag class default (gold, from the
+    // design system). Hotel uses the --c-heading hex directly since this
+    // string is built in JS. Publix (grocery) intentionally stays outside
+    // the site palette — a functional map-category color, same kind of
+    // deliberate exception as the RSVP modal's own palette.
+    var tagStyle = isVenue ? '' : (isPublix ? ' style="background:#4c8c4a;"' : ' style="background:#284B43;"');
     var popupContent = '<div class="popup-tag"' + tagStyle + '>' + tagLabel + '</div>' +
       '<div class="popup-title">' + loc[0] + '</div>' +
       '<div class="popup-distance">' + loc[3] + '</div>';
@@ -330,537 +1177,4 @@
     });
   })();
 </script>
-
-<style>
-
-/* ========================= */
-/* BASE + PAGE WRAPPERS */
-/* ========================= */
-.travel-page-wrapper {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 0 20px;
-  font-family: 'Montserrat', sans-serif;
-  color: #2d2f3f;
-}
-
-.travel-header-wrap {
-  padding-top: 28px;
-}
-
-.travel-body-wrap {
-  padding-top: 26px;
-  padding-bottom: 12px;
-}
-
-/* ================= HEADER ================= */
-
-.trav-header {
-  text-align: center;
-}
-
-.trav-logo-img {
-  height: 56px;
-  margin-bottom: 10px;
-  opacity: 0.85;
-}
-
-
-.trav-title {
-  font-family: 'Great Vibes', cursive;
-  font-weight: 400;
-  font-size: 3.8rem;
-  margin: 0;
-  color: #2d2f3f;
-}
-
-.trav-subtitle {
-  font-size: 1rem;
-  color: #514131;
-  margin: 2px 0 0;
-}
-
-/* ================= QUICK-JUMP TAB NAV ================= */
-/* Full-bleed bar (edge to edge, breaks out of the .container-fluid px-2
-   gutter from layout.html) with a subtle underline on the active tab. */
-
-.pills-nav {
-  position: sticky;
-  top: 76px;
-  z-index: 80;
-  width: auto;
-  margin-left: -0.5rem;
-  margin-right: -0.5rem;
-  margin-top: 22px;
-  background: #fdfcfa;
-  border-bottom: 1px solid #ece4d8;
-  overflow-x: auto;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.pills-nav::-webkit-scrollbar {
-  display: none;
-}
-
-.pills-nav-inner {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  gap: 28px;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-.pill-link {
-  flex-shrink: 0;
-  position: relative;
-  padding: 14px 1px;
-  background: transparent;
-  border: none;
-  color: #83786a;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.82rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  text-decoration: none;
-  white-space: nowrap;
-  cursor: pointer;
-  transition: color 0.2s ease;
-}
-
-.pill-link::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: 2px;
-  background: transparent;
-  transition: background-color 0.2s ease;
-}
-
-.pill-link:hover {
-  color: #2d2f3f;
-}
-
-.pill-link.is-active {
-  color: #2d2f3f;
-}
-
-.pill-link.is-active::after {
-  background-color: #af8e6e;
-}
-
-#s-flights, #s-hotels, #s-map, #s-transit, #s-parking {
-  scroll-margin-top: 130px;
-}
-
-@media (max-width: 600px) {
-  .pills-nav {
-    top: 68px;
-  }
-
-  .pills-nav-inner {
-    gap: 16px;
-    padding: 0 16px;
-  }
-
-  .pill-link {
-    font-size: 0.72rem;
-    padding: 12px 1px;
-  }
-}
-
-/* ================= SECTION LABEL + DIVIDER ================= */
-/* Quiet, dark, no underline — same italic-serif treatment index.html
-   uses for its "Friday, Oct 23" day labels, instead of a big gold
-   underlined title. */
-
-.trav-group {
-  padding: 0 2px;
-}
-
-.trav-head {
-  margin: 0 0 14px;
-}
-
-.trav-head-text {
-  font-family: 'Instrument Serif', serif;
-  font-style: italic;
-  font-weight: 400;
-  font-size: 1.15rem;
-  color: #2d2f3f;
-}
-
-.trav-divider {
-  border: none;
-  border-top: 1px solid #e6ddd1f8;
-  margin: 34px 0;
-}
-
-.travel-body-text {
-  font-size: 0.9rem;
-  color: #514131;
-  margin: 0;
-}
-
-.travel-section a.highlight-link {
-  color: #af8e6e;
-  text-decoration: underline;
-}
-
-.trav-subhead {
-  font-size: 0.88rem;
-  color: #83786a;
-  margin: 0 0 16px;
-}
-
-/* ================= FLIGHTS ================= */
-
-.flight-row {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.airline-logo {
-  height: 38px;
-  flex-shrink: 0;
-}
-
-/* ================= HOTEL ROW (horizontal scroll, replaces the grid) ================= */
-/* One card component, reused for every hotel including the reserved
-   block — same size, same type scale, no exceptions. */
-
-.hotel-row {
-  display: flex;
-  gap: 11px;
-  overflow-x: auto;
-  padding: 2px 2px 8px;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.hotel-row::-webkit-scrollbar {
-  /* display: none; */
-}
-
-.hotel-card {
-  flex: 0 0 150px;
-  background: #fffaf7;
-  border: 1px solid #e6ddd1;
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.hotel-card .hotel-carousel {
-  border-radius: 12px 12px 0 0;
-}
-
-.hotel-card .carousel-images img {
-  height: 118px;
-}
-
-.hotel-badge {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  z-index: 6;
-  background: #af8e6e;
-  color: #fff;
-  font-size: 0.58rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  padding: 3px 9px;
-  border-radius: 20px;
-  text-decoration: none;
-  transition: background 0.2s ease;
-}
-
-.hotel-badge:hover {
-  background: #8a685d;
-  color: #fff;
-}
-
-.hotel-card h5 {
-  margin: 10px 12px 12px;
-  font-size: 0.88rem;
-  font-weight: 600;
-  line-height: 1.35;
-}
-
-.hotel-link {
-  display: inline-block;
-  color: #2d2f3f;
-  text-decoration: none;
-  font-weight: 600;
-  transition: color 0.2s ease;
-}
-
-.hotel-link:hover {
-  color: #af8e6e;
-  text-decoration: underline;
-}
-
-/* ================= CAROUSEL (shared: official + row cards) ================= */
-
-.hotel-carousel {
-  position: relative;
-  overflow: hidden;
-}
-
-.carousel-images {
-  display: flex;
-  height: 100%;
-  transition: transform 0.4s ease;
-}
-
-.carousel-images img {
-  width: 100%;
-  object-fit: cover;
-  flex-shrink: 0;
-}
-
-.carousel-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(0, 0, 0, 0.45);
-  border: none;
-  color: #fff;
-  font-size: 18px;
-  padding: 5px 9px;
-  cursor: pointer;
-  border-radius: 50%;
-  z-index: 10;
-  transition: background 0.2s ease;
-}
-
-.carousel-btn.left { left: 10px; }
-.carousel-btn.right { right: 10px; }
-
-.carousel-btn:hover {
-  background: rgba(0, 0, 0, 0.75);
-}
-
-/* ================= MAP ================= */
-
-#map {
-  height: 260px;
-  border-radius: 12px;
-  border: 1px solid #e6ddd1;
-}
-
-.map-legend {
-  display: flex;
-  justify-content: center;
-  gap: 22px;
-  margin-top: 14px;
-  font-size: 0.85rem;
-  color: #514131;
-}
-.map-legend span {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-}
-.legend-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  display: inline-block;
-  flex-shrink: 0;
-}
-.legend-venue { background: #af8e6e; box-shadow: 0 0 0 2px #fff, 0 0 0 3px #af8e6e; }
-.legend-hotel { background: #fff; border: 2px solid #2d2f3f; }
-.legend-publix { background: #4c8c4a; box-shadow: 0 0 0 2px #fff, 0 0 0 3px #4c8c4a; }
-
-.venue-marker {
-  width: 9px; height: 9px;
-  border-radius: 50%;
-  background: #af8e6e;
-  border: 1.5px solid #fff;
-  box-shadow: 0 0 0 2px #af8e6e, 0 3px 10px rgba(0,0,0,0.3);
-}
-.hotel-marker {
-  width: 9px; height: 9px;
-  border-radius: 50%;
-  background: #fff;
-  border: 2.5px solid #2d2f3f;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-}
-.publix-marker {
-  width: 9px; height: 9px;
-  border-radius: 50%;
-  background: #4c8c4a;
-  border: 1.5px solid #fff;
-  box-shadow: 0 0 0 1.5px #4c8c4a, 0 2px 6px rgba(0,0,0,0.25);
-}
-
-.leaflet-tooltip.map-label {
-  background: rgba(255,255,255,0.94);
-  border: 1px solid #e6ddd1;
-  border-radius: 6px;
-  padding: 1px 2px;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.4rem;
-  font-weight: 600;
-  color: #2d2f3f;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
-  white-space: nowrap;
-}
-.leaflet-tooltip.map-label-venue {
-  background: #af8e6e;
-  border-color: #af8e6e;
-  color: #fff;
-  font-weight: 700;
-}
-.leaflet-tooltip.map-label::before {
-  display: none;
-}
-
-.leaflet-popup-content-wrapper {
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-  padding: 2px;
-}
-.leaflet-popup-content {
-  margin: 14px 16px;
-  font-family: 'Montserrat', sans-serif;
-}
-.popup-title {
-  font-weight: 700;
-  font-size: 0.95rem;
-  color: #2d2f3f;
-  margin-bottom: 3px;
-}
-.popup-tag {
-  display: inline-block;
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #fff;
-  background: #af8e6e;
-  padding: 2px 8px;
-  border-radius: 10px;
-  margin-bottom: 6px;
-}
-.popup-distance {
-  font-size: 0.8rem;
-  color: #83786a;
-  margin-top: 4px;
-}
-.popup-link {
-  display: inline-block;
-  margin-top: 6px;
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: #af8e6e;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-.leaflet-popup-tip {
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-.leaflet-control-zoom a {
-  border-radius: 8px !important;
-  color: #2d2f3f !important;
-}
-.leaflet-control-attribution {
-  font-size: 0.65rem !important;
-  background: rgba(255,255,255,0.7) !important;
-}
-
-/* ================= VENUE + PARKING ================= */
-
-.venue-parking-card {
-  display: grid;
-  grid-template-columns: 1fr 1px 1fr;
-  gap: 26px;
-  padding: 22px 0 4px;
-  background: transparent;
-}
-
-.venue-parking-section {
-  display: flex;
-  flex-direction: column;
-}
-
-.venue-parking-label {
-  font-size: 0.66rem;
-  font-weight: 700;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  color: #2d2f3f;
-  margin-bottom: 7px;
-}
-
-.venue-parking-title {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #2d2f3f;
-  margin: 0 0 3px;
-}
-
-.venue-parking-subtitle {
-  margin: 0 0 12px;
-  font-family: Georgia, serif;
-  font-size: 0.82rem;
-  font-style: italic;
-  color: #8a685d;
-}
-
-.venue-parking-address {
-  margin: 0;
-  font-size: 0.88rem;
-  line-height: 1.6;
-  color: #514131;
-}
-
-.venue-parking-divider {
-  width: 1px;
-  background: rgba(175, 142, 110, 0.3);
-}
-
-/* ================= MOBILE ================= */
-
-@media (max-width: 768px) {
-
-  .hotel-card { flex: 0 0 120px; }
-  .hotel-card .carousel-images img { height: 96px; }
-  .hotel-card h5 { font-size: 0.8rem; }
-
-  .carousel-btn { font-size: 15px; padding: 4px 8px; }
-
-  #map { height: 220px; }
-}
-
-@media (max-width: 600px) {
-
-  .trav-title { font-size: 2.5rem; }
-  .trav-logo-img { height: 46px; }
-
-  .travel-header-wrap { padding-top: 20px; }
-  .travel-body-wrap { padding-top: 20px; }
-
-  .trav-divider { margin: 26px 0; }
-
-  .venue-parking-card {
-    grid-template-columns: 1fr 1px 1fr;
-    gap: 14px;
-  }
-
-  .venue-parking-label { font-size: 0.6rem; }
-  .venue-parking-title { font-size: 0.88rem; }
-  .venue-parking-subtitle { font-size: 0.78rem; }
-  .venue-parking-address { font-size: 0.82rem; line-height: 1.45; }
-}
-
-</style>
-
 {% endblock %}
