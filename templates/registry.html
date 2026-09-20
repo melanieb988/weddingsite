@@ -1,24 +1,22 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<div class="registry-page-wrapper" style="padding: 40px 20px; max-width: 900px; margin: 0 auto; font-family:'Montserrat', sans-serif; color:#2d2f3f;">
+<div class="registry-page">
 
   <!-- HEADER -->
-  <div class="text-center mb-5">
-    <img src="{{ url_for('static', filename='images/biltmore1.png') }}" alt="Biltmore Logo" style="height:60px; margin-bottom:16px; opacity:0.85;">
-    <h1 style="font-family:'Great Vibes', cursive; font-size:3.8rem; margin-bottom:0; color:#2d2f3f;">Our Registry</h1>
-    <p style="font-size:1.1rem; color:#514131; margin-top:4px;">For the life & adventures ahead</p>
+  <div class="registry-header">
+    <img src="{{ url_for('static', filename='images/biltmore1.png') }}" alt="Biltmore Logo" class="registry-logo">
+    <h1 class="registry-heading">Our Registry</h1>
+    <p class="registry-subtext">For the Life &amp; Adventures Ahead</p>
   </div>
 
-  <!-- INTRO CARD -->
-  <div class="registry-intro">
-    <p>
-        Having you there to celebrate with us means the most. 
-    </p>
-  </div>
+  
+
+  <!-- INTRO -->
+
 
   <!-- ZOLA REGISTRY EMBED -->
-  <div class="registry-embed-card">
+  <div class="registry-embed-wrap">
     <!--
       Replace the two placeholders below with your real Zola info:
         - MY_ZOLA_URL           -> your full registry URL, e.g. https://www.zola.com/registry/melanieandisaac
@@ -36,14 +34,16 @@
 
     <!-- Fallback, in case the widget doesn't load (ad blockers, etc.) -->
     <noscript>
-      <a href="MY_ZOLA_URL" target="_blank" class="registry-fallback-btn">View Our Registry on Zola →</a>
+      <a href="MY_ZOLA_URL" target="_blank" class="registry-fallback-btn">
+        View Our Registry on Zola <span class="registry-btn-arrow">→</span>
+      </a>
     </noscript>
   </div>
 
   <!-- ALWAYS-VISIBLE BACKUP LINK -->
-  <div class="text-center registry-backup-link-wrap">
+  <div class="registry-backup-link-wrap">
     <a href="MY_ZOLA_URL" target="_blank" class="registry-backup-link">
-      Prefer to view it directly on Zola? Click here →
+      Prefer to view it directly on Zola? Click here <span class="registry-btn-arrow">→</span>
     </a>
   </div>
 
@@ -51,64 +51,134 @@
 
 <style>
 
-.registry-intro {
-  background: #faf9f7;
-  border-radius: 14px;
-  padding: 24px 28px;
-  margin-bottom: 32px;
+.registry-page {
+  padding: 60px 20px 20px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* HEADER */
+
+.registry-header {
   text-align: center;
 }
 
-.registry-intro p {
-  font-size: 1.05rem;
-  color: #514131;
-  line-height: 1.7;
+.registry-logo {
+  height: 48px;
+  margin-bottom: 20px;
+  opacity: 0.85;
+}
+
+.registry-heading {
+  font-family: 'Great Vibes', cursive;
+  font-size: 3.4rem;
+  font-weight: 400;
+  color: var(--c-heading);
+  text-align: center;
   margin: 0;
 }
 
-.registry-embed-card {
-  background: #fffaf7;
-  border-radius: 16px;
-  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.12);
-  padding: 32px;
-  min-height: 200px;
+.registry-subtext {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-secondary);
+  text-align: center;
+  margin: 10px 0 0;
+}
+
+/* INTRO */
+
+.registry-intro {
+  text-align: center;
+  max-width: 520px;
+  margin: 0 auto 8px;
+}
+
+.registry-intro p {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: var(--c-muted);
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* REGISTRY EMBED */
+
+.registry-embed-wrap {
+  background: var(--c-bg-panel);
+  padding: 40px 28px;
+  margin-top: 8px;
+  text-align: center;
+  min-height: 160px;
 }
 
 .registry-fallback-btn {
-  display: inline-block;
-  background: #af8e6e;
-  color: #fff;
-  padding: 12px 26px;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  background: transparent;
+  color: var(--c-gold);
+  border: 1.5px solid var(--c-gold);
+  padding: 14px 36px;
   border-radius: 30px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.76rem;
+  font-weight: 700;
   text-decoration: none;
-  font-weight: 600;
-  transition: all 0.25s ease;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
 .registry-fallback-btn:hover {
-  background: #8a685d;
+  background: var(--c-gold);
   color: #fff;
+  transform: translateY(-2px);
 }
 
+.registry-btn-arrow {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.registry-fallback-btn:hover .registry-btn-arrow,
+.registry-backup-link:hover .registry-btn-arrow {
+  transform: translateX(3px);
+}
+
+/* BACKUP LINK */
+
 .registry-backup-link-wrap {
-  margin-top: 24px;
+  text-align: center;
+  margin-top: 28px;
 }
 
 .registry-backup-link {
-  font-size: 0.9rem;
-  color: #8a685d;
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--c-gold);
+  text-decoration: none;
 }
 
 .registry-backup-link:hover {
-  color: #514131;
+  color: var(--c-ink);
 }
 
 @media (max-width: 600px) {
-  .registry-intro,
-  .registry-embed-card {
-    padding: 20px 18px;
+  .registry-heading {
+    font-size: 2.4rem;
+  }
+
+  .registry-embed-wrap {
+    padding: 28px 18px;
   }
 }
 
