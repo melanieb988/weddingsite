@@ -383,12 +383,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   padding-top: 2px;
 }
 
 .featured-hotel-footnote-line {
-  width: 20px;
+  width: 25px;
   height: 1px;
   background: var(--c-divider);
   opacity: 0.6;
@@ -694,8 +694,8 @@
 .venue-parking-card {
   display: grid;
   grid-template-columns: 1fr 1px 1fr;
-  gap: 26px;
-  padding: 4px 0 4px;
+  gap: 20px;
+  padding: 2px 0 2px;
   background: transparent;
 }
 
@@ -784,7 +784,7 @@
 
   .featured-hotel-footnote-line { width: 14px; }
 
-  .featured-hotel-footnote-text { font-size: 0.62rem; }
+  .featured-hotel-footnote-text { font-size: 0.59rem; }
 
   .hotel-grid { gap: 10px; }
 
@@ -797,7 +797,7 @@
 
   .venue-parking-card {
     grid-template-columns: 1fr 1px 1fr;
-    gap: 14px;
+    gap: 8px;
   }
 
   .venue-parking-label { font-size: 0.6rem; }
@@ -856,9 +856,9 @@
       <div class="featured-hotel-media">
         <div class="hotel-carousel" id="carousel-official">
           <div class="carousel-images">
-            <img src="{{ url_for('static', filename='images/travel/marriot_ren5.jpeg') }}" alt="Renaissance Hotel">
+            <img src="{{ url_for('static', filename='images/travel/marriot_ren_hotel.jpg') }}" alt="Renaissance Hotel">
             <img src="{{ url_for('static', filename='images/travel/marriot_ren_din.jpg') }}" alt="Hotel Dining">
-            <img src="{{ url_for('static', filename='images/travel/marriot_ren4.png') }}" alt="Guest Room">
+            <img src="{{ url_for('static', filename='images/travel/marriot_ren_room.jpg') }}" alt="Guest Room">
           </div>
           <button class="carousel-btn left" onclick="prevSlide('carousel-official')">&#10094;</button>
           <button class="carousel-btn right" onclick="nextSlide('carousel-official')">&#10095;</button>
@@ -875,7 +875,7 @@
         </a>
         <div class="featured-hotel-footnote">
           <span class="featured-hotel-footnote-line"></span>
-          <p class="featured-hotel-footnote-text">Please select only <strong>Friday &amp; Saturday nights</strong> to receive our discounted rate.</p>
+          <p class="featured-hotel-footnote-text">Please select only <strong>Friday &amp; Saturday nights</strong> for discount.</p>
           <span class="featured-hotel-footnote-line"></span>
         </div>
       </div>
@@ -962,7 +962,7 @@
     <div class="trav-head"><span class="trav-head-text">Map</span></div>
     <div id="map"></div>
     <div class="map-legend">
-      <span><span class="legend-dot legend-venue"></span> The Biltmore (Venue)</span>
+      <span><span class="legend-dot legend-venue"></span> The Biltmore</span>
       <span><span class="legend-dot legend-hotel"></span> Hotels</span>
       <span><span class="legend-dot legend-publix"></span> Publix</span>
     </div>
