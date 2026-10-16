@@ -1,290 +1,517 @@
 {% extends 'layout.html' %}
+
 {% block body %}
-<div class="pi-mile-page-wrapper" style="padding: 40px 20px; max-width: 1200px; margin: 0 auto;">
+<div class="pm-page">
 
-  <!-- Page Header -->
-  <div class="text-center mb-5">
-    <h1 style="font-family:'Great Vibes', cursive; font-weight: 400; font-size:3.4rem; margin-bottom:0; color:#2d2f3f;">
-      Pi Mile Race
-    </h1>
-    <p style="font-family:'Montserrat', sans-serif; color:#514131; font-size:1.2rem; margin-top:6px;">
-      Lace up and get ready to race
-    </p>
+  <!-- HEADER -->
+  <div class="pm-header">
+    <h1 class="pm-heading">Pi Mile Race</h1>
+    <p class="pm-subtext">Saturday, October 24 &middot; 3.14 Miles</p>
   </div>
 
-  <!-- Small Sidewalk Image Above Intro -->
-  <div class="text-center mb-5">
-    <img
-      src="{{ url_for('static', filename='images/pi_mile_sidewalk.jpg') }}"
-      alt="Pi Mile markers along course"
-      style="
-        width:100%;
-        max-width:150px;
-        border-radius:10px;
-        box-shadow:0 3px 12px rgba(0,0,0,0.08);
-        opacity:0.95;
-      "
-    >
-    <p style="font-family:'Montserrat', sans-serif; color:#83786a; font-style:italic; font-size:0.85rem; margin-top:8px;">
-      Pi Mile markers along course
-    </p>
-  </div>
+  <!-- RACE MORNING -->
+  <section class="pm-section">
+    <div class="pm-label"><span class="pm-label-text">Race Morning</span><span class="pm-label-trail"></span></div>
 
-  <!-- Course Description -->
-  <div class="pi-mile-section mb-5" style="max-width: 900px; margin: 0 auto;">
-    <h2 class="section-title">The Course</h2>
-    <div class="event-block pi-mile-course-block text-center">
-
-      <div class="pi-mile-distance-badge">
-        <span class="pi-mile-distance-symbol">&pi;</span>
-        <span class="pi-mile-distance-number">3.14</span>
-        <span class="pi-mile-distance-unit">Miles</span>
+    <div class="pm-row">
+      <div class="pm-time">8:45 AM</div>
+      <div>
+        <p class="pm-title pm-title-row">Runners Arrive <a class="pm-see-below" href="#getting-there">See Getting There below <span aria-hidden="true">&darr;</span></a></p>
       </div>
+    </div>
 
-      <p style="font-family:'Montserrat', sans-serif; font-size:1.05rem; color:#2d2f3f; line-height:1.6; margin:0 0 10px;">
-        Runners will complete a <strong>3.14-mile loop</strong> around Georgia Tech's campus and battle it out to the finish.
-      </p>
-      <p style="font-family:'Montserrat', sans-serif; font-size:0.85rem; color:#83786a; font-style:italic; line-height:1.6; margin:0;">
-        The winner will receive a prize.
-      </p>
+    <div class="pm-row">
+      <div class="pm-time">9:00 AM</div>
+      <div>
+        <p class="pm-title">Race Start</p>
+      </div>
+    </div>
 
-      <a class="pi-mile-history-link" href="https://news.gatech.edu/archive/features/pi-mile-road-race.shtml" target="_blank" rel="noopener">
-        History of the Pi Mile Race <span class="link-arrow">&rarr;</span>
+    <div class="pm-row">
+      <div class="pm-time">9:15 AM</div>
+      <div>
+        <p class="pm-title">First Finisher Expected</p>
+        <p class="pm-note">Train up!</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE COURSE -->
+  <section class="pm-section">
+    <div class="pm-label"><span class="pm-label-text">The Course</span><span class="pm-label-trail"></span></div>
+
+    <!-- course intro — one line with the pi symbol -->
+    <p class="pm-course-line">
+      <span class="pm-pi" aria-hidden="true">&pi;</span> The official <b>3.14-mile loop</b> around Ga&nbsp;Tech&rsquo;s campus
+    </p>
+
+
+    <!-- GPX / Garmin course link -->
+    <div class="pm-garmin">
+      <a class="pm-garmin-link" href="https://connect.garmin.com/app/course/517022203" target="_blank" rel="noopener">
+        Download GPX on Garmin <span class="pm-garmin-arrow">&rarr;</span>
       </a>
-
-    </div>
-  </div>
-
-  <!-- Course Map -->
-  <div class="text-center mb-5">
-    <img
-      src="{{ url_for('static', filename='images/pimile_course_map.png') }}"
-      alt="Pi Mile course map"
-      style="
-        width:100%;
-        max-width:880px;
-        border-radius:12px;
-        box-shadow:0 8px 25px rgba(0,0,0,0.12);
-      "
-    >
-  </div>
-
-  <!-- Start Location -->
-  <div class="pi-mile-section mb-4" style="max-width: 900px; margin: 0 auto;">
-
-      <h2 class="section-title">Start Location</h2>
     </div>
 
-    <div class="event-block text-center">
-
-      <span class="pi-mile-time-label">Race Start Time</span>
-      <p class="pi-mile-time-value">9:00 AM</p>
-
-      <p style="font-family:'Montserrat', sans-serif; font-size:1rem; color:#514131; margin-bottom:20px;">
-        The race will begin at:
-      </p>
-
-      <a
-        class="pi-mile-address"
-        href="https://www.google.com/maps/search/?api=1&query=225+North+Ave+NW,+Atlanta,+GA+30332"
-        target="_blank"
-        rel="noopener"
-      >
-        <span class="pi-mile-address-pin">📍</span>
-        <span class="pi-mile-address-text">
-          225 North Ave NW<br>
-          Atlanta, GA 30332
-        </span>
-        <span class="pi-mile-address-arrow">Get Directions →</span>
+    <figure class="pm-map">
+      <a href="{{ url_for('static', filename='images/pimile_course_map.png') }}" target="_blank" rel="noopener">
+        <img src="{{ url_for('static', filename='images/pimile_course_map.png') }}" alt="Pi Mile course map around Georgia Tech's campus, starting and finishing at the CRC">
       </a>
+      <figcaption>Tap the map to enlarge</figcaption>
+    </figure>
 
-      <p style="font-family:'Montserrat', sans-serif; font-size:0.9rem; color:#83786a; font-style:italic; margin-top:22px;">
-        More miles to follow after.
-      </p>
+
+  </section>
+
+  <!-- GETTING THERE -->
+  <section class="pm-section" id="getting-there">
+    <div class="pm-label"><span class="pm-label-text">Getting There</span><span class="pm-label-trail"></span></div>
+
+    <!-- Start address — whole row opens Google Maps -->
+    <a class="pm-link-row" href="https://www.google.com/maps/search/?api=1&amp;query=Georgia+Tech+Campus+Recreation+Center+750+Ferst+Dr+Atlanta+GA+30332" target="_blank" rel="noopener">
+      <span class="pm-link-icon"><img src="{{ url_for('static', filename='images/map_icon.png') }}" alt=""></span>
+      <span class="pm-link-body">
+        <span class="pm-stat-label">Start &amp; Finish</span>
+        <span class="pm-title">Georgia Tech Campus Recreation Center</span>
+        <span class="pm-detail">750 Ferst Dr, Atlanta, GA 30332</span>
+      </span>
+      <svg class="pm-go" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+    </a>
+
+    <!-- Running / walking -->
+    <div class="pm-link-row">
+      <span class="pm-link-icon"><img class="pm-icon-runner" src="{{ url_for('static', filename='images/runner.png') }}" alt=""></span>
+      <span class="pm-link-body">
+        <span class="pm-stat-label">From the Biltmore</span>
+        <span class="pm-title">About 1 Mile Away</span>
+        <span class="pm-detail">Running, walking, or taking an Uber is recommended.</span>
+      </span>
     </div>
-  </div>
+
+    <!-- Game day parking -->
+    <div class="pm-link-row">
+      <span class="pm-link-icon"><img class="pm-icon-car" src="{{ url_for('static', filename='images/car.png') }}" alt=""></span>
+      <span class="pm-link-body">
+        <span class="pm-stat-label">Driving?</span>
+        <span class="pm-title">Game Day Parking</span>
+        <span class="pm-detail">Since it&rsquo;s game day, parking may be limited </span>
+        <a class="pm-inline-link" href="https://www.pts.gatech.edu/parking/gameday-parking/" target="_blank" rel="noopener">See here for game day parking <span class="pm-nowrap">options <span class="pm-inline-arrow">&rarr;</span></span></a>
+      </span>
+    </div>
+  </section>
+
+  <!-- PI MILE TRADITION -->
+  <section class="pm-section pm-tradition">
+    <div class="pm-label"><span class="pm-label-text">A Pi Mile Tradition</span><span class="pm-label-trail"></span></div>
+
+    <p class="pm-detail pm-tradition-text">The Pi Mile is a Georgia Tech tradition: 3.14 mile perimeter loop around campus</p>
+
+    <a class="pm-inline-link" href="https://news.gatech.edu/archive/features/pi-mile-road-race.shtml" target="_blank" rel="noopener">History of the Pi Mile Race <span class="pm-inline-arrow">&rarr;</span></a>
+  </section>
 
 </div>
 
 <style>
+  /* ========================= */
+  /* PI MILE PAGE — same fonts, colors, and flat hairline-divided
+     layout as the Weekend Schedule. Color variables (--c-*) come from
+     the global :root in layout.html. */
+  /* ========================= */
 
-/* ================= SECTION TITLE (matches the cursive accent headers used on
-   travel.html / gallery.html / faq.html) ================= */
-
-   .section-title {
-  font-family: 'Instrument Serif', serif;   /* switched from Montserrat */
-  font-style: italic;
-  font-weight: 400;
-  color: #8a685d;
-  font-size: 1.9rem;
-  letter-spacing: 0.01em;
-  border-bottom: 1px solid #af8e6e;  /* thinner than the 2px it has now — serif italic doesn't want a heavy rule */
-  display: inline-block;
-  padding-bottom: 6px;
-  margin-bottom: 24px;
-}
-/* ================= CONTENT CARD (matches travel.html's event-block) ================= */
-
-.event-block {
-  background: #faf9f7;
-  padding: 24px 28px;
-  border-radius: 14px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-}
-
-/* ================= COURSE CARD ================= */
-
-.pi-mile-distance-badge {
-  display: flex;
-  align-items: baseline;
-  justify-content: center;
-  gap: 7px;
-  margin-bottom: 22px;
-  padding-bottom: 18px;
-  border-bottom: 1px solid rgba(175, 142, 110, 0.25);
-}
-
-.pi-mile-distance-symbol {
-  font-family: Georgia, 'Times New Roman', serif;
-  font-style: italic;
-  font-size: 1.7rem;
-  color: #af8e6e;
-}
-
-.pi-mile-distance-number {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
-  font-size: 2.4rem;
-  color: #2d2f3f;
-  letter-spacing: -0.01em;
-  line-height: 1;
-}
-
-.pi-mile-distance-unit {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #83786a;
-}
-
-.pi-mile-history-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 22px;
-  padding-top: 18px;
-  border-top: 1px solid #e6ddd1;
-  width: 100%;
-  justify-content: center;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: #af8e6e;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  transition: color 0.2s ease;
-}
-
-.pi-mile-history-link:hover {
-  color: #8a685d;
-}
-
-.pi-mile-history-link .link-arrow {
-  display: inline-block;
-  transition: transform 0.25s ease;
-}
-
-.pi-mile-history-link:hover .link-arrow {
-  transform: translateX(4px);
-}
-
-/* ================= START TIME ================= */
-
-.pi-mile-time-label {
-  display: block;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 1.4px;
-  text-transform: uppercase;
-  color: #af8e6e;
-  margin-bottom: 6px;
-}
-
-.pi-mile-time-value {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
-  font-size: 1.35rem;
-  color: #2d2f3f;
-  margin-bottom: 20px;
-}
-
-/* ================= START ADDRESS CALLOUT (now a clickable Google Maps link) ================= */
-
-.pi-mile-address {
-  display: inline-flex;
-  align-items: center;
-  gap: 14px;
-  padding: 16px 26px;
-  background: #fff;
-  border-radius: 10px;
-  border: 1px solid #e6e3de;
-  text-decoration: none;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-}
-
-.pi-mile-address:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.1);
-  border-color: rgba(175, 142, 110, 0.4);
-}
-
-.pi-mile-address-pin {
-  font-size: 1.3rem;
-  line-height: 1;
-}
-
-.pi-mile-address-text {
-  font-family: 'Montserrat', sans-serif;
-  color: #2d2f3f;
-  font-size: 1.05rem;
-  line-height: 1.5;
-  text-align: left;
-}
-
-.pi-mile-address-arrow {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  color: #af8e6e;
-  white-space: nowrap;
-  transition: transform 0.25s ease;
-}
-
-.pi-mile-address:hover .pi-mile-address-arrow {
-  transform: translateX(4px);
-}
-
-@media (max-width: 600px) {
-  .event-block {
-    padding: 20px 20px;
+  .pm-page {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 80px 20px 16px;
+    font-family: 'Montserrat', sans-serif;
+    color: var(--c-muted);
   }
 
-  .pi-mile-address {
-    flex-direction: column;
+  /* header — same as "Weekend Schedule" */
+  .pm-header {
     text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .pm-heading {
+    font-family: 'Great Vibes', cursive;
+    font-size: 3.4rem;
+    font-weight: 400;
+    color: var(--c-heading);
+    text-align: center;
+    margin-bottom: 0;
+  }
+
+  .pm-subtext {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c-secondary);
+    text-align: center;
+    margin-top: 4px;
+  }
+
+  .pm-section {
+    margin-bottom: 30px;
+    scroll-margin-top: 90px;   /* clears the fixed navbar when jumped to */
+  }
+
+  .pm-section:last-child {
+    margin-bottom: 0;
+  }
+
+  /* section label — same as the schedule's "Friday, Oct 23" */
+  .pm-label {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin: 0 0 4px;
+  }
+
+  .pm-label-text {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--c-secondary);
+    white-space: nowrap;
+  }
+
+  .pm-label-trail {
+    flex: 1;
+    height: 1px;
+    background: var(--c-divider);
+  }
+
+  /* timeline rows — same as the schedule's event rows */
+  .pm-row {
+    display: grid;
+    grid-template-columns: 78px 1fr;
+    column-gap: 40px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--c-divider);
+  }
+
+  .pm-row:last-child {
+    border-bottom: none;
+  }
+
+  .pm-time {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--c-taupe);
+    font-variant-numeric: tabular-nums;
+    line-height: 1.35;
+    padding-top: 2px;
+  }
+
+  .pm-title {
+    display: block;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--c-heading);
+    line-height: 1.3;
+    margin: 0;
+  }
+
+  /* timeline titles — a step smaller than the getting-there titles */
+  .pm-row .pm-title {
+    font-size: 0.9rem;
+  }
+
+  .pm-title-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 10px;
+    row-gap: 2px;
+  }
+
+  /* small gold jump link beside "Runners Arrive" */
+  .pm-see-below {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--c-gold);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .pm-see-below:hover {
+    color: var(--c-heading);
+  }
+
+  .pm-detail {
+    display: block;
+    font-weight: 400;
+    font-size: 0.85rem;
+    color: var(--c-muted);
+    line-height: 1.45;
+    margin: 0;
+  }
+
+  .pm-detail b {
+    color: var(--c-heading);
+    font-weight: 600;
+  }
+
+  /* small serif italic aside — same as "Casual Attire" */
+  .pm-note {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--c-muted);
+    line-height: 1.4;
+    margin: 2px 0 0;
+  }
+
+  /* tiny gold uppercase label */
+  .pm-stat-label {
+    display: block;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--c-gold);
+    margin-bottom: 2px;
+  }
+
+  /* ---- course ---- */
+  /* ---- course intro line ---- */
+  .pm-course-line {
+    margin: 16px 0 0;
+    line-height: 1.5;
+    font-size: 0.95rem;
+    color: var(--c-muted);
+    text-align: center;
+  }
+
+  .pm-course-line b {
+    color: var(--c-heading);
+    font-weight: 600;
+  }
+
+  .pm-pi {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 1.6rem;
+    line-height: 1;
+    color: var(--c-gold);
+    margin-right: 4px;
+    vertical-align: -2px;
+  }
+
+  .pm-course-meta {
+    margin: 2px 0 0;
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--c-muted);
+    text-align: center;
+  }
+
+  /* ---- tradition ---- */
+  .pm-tradition-text {
+    padding: 12px 0 6px;
+  }
+
+  .pm-map {
+    margin: 0;
+  }
+
+  /* crop window — shows only the course loop, trims the empty
+     map above/below and the legend (tap still opens the full map) */
+  .pm-map a {
+    position: relative;
+    display: block;
+    width: 100%;
+    max-width: 220px;
+    aspect-ratio: 640 / 540;
+    margin: 0 auto;
+    overflow: hidden;
+    border: 1px solid var(--c-divider);
+  }
+
+  .pm-map img {
+    position: absolute;
+    display: block;
+    width: 127%;        /* full image width / crop width (813 / 640) */
+    max-width: none;
+    height: auto;
+    left: -13.3%;       /* crop starts 85px in from the left */
+    top: -52.8%;        /* crop starts 285px down from the top */
+  }
+
+  .pm-map figcaption {
+    margin-top: 8px;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--c-taupe);
+    text-align: center;
+  }
+
+  /* Garmin — sleek gold text link, arrow nudges on hover */
+  .pm-garmin {
+    text-align: center;
+    margin: 4px 0 18px;
+  }
+
+  .pm-garmin-link {
+    display: inline-flex;
+    align-items: center;
     gap: 8px;
-    padding: 18px 20px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--c-gold);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--c-gold);
+    text-decoration: none;
   }
 
-  .pi-mile-address-text {
-    text-align: center;
+  .pm-garmin-link:hover {
+    color: var(--c-heading);
+    border-bottom-color: var(--c-heading);
   }
-}
 
+  .pm-garmin-arrow {
+    display: inline-block;
+    font-size: 0.9rem;
+    letter-spacing: 0;
+    transition: transform 0.2s ease;
+  }
+
+  .pm-garmin-link:hover .pm-garmin-arrow {
+    transform: translateX(3px);
+  }
+
+  .pm-garmin-sub {
+    margin: 8px 0 0;
+    font-size: 0.72rem;
+    color: var(--c-muted);
+  }
+
+  /* inline text link with arrow (game day parking) */
+  .pm-inline-link {
+    display: inline-block;
+    margin-top: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--c-gold);
+    text-decoration: none;
+  }
+
+  .pm-nowrap {
+    white-space: nowrap;
+  }
+
+  .pm-inline-link:hover {
+    color: var(--c-heading);
+  }
+
+  .pm-inline-arrow {
+    display: inline-block;
+    margin-left: 3px;
+    transition: transform 0.2s ease;
+  }
+
+  .pm-inline-link:hover .pm-inline-arrow {
+    transform: translateX(3px);
+  }
+
+  /* ---- getting there: tappable rows, same as the arrival dropdown ---- */
+  .pm-link-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--c-divider);
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .pm-link-icon {
+    position: relative;
+    flex: 0 0 auto;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--c-bg-panel);
+  }
+
+  /* map pin — cropped from map_icon.png */
+  .pm-link-icon img {
+    position: absolute;
+    width: 105%;
+    max-width: none;
+    height: auto;
+    left: -3%;
+    top: 4%;
+    mix-blend-mode: multiply;
+  }
+
+  /* car — cropped from car.png */
+  .pm-link-icon img.pm-icon-car {
+    width: 122.6%;
+    left: -10.9%;
+    top: -11%;
+    mix-blend-mode: normal;
+  }
+
+  /* runner — cropped from runner.png */
+  .pm-link-icon img.pm-icon-runner {
+    width: 75%;
+    left: 12.5%;
+    top: 18%;
+  }
+
+  .pm-link-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .pm-go {
+    flex: 0 0 auto;
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: var(--c-ink);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.2s ease;
+  }
+
+  .pm-link-row:hover .pm-go {
+    transform: translateX(3px);
+  }
+
+  @media (max-width: 600px) {
+    .pm-page {
+      padding: 64px 16px 12px;
+    }
+
+    .pm-heading {
+      font-size: 2.4rem;
+    }
+
+    .pm-row {
+      grid-template-columns: 60px 1fr;
+      column-gap: 14px;
+    }
+
+    .pm-time {
+      font-size: 0.66rem;
+    }
+
+    .pm-link-row {
+      gap: 12px;
+    }
+  }
 </style>
 {% endblock %}
-
