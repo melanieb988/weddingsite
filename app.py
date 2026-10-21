@@ -70,7 +70,10 @@ def index():
 def event():
     return redirect(url_for('index') + '#schedule')
  
- 
+@app.route("/setup-guide")
+def setup_guide():
+    return app.send_static_file("setup-guide.html")
+    
 @app.route("/faq")
 def faq():
     return render_template("faq.html", app_data=app_data)
